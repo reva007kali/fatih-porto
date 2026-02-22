@@ -161,7 +161,7 @@
                 <!-- Music Player -->
                 <livewire:public.components.music-player />
 
-                <a href="#contact"
+                <a href="/#contact"
                     class="px-8 py-3 rounded-full bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all duration-300">
                     Let's Talk
                 </a>
