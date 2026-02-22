@@ -192,6 +192,11 @@
                             'icon' => 'M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z',
                         ],
                         [
+                            'route' => 'admin.three-d.index',
+                            'label' => '3D Gallery',
+                            'icon' => 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
+                        ],
+                        [
                             'route' => 'admin.music.index',
                             'label' => 'Music',
                             'icon' =>

@@ -7,17 +7,26 @@ import { initShowcase3D, cleanupShowcase3D } from './showcase-3d';
 let scroll;
 
 function initScroll() {
-    // Disable Locomotive Scroll for Admin/Dashboard pages
-    if (window.location.pathname.startsWith('/admin') || 
-        window.location.pathname.startsWith('/dashboard') || 
-        window.location.pathname.startsWith('/profile')) {
+    // Disable Locomotive Scroll for Admin/Dashboard pages and 3D Viewer
+    const is3DViewer = window.location.pathname.startsWith('/3d-gallery/') && window.location.pathname.split('/').length > 2;
+    const isAdmin = window.location.pathname.startsWith('/admin') || 
+                   window.location.pathname.startsWith('/dashboard') || 
+                   window.location.pathname.startsWith('/profile');
+
+    if (isAdmin || is3DViewer) {
         
         if (scroll) {
             scroll.destroy();
             scroll = undefined;
         }
-        document.documentElement.style.overflow = 'auto';
-        document.body.style.overflow = 'auto';
+
+        if (is3DViewer) {
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.documentElement.style.overflow = 'auto';
+            document.body.style.overflow = 'auto';
+        }
         return;
     }
 

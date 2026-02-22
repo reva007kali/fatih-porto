@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SitemapController;
 use App\Livewire\Admin\About as AboutSettings;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Features\Index as FeaturesIndex;
@@ -16,25 +17,28 @@ use App\Livewire\Admin\Testimonials\Index as TestimonialsIndex;
 use App\Livewire\Admin\Websites\Index as WebsitesIndex;
 use App\Livewire\Public\About;
 use App\Livewire\Public\Archive;
+use App\Livewire\Public\Gallery;
 use App\Livewire\Public\Home;
 use App\Livewire\Public\PrivacyPolicy;
 use App\Livewire\Public\ProjectDetail;
 use App\Livewire\Public\ServiceDetail;
 use App\Livewire\Public\TermsOfService;
-use App\Livewire\Public\Websites;
-use App\Livewire\Public\Works;
-use App\Livewire\Public\Gallery;
-use App\Http\Controllers\SitemapController;
-
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Route;
+use App\Livewire\Public\ThreeDGallery;
+use App\Livewire\Public\ThreeDViewer;
 
 use App\Livewire\Public\ThreeShowcase;
+use App\Livewire\Public\Websites;
+
+use App\Livewire\Public\Works;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home::class)->name('home');
 Route::get('/3d-showcase', ThreeShowcase::class)->name('showcase.3d');
 Route::get('/works', Works::class)->name('works');
 Route::get('/gallery', Gallery::class)->name('gallery');
+Route::get('/3d-gallery', ThreeDGallery::class)->name('three-d.gallery');
+Route::get('/3d-gallery/{slug}', ThreeDViewer::class)->name('three-d.show');
 Route::get('/websites', Websites::class)->name('websites');
 Route::get('/archive', Archive::class)->name('archive');
 Route::get('/works/{slug}', ProjectDetail::class)->name('works.show');
@@ -75,6 +79,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('websites/create', App\Livewire\Admin\Websites\Create::class)->name('websites.create');
     Route::get('websites/{id}/edit', App\Livewire\Admin\Websites\Edit::class)->name('websites.edit');
     Route::get('gallery', App\Livewire\Admin\Gallery\Index::class)->name('gallery');
+
+    Route::get('three-d', App\Livewire\Admin\ThreeD\Index::class)->name('three-d.index');
+    Route::get('three-d/create', App\Livewire\Admin\ThreeD\Create::class)->name('three-d.create');
+    Route::get('three-d/{id}/edit', App\Livewire\Admin\ThreeD\Edit::class)->name('three-d.edit');
     
     Route::get('music', App\Livewire\Admin\Music\Index::class)->name('music.index');
     Route::get('music/create', App\Livewire\Admin\Music\Create::class)->name('music.create');
