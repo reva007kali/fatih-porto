@@ -8,14 +8,14 @@
         <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
             <div class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
                 <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-500 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                 </span>
-                <p class="text-blue-500 font-black tracking-[0.4em] uppercase text-[10px]">WebGL Experiments</p>
+                <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">WebGL Experiments</p>
             </div>
             
             <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
-                3D <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">Dimension.</span>
+                3D <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Dimension.</span>
             </h1>
             
             <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
