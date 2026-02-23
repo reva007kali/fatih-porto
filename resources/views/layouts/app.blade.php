@@ -65,8 +65,7 @@
     </style>
 </head>
 
-<body class="font-sans antialiased bg-[#0b0b0d] text-white selection:bg-swiss-blue selection:text-white"
-    x-data="{ sidebarOpen: false }">
+<body class="antialiased bg-[#0b0b0d] text-white selection:bg-swiss-blue selection:text-white" x-data="{ sidebarOpen: false }">
     <div class="min-h-screen flex flex-col lg:flex-row">
 
         <!-- Mobile Header -->
@@ -96,9 +95,9 @@
                 <a href="{{ route('dashboard') }}"
                     class="text-xl font-bold text-white tracking-tight flex items-center gap-3">
                     <div
-                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-swiss-blue to-purple-600 flex items-center justify-center text-white font-bold shadow-lg shadow-swiss-blue/20">
-                        R</div>
-                    <span>Admin Panel</span>
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-swiss-blue to-purple-600 flex items-center justify-center text-orange-600 font-bold shadow-lg shadow-swiss-blue/20">
+                        REVA</div>
+                    <span>CMS</span>
                 </a>
             </div>
 
@@ -117,7 +116,7 @@
                 <a href="{{ route('dashboard') }}"
                     class="group flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 mb-1
                     {{ request()->routeIs('dashboard')
-                        ? 'bg-white/10 text-white shadow-inner shadow-white/5 border border-white/5'
+                        ? 'bg-orange-600 text-white shadow-inner shadow-white/5 border border-white/5'
                         : 'text-gray-400 hover:bg-white/5 hover:text-white' }}">
                     <svg class="w-5 h-5 mr-3 transition-colors duration-200 {{ request()->routeIs('dashboard') ? 'text-swiss-blue' : 'text-gray-500 group-hover:text-white' }}"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -209,7 +208,7 @@
                     <a href="{{ route($item['route']) }}"
                         class="group flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 mb-1
                         {{ request()->routeIs($item['route'])
-                            ? 'bg-white/10 text-white shadow-inner shadow-white/5 border border-white/5'
+                            ? 'bg-orange-600 text-white shadow-inner shadow-white/5 border border-white/5'
                             : 'text-gray-400 hover:bg-white/5 hover:text-white' }}">
                         <svg class="w-5 h-5 mr-3 transition-colors duration-200 {{ request()->routeIs($item['route']) ? 'text-swiss-blue' : 'text-gray-500 group-hover:text-white' }}"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -247,7 +246,7 @@
                     <a href="{{ route($item['route']) }}"
                         class="group flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 mb-1
                         {{ request()->routeIs($item['route'])
-                            ? 'bg-white/10 text-white shadow-inner shadow-white/5 border border-white/5'
+                            ? 'bg-orange-600 text-white shadow-inner shadow-white/5 border border-white/5'
                             : 'text-gray-400 hover:bg-white/5 hover:text-white' }}">
                         <svg class="w-5 h-5 mr-3 transition-colors duration-200 {{ request()->routeIs($item['route']) ? 'text-swiss-blue' : 'text-gray-500 group-hover:text-white' }}"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -261,7 +260,7 @@
                 <a href="{{ route('profile') }}"
                     class="group flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 mb-1
                     {{ request()->routeIs('profile')
-                        ? 'bg-white/10 text-white shadow-inner shadow-white/5 border border-white/5'
+                        ? 'bg-orange-600 text-white shadow-inner shadow-white/5 border border-white/5'
                         : 'text-gray-400 hover:bg-white/5 hover:text-white' }}">
                     <svg class="w-5 h-5 mr-3 transition-colors duration-200 {{ request()->routeIs('profile') ? 'text-swiss-blue' : 'text-gray-500 group-hover:text-white' }}"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -315,16 +314,41 @@
 
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open"
-                            class="flex items-center text-gray-400 focus:outline-none hover:text-white transition-colors gap-3 p-1 pr-4 rounded-full border border-transparent hover:border-white/5 hover:bg-white/5">
-                            <div
-                                class="w-8 h-8 rounded-full bg-gradient-to-br from-swiss-blue to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-lg shadow-purple-500/20">
-                                {{ substr(Auth::user()->name, 0, 1) }}
+                            class="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-white/10 bg-zinc-900/40 hover:bg-zinc-800/60 hover:border-orange-500/30 transition-all duration-300 group shadow-lg shadow-black/20 focus:outline-none">
+
+                            <!-- Avatar with Gradient & Status Ring -->
+                            <div class="relative">
+                                <div
+                                    class="w-9 h-9 rounded-full bg-gradient-to-tr from-orange-600 to-amber-400 flex items-center justify-center text-zinc-950 font-black text-sm shadow-md group-hover:scale-105 transition-transform duration-300 ring-2 ring-orange-500/20 group-hover:ring-orange-500/50">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                                <!-- Online Status Dot -->
+                                <div
+                                    class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-zinc-950 rounded-full shadow-sm">
+                                </div>
                             </div>
-                            <span class="font-semibold text-sm">{{ Auth::user()->name }}</span>
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
+
+                            <!-- User Details (Hidden on small mobile if needed) -->
+                            <div class="text-left hidden sm:block">
+                                <p
+                                    class="text-[13px] font-bold text-white leading-none group-hover:text-orange-400 transition-colors">
+                                    {{ Auth::user()->name }}
+                                </p>
+                                <p
+                                    class="text-[9px] font-extrabold text-zinc-500 uppercase tracking-[0.1em] leading-none mt-1.5">
+                                    Administrator
+                                </p>
+                            </div>
+
+                            <!-- Animated Chevron Icon -->
+                            <div class="ml-1 text-zinc-500 group-hover:text-white transition-colors">
+                                <svg class="w-4 h-4 transition-transform duration-300 ease-in-out"
+                                    :class="{ 'rotate-180 text-orange-500': open }" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
                         </button>
 
                         <div x-show="open" @click.away="open = false"
@@ -353,7 +377,7 @@
 
             <!-- Main -->
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-[#0b0b0d] p-4 lg:p-8">
-                <div class="max-w-7xl mx-auto pb-10">
+                <div class="pb-10">
                     {{ $slot }}
                 </div>
             </main>
