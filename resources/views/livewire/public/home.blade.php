@@ -98,24 +98,30 @@
                 </p>
 
                 {{-- Action Group --}}
-                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                <div class="flex flex-col sm:flex-row items-center gap-4 md:gap-6">
                     {{-- Main CTA --}}
-                    <div class="flex items-center gap-4">
+                    <div class="flex flex-row items-center gap-4 w-full sm:w-auto justify-center">
+                        
+                        {{-- Primary Button --}}
                         <a href="{{ $hero->cta_link ?? '#' }}"
-                            class="group relative px-3 py-1 md:px-10 md:py-5 rounded-full overflow-hidden transition-all duration-300 active:scale-95 shadow-[0_20px_40px_-10px_rgba(255,107,0,0.3)] hover:shadow-[0_25px_50px_-10px_rgba(255,107,0,0.5)]">
+                            class="group relative flex-1 sm:flex-none inline-flex items-center justify-center px-6 py-3.5 md:px-10 md:py-5 rounded-full overflow-hidden transition-all duration-300 active:scale-95 shadow-[0_20px_40px_-10px_rgba(255,107,0,0.3)] hover:shadow-[0_25px_50px_-10px_rgba(255,107,0,0.5)]">
                             <div
                                 class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-400 group-hover:scale-110 transition-transform duration-500">
                             </div>
                             <span
-                                class="relative z-10 text-black font-black uppercase tracking-widest text-[8px] md:text-xs group-hover:tracking-[0.25em] transition-all duration-500">
+                                class="relative z-10 text-black font-bold uppercase tracking-widest text-[10px] md:text-xs group-hover:tracking-[0.2em] transition-all duration-500 whitespace-nowrap">
                                 {{ $hero->cta_text ?? 'Start a Project' }}
                             </span>
                         </a>
+                
+                        {{-- Download CV Button --}}
                         <a href="/cv.pdf" download
-   class="inline-flex items-center uppercase text-[8px] md:text-xs tracking-widest px-5 py-2 bg-black/30 border-[1px] border-orange-700 text-white rounded-full hover:opacity-80 transition">
-    Download CV
-</a>
+                            class="inline-flex flex-1 sm:flex-none items-center justify-center uppercase text-[10px] md:text-xs font-bold tracking-widest px-6 py-3.5 md:px-10 md:py-5 bg-white/5 border border-orange-700/50 text-white rounded-full hover:bg-orange-700/20 transition-all duration-300 backdrop-blur-sm whitespace-nowrap">
+                            Download CV
+                        </a>
+                        
                     </div>
+                </div>
                     {{-- Social Icons: Refined --}}
                     <div class="flex items-center gap-5 pl-2 sm:border-l sm:border-white/10 sm:pl-8">
                         @foreach ($social_links as $link)
