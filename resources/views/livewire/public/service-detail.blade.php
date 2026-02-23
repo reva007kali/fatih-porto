@@ -1,14 +1,22 @@
 <div class="min-h-screen bg-[#0b0b0d] text-white antialiased selection:bg-orange-500 selection:text-white">
 
-    {{-- 1. Floating Navigation --}}
+    {{-- 1. Floating Back Button --}}
     <div class="fixed bottom-8 left-6 md:left-12 z-[100]">
-        <a href="{{ route('home') }}"
-            class="group flex items-center justify-center w-14 h-14 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 hover:border-orange-500/50 transition-all duration-500 hover:scale-110 shadow-2xl">
+        <button type="button" x-on:click="window.history.back()"
+            class="group flex items-center justify-center w-14 h-14 rounded-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 hover:border-orange-500/50 transition-all duration-500 hover:scale-110 shadow-2xl focus:outline-none"
+            title="Go Back">
+
+            {{-- Tooltip (Optional, shows on hover) --}}
+            <span
+                class="absolute left-16 scale-0 group-hover:scale-100 transition-all origin-left bg-orange-600 text-white text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-md shadow-xl whitespace-nowrap pointer-events-none">
+                Go Back
+            </span>
+
             <svg class="w-6 h-6 text-orange-500 group-hover:-translate-x-1 transition-transform" fill="none"
-                stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path>
             </svg>
-        </a>
+        </button>
     </div>
 
     {{-- 2. Atmospheric Hero Section --}}

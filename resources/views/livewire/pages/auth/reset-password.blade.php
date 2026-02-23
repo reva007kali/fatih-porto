@@ -1,31 +1,20 @@
 <?php
 
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rules;
+use App\Livewire\Forms\ResetPasswordForm;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\Locked;
 use Livewire\Volt\Component;
 
 new #[Layout('layouts.guest')] class extends Component
 {
-    #[Locked]
-    public string $token = '';
-    public string $email = '';
-    public string $password = '';
-    public string $password_confirmation = '';
+    public ResetPasswordForm $form;
 
     /**
      * Mount the component.
      */
     public function mount(string $token): void
     {
-        $this->token = $token;
-
-        $this->email = request()->string('email');
+        $this->form->token = $token;
+        $this->form->email = request()->string('email');
     }
 
     /**
@@ -33,73 +22,96 @@ new #[Layout('layouts.guest')] class extends Component
      */
     public function resetPassword(): void
     {
-        $this->validate([
-            'token' => ['required'],
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
-        ]);
+        try {
+            $this->form->resetPassword();
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
-        $status = Password::reset(
-            $this->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user) {
-                $user->forceFill([
-                    'password' => Hash::make($this->password),
-                    'remember_token' => Str::random(60),
-                ])->save();
+            session()->flash('status', __('passwords.reset'));
 
-                event(new PasswordReset($user));
-            }
-        );
-
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        if ($status != Password::PASSWORD_RESET) {
-            $this->addError('email', __($status));
-
-            return;
+            $this->redirectRoute('login', navigate: true);
+        } catch (\Exception $e) {
+            $this->addError('form.email', __($e->getMessage()));
         }
-
-        Session::flash('status', __($status));
-
-        $this->redirectRoute('login', navigate: true);
     }
 }; ?>
 
-<div>
-    <form wire:submit="resetPassword">
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+<div class="relative min-h-screen antialiased">
+    {{-- Background --}}
+    <div class="absolute inset-0 -z-10 bg-gray-950">
+        <div aria-hidden="true" class="absolute inset-0 flex items-center justify-center">
+            <div
+                class="relative h-full w-full max-w-3xl animate-blob-bounce rounded-full bg-gradient-to-tr from-fuchsia-500 to-cyan-500 opacity-20 blur-3xl">
+            </div>
         </div>
+    </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input wire:model="password" id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+    {{-- Content --}}
+    <div class="flex min-h-screen flex-col items-center justify-center p-4">
+        <div class="w-full max-w-md">
+            <div class="mb-8 text-center">
+                 <a href="{{ route('home') }}" class="inline-block" wire:navigate>
+                    <h1 class="text-4xl font-black tracking-tighter text-white lg:text-5xl">
+                        Reset Password
+                    </h1>
+                 </a>
+                 <p class="mt-2 text-lg text-gray-400">
+                    Choose a new password for your account
+                 </p>
+            </div>
+
+
+            <div
+                class="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl shadow-black/20 backdrop-blur-lg">
+                <!-- Session Status -->
+                <x-auth-session-status class="mb-4" :status="session('status')" />
+
+                <form wire:submit="resetPassword" class="space-y-6">
+                    <!-- Email Address -->
+                    <div>
+                        <x-input-label for="email" value="Email" class="sr-only" />
+                        <x-text-input wire:model="form.email" id="email"
+                            class="block w-full rounded-lg border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/40 focus:border-cyan-500 focus:ring-cyan-500"
+                            type="email" name="email" required autofocus autocomplete="username"
+                            placeholder="Email" />
+                        <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                         <x-input-label for="password" value="Password" class="sr-only" />
+                         <x-text-input wire:model="form.password" id="password"
+                                class="block w-full rounded-lg border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/40 focus:border-cyan-500 focus:ring-cyan-500"
+                                type="password"
+                                name="password"
+                                required autocomplete="new-password"
+                                placeholder="New Password"/>
+                        <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div>
+                         <x-input-label for="password_confirmation" value="Confirm Password" class="sr-only" />
+                         <x-text-input wire:model="form.password_confirmation" id="password_confirmation"
+                                class="block w-full rounded-lg border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/40 focus:border-cyan-500 focus:ring-cyan-500"
+                                type="password"
+                                name="password_confirmation"
+                                required autocomplete="new-password"
+                                placeholder="Confirm New Password"/>
+                        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-primary-button class="flex w-full justify-center rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 px-4 py-3 font-semibold text-white shadow-lg transition-transform duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-l hover:shadow-cyan-500/30 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-gray-900">
+                            {{ __('Reset Password') }}
+                        </x-primary-button>
+                    </div>
+                </form>
+
+            </div>
+
+             <p class="mt-8 text-center text-sm text-gray-500">
+                This is a restricted area. Only authorized users are allowed.
+             </p>
+
         </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full"
-                          type="password"
-                          name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
+    </div>
 </div>

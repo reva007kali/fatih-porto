@@ -3,28 +3,37 @@
     @section('meta_title', $project->title . ' | Reva Adhitya')
     @section('meta_description', Str::limit(strip_tags($project->description), 160))
     @section('meta_keywords', 'Project, ' . $project->category . ', ' . $project->title . ', Reva Adhitya')
-    @if($project->image)
+    @if ($project->image)
         @section('meta_image', asset('storage/' . $project->image))
     @endif
 
-    {{-- 1. Floating Navigation --}}
+    {{-- 1. Floating Back Button --}}
     <div class="fixed bottom-8 left-6 md:left-12 z-[100]">
-        <a href="{{ route('home') }}"
-            class="group flex items-center justify-center w-14 h-14 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 hover:border-orange-500/50 transition-all duration-500 hover:scale-110 shadow-2xl">
+        <button type="button" x-on:click="window.history.back()"
+            class="group flex items-center justify-center w-14 h-14 rounded-full bg-zinc-900/40 backdrop-blur-xl border border-white/10 hover:border-orange-500/50 transition-all duration-500 hover:scale-110 shadow-2xl focus:outline-none"
+            title="Go Back">
+
+            {{-- Tooltip (Optional, shows on hover) --}}
+            <span
+                class="absolute left-16 scale-0 group-hover:scale-100 transition-all origin-left bg-orange-600 text-white text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-md shadow-xl whitespace-nowrap pointer-events-none">
+                Go Back
+            </span>
+
             <svg class="w-6 h-6 text-orange-500 group-hover:-translate-x-1 transition-transform" fill="none"
-                stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path>
             </svg>
-        </a>
+        </button>
     </div>
 
     {{-- 2. Cinematic Hero Section --}}
     <header class="relative min-h-[60vh] flex items-end pt-24 pb-10 overflow-hidden">
         @if ($project->image)
-        <div class="absolute right-0 top-1/2 -translate-y-1/2 w-full lg:w-1/2 h-full opacity-20 pointer-events-none">
-            <img src="{{ asset('storage/' . $project->image) }}"
-                class="w-full h-full object-cover blur-[4px] lg:blur-[2px]">
-        </div>
+            <div
+                class="absolute right-0 top-1/2 -translate-y-1/2 w-full lg:w-1/2 h-full opacity-20 pointer-events-none">
+                <img src="{{ asset('storage/' . $project->image) }}"
+                    class="w-full h-full object-cover blur-[4px] lg:blur-[2px]">
+            </div>
         @endif
 
         {{-- Ambient Glows --}}
