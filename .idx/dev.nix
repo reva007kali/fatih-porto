@@ -1,6 +1,7 @@
 {pkgs}: {
   channel = "stable-24.05";
   packages = [
+    pkgs.php82
     pkgs.nodejs_20
   ];
   idx.extensions = [

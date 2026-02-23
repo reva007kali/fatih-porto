@@ -55,17 +55,48 @@
 
     <!-- TRIGGER BUTTON -->
     <button wire:click="toggleChat"
-        class="fixed bottom-8 right-8 z-[1000] flex items-center gap-3 px-5 py-3 bg-[#161618] border border-white/10 rounded-full shadow-2xl hover:scale-105 transition-all group">
-        <div class="relative">
-            <span class="w-2 h-2 bg-green-500 rounded-full block"></span>
-            <span class="absolute inset-0 bg-green-500 rounded-full animate-ping"></span>
-        </div>
-        <span class="text-[10px] font-black uppercase tracking-widest text-white">Ai Assistant</span>
-    </button>
+    class="fixed bottom-12 right-8 z-[1000] flex items-center gap-3 px-3 md:px-5 py-3 bg-orange-700 md:bg-[#161618] border border-white/10 rounded-full shadow-2xl hover:scale-105 transition-all group">
+
+    <!-- Status Indicator -->
+    <div class="relative hidden md:block">
+        <span class="w-2 h-2 bg-green-500 rounded-full block"></span>
+        <span class="absolute inset-0 bg-green-500 rounded-full animate-ping"></span>
+    </div>
+
+    <!-- AI Icon -->
+    <svg xmlns="http://www.w3.org/2000/svg"
+    class="w-5 h-5 text-white"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round">
+
+    <!-- Antenna -->
+    <line x1="12" y1="2" x2="12" y2="5" />
+    <circle cx="12" cy="2" r="1.2" fill="currentColor"/>
+
+    <!-- Head -->
+    <rect x="4" y="6" width="16" height="12" rx="3" />
+
+    <!-- Eyes -->
+    <circle cx="9" cy="12" r="1.2" fill="currentColor"/>
+    <circle cx="15" cy="12" r="1.2" fill="currentColor"/>
+
+    <!-- Mouth -->
+    <line x1="9" y1="16" x2="15" y2="16" />
+</svg>
+
+    <!-- Text (Desktop Only) -->
+    <span class="hidden md:inline text-[10px] font-black uppercase tracking-widest text-white">
+        AI Assistant
+    </span>
+</button>
 
     @if ($isOpen)
         <div x-transition
-            class="fixed bottom-24 right-6 md:right-8 w-[92vw] md:w-[420px] h-[600px] max-h-[75vh] flex flex-col z-[1001] rounded-3xl overflow-hidden shadow-2xl glass-panel">
+            class="fixed bottom-0 md:bottom-8 right-0 md:right-8 pb-20 md:pb-0 w-[100vw] md:w-[420px] h-full md:h-[600px] max-h-[100vh] flex flex-col z-[1001] md:rounded-3xl overflow-hidden shadow-2xl glass-panel">
 
             <!-- Header -->
             <div class="px-6 py-5 border-b border-white/5 bg-white/[0.02] flex justify-between items-center">

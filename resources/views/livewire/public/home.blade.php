@@ -111,6 +111,10 @@
                                 {{ $hero->cta_text ?? 'Start a Project' }}
                             </span>
                         </a>
+                        <a href="/cv.pdf" download
+   class="inline-flex items-center uppercase text-xs tracking-widest px-5 py-2 bg-black/30 border-[1px] border-orange-700 text-white rounded-full hover:opacity-80 transition">
+    Download CV
+</a>
                     </div>
                     {{-- Social Icons: Refined --}}
                     <div class="flex items-center gap-5 pl-2 sm:border-l sm:border-white/10 sm:pl-8">
