@@ -107,12 +107,12 @@
                                 class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-400 group-hover:scale-110 transition-transform duration-500">
                             </div>
                             <span
-                                class="relative z-10 text-black font-black uppercase tracking-widest text-xs group-hover:tracking-[0.25em] transition-all duration-500">
+                                class="relative z-10 text-black font-black uppercase tracking-widest text-[6px] md:text-xs group-hover:tracking-[0.25em] transition-all duration-500">
                                 {{ $hero->cta_text ?? 'Start a Project' }}
                             </span>
                         </a>
                         <a href="/cv.pdf" download
-   class="inline-flex items-center uppercase text-xs tracking-widest px-5 py-2 bg-black/30 border-[1px] border-orange-700 text-white rounded-full hover:opacity-80 transition">
+   class="inline-flex items-center uppercase text-[6px] md:text-xs tracking-widest px-5 py-2 bg-black/30 border-[1px] border-orange-700 text-white rounded-full hover:opacity-80 transition">
     Download CV
 </a>
                     </div>
