@@ -33,36 +33,81 @@
                             <div
                                 x-data="{
                                     content: @entangle('content'),
+                                    quill: null,
                                     initQuill() {
                                         this.$nextTick(() => {
-                                            const quill = new Quill(this.$refs.quillEditor, {
+                                            this.quill = new Quill(this.$refs.quillEditor, {
                                                 theme: 'snow',
                                                 modules: {
-                                                    toolbar: [
-                                                        ['bold', 'italic', 'underline'],
-                                                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                                        ['link', 'clean']
-                                                    ]
+                                                    toolbar: {
+                                                        container: [
+                                                            ['bold', 'italic', 'underline'],
+                                                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                                            ['link', 'image', 'video'],
+                                                            ['clean']
+                                                        ],
+                                                        handlers: {
+                                                            image: () => this.selectLocalImage(),
+                                                            video: () => this.selectLocalVideo()
+                                                        }
+                                                    }
                                                 }
                                             });
 
                                             if (this.content) {
-                                                quill.root.innerHTML = this.content;
+                                                this.quill.root.innerHTML = this.content;
                                             }
 
-                                            quill.on('text-change', (delta, oldDelta, source) => {
+                                            this.quill.on('text-change', (delta, oldDelta, source) => {
                                                 if (source === 'user') {
-                                                    this.content = quill.root.innerHTML;
+                                                    this.content = this.quill.root.innerHTML;
                                                 }
                                             });
 
                                             this.$watch('content', (value) => {
                                                 if (value === null || value === undefined) value = '';
-                                                if (quill.root.innerHTML !== value) {
-                                                    quill.root.innerHTML = value;
+                                                if (this.quill.root.innerHTML !== value) {
+                                                    this.quill.root.innerHTML = value;
+                                                }
+                                            });
+
+                                            Livewire.on('quill-upload-finished', ({ url, type }) => {
+                                                if (url) {
+                                                    const range = this.quill.getSelection(true);
+                                                    this.quill.insertEmbed(range.index, type, url);
                                                 }
                                             });
                                         });
+                                    },
+                                    selectLocalImage() {
+                                        const input = document.createElement('input');
+                                        input.setAttribute('type', 'file');
+                                        input.setAttribute('accept', 'image/*');
+                                        input.click();
+
+                                        input.onchange = () => {
+                                            const file = input.files[0];
+                                            if (/^image\//.test(file.type)) {
+                                                @this.upload('quillFile', file);
+                                            } else {
+                                                alert('You can only upload images.');
+                                            }
+                                        };
+                                    },
+                                    selectLocalVideo() {
+                                        const input = document.createElement('input');
+                                        input.setAttribute('type', 'file');
+                                        input.setAttribute('accept', 'video/*');
+                                        input.click();
+
+                                        input.onchange = () => {
+                                            const file = input.files[0];
+                                            if (/^video\//.test(file.type)) {
+                                                @this.upload('quillFile', file);
+                                            } else {
+                                                alert('You can only upload videos.');
+                                            }
+                                        };
                                     }
                                 }"
                                 x-init="initQuill()"

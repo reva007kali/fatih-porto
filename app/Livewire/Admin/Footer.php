@@ -11,9 +11,10 @@ class Footer extends Component
 {
     public $about_text;
     public $copyright_text;
-    public $twitter_url;
-    public $github_url;
-    public $linkedin_url;
+    public $email;
+    public $phone;
+    public $availability_text;
+    public $watermark_text;
 
     public function mount()
     {
@@ -22,46 +23,46 @@ class Footer extends Component
         if ($setting) {
             $this->about_text = $setting->about_text;
             $this->copyright_text = $setting->copyright_text;
-            $links = $setting->social_links ?? [];
-            $this->twitter_url = $links['twitter'] ?? '';
-            $this->github_url = $links['github'] ?? '';
-            $this->linkedin_url = $links['linkedin'] ?? '';
-        }
-    }
+            
+            $details = is_array($setting->social_links) ? $setting->social_links : [];
 
-    public function render()
-    {
-        return view('livewire.admin.footer');
+            $this->email = $details['email'] ?? '';
+            $this->phone = $details['phone'] ?? '';
+            $this->availability_text = $details['availability_text'] ?? '';
+            $this->watermark_text = $details['watermark_text'] ?? '';
+        }
     }
 
     public function save()
     {
         $this->validate([
-            'about_text' => 'nullable|string',
-            'copyright_text' => 'nullable|string',
-            'twitter_url' => 'nullable|url',
-            'github_url' => 'nullable|url',
-            'linkedin_url' => 'nullable|url',
+            'about_text' => 'nullable|string|max:255',
+            'copyright_text' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:255',
+            'availability_text' => 'nullable|string|max:255',
+            'watermark_text' => 'nullable|string|max:255',
         ]);
 
-        $setting = FooterSetting::first();
+        $setting = FooterSetting::firstOrCreate([]);
 
-        $data = [
+        $details = is_array($setting->social_links) ? $setting->social_links : [];
+        $details['email'] = $this->email;
+        $details['phone'] = $this->phone;
+        $details['availability_text'] = $this->availability_text;
+        $details['watermark_text'] = $this->watermark_text;
+
+        $setting->update([
             'about_text' => $this->about_text,
             'copyright_text' => $this->copyright_text,
-            'social_links' => [
-                'twitter' => $this->twitter_url,
-                'github' => $this->github_url,
-                'linkedin' => $this->linkedin_url,
-            ],
-        ];
-
-        if ($setting) {
-            $setting->update($data);
-        } else {
-            FooterSetting::create($data);
-        }
+            'social_links' => $details,
+        ]);
 
         session()->flash('message', 'Footer settings updated successfully.');
+    }
+
+    public function render()
+    {
+        return view('livewire.admin.footer');
     }
 }

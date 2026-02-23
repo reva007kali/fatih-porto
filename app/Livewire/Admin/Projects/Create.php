@@ -26,6 +26,10 @@ class Create extends Component
     public $is_featured = false;
     public $is_archived = false;
 
+    // For Quill editor file uploads
+    public $quillFile;
+    public $quillFileUrl;
+
     // Multiple file uploads
     public $mediaFiles = []; // Temporary files
     public $captions = []; // Captions for new files
@@ -33,6 +37,13 @@ class Create extends Component
     public function render()
     {
         return view('livewire.admin.projects.create');
+    }
+
+    public function updatedQuillFile()
+    {
+        $this->validate(['quillFile' => 'file|max:51200']); // 50MB Max
+        $path = $this->handleFileUpload($this->quillFile, 'quill-uploads');
+        $this->quillFileUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($path);
     }
 
     public function store()

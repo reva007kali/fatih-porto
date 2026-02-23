@@ -3,9 +3,9 @@
         {{-- Header --}}
         <div class="mb-8">
             <h2 class="font-bold text-3xl text-white tracking-tight">
-                {{ __('Add New Project') }}
+                {{ __('Create New Project') }}
             </h2>
-            <p class="text-sm text-gray-400 mt-2">Create a new project case study.</p>
+            <p class="text-sm text-gray-400 mt-2">Add a new project to your portfolio.</p>
         </div>
 
         <div class="bg-[#1c1c1e] border border-white/5 rounded-3xl overflow-hidden shadow-xl shadow-black/20">
@@ -38,11 +38,18 @@
                                             const quill = new Quill(this.$refs.quillEditor, {
                                                 theme: 'snow',
                                                 modules: {
-                                                    toolbar: [
-                                                        ['bold', 'italic', 'underline'],
-                                                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                                        ['link', 'clean']
-                                                    ]
+                                                    toolbar: {
+                                                        container: [
+                                                            ['bold', 'italic', 'underline'],
+                                                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                                            ['link', 'image', 'video'],
+                                                            ['clean']
+                                                        ],
+                                                        handlers: {
+                                                            image: () => this.selectLocalImage(quill),
+                                                            video: () => this.selectLocalVideo(quill)
+                                                        }
+                                                    }
                                                 }
                                             });
 
@@ -60,6 +67,50 @@
                                                 if (value === null || value === undefined) value = '';
                                                 if (quill.root.innerHTML !== value) {
                                                     quill.root.innerHTML = value;
+                                                }
+                                            });
+                                        });
+                                    },
+                                    selectLocalImage(quill) {
+                                        const input = document.createElement('input');
+                                        input.setAttribute('type', 'file');
+                                        input.setAttribute('accept', 'image/*');
+                                        input.click();
+
+                                        input.onchange = () => {
+                                            const file = input.files[0];
+                                            if (/^image\//.test(file.type)) {
+                                                this.uploadFile(file, quill, 'image');
+                                            } else {
+                                                alert('You can only upload images.');
+                                            }
+                                        };
+                                    },
+                                    selectLocalVideo(quill) {
+                                        const input = document.createElement('input');
+                                        input.setAttribute('type', 'file');
+                                        input.setAttribute('accept', 'video/*');
+                                        input.click();
+
+                                        input.onchange = () => {
+                                            const file = input.files[0];
+                                            if (/^video\//.test(file.type)) {
+                                                this.uploadFile(file, quill, 'video');
+                                            } else {
+                                                alert('You can only upload videos.');
+                                            }
+                                        };
+                                    },
+                                    uploadFile(file, quill, type) {
+                                        @this.upload('quillFile', file, (uploadedFilename) => {
+                                            @this.get('quillFileUrl').then((url) => {
+                                                if (url) {
+                                                    const range = quill.getSelection(true);
+                                                    if (type === 'image') {
+                                                        quill.insertEmbed(range.index, 'image', url);
+                                                    } else {
+                                                        quill.insertEmbed(range.index, 'video', url);
+                                                    }
                                                 }
                                             });
                                         });
@@ -170,7 +221,7 @@
                         </button>
                         <button type="submit" wire:loading.attr="disabled"
                             class="px-8 py-3 bg-white text-black rounded-xl font-bold uppercase tracking-wider text-xs hover:bg-gray-200 transition-all active:scale-95 disabled:opacity-50">
-                            Add Project
+                            Create Project
                         </button>
                     </div>
                 </form>

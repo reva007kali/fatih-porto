@@ -21,6 +21,9 @@ class About extends Component
     public $button_text;
     public $button_link;
 
+    // For Quill editor file uploads
+    public $quillFile;
+
     public function mount()
     {
         $about = AboutSection::first();
@@ -32,7 +35,18 @@ class About extends Component
             $this->button_text = $about->button_text;
             $this->button_link = $about->button_link;
         }
-        $this->dispatch('contentUpdated', $this->content);
+    }
+
+    public function updatedQuillFile()
+    {
+        $this->validate(['quillFile' => 'file|max:51200']); // 50MB Max
+        $path = $this->handleFileUpload($this->quillFile, 'quill-uploads');
+        $url = \Illuminate\Support\Facades\Storage::disk('public')->url($path);
+        
+        $mime = $this->quillFile->getMimeType();
+        $type = str_starts_with($mime, 'image') ? 'image' : 'video';
+
+        $this->dispatch('quill-upload-finished', url: $url, type: $type);
     }
 
     public function save()

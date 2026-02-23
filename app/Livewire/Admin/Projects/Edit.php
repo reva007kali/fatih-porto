@@ -27,6 +27,9 @@ class Edit extends Component
     public $is_archived = false;
     public $projectId;
 
+    // For Quill editor file uploads
+    public $quillFile;
+
     // Multiple file uploads
     public $mediaFiles = []; // Temporary files
     public $captions = []; // Captions for new files
@@ -55,6 +58,18 @@ class Edit extends Component
     public function render()
     {
         return view('livewire.admin.projects.edit');
+    }
+
+    public function updatedQuillFile()
+    {
+        $this->validate(['quillFile' => 'file|max:51200']); // 50MB Max
+        $path = $this->handleFileUpload($this->quillFile, 'quill-uploads');
+        $url = \Illuminate\Support\Facades\Storage::disk('public')->url($path);
+
+        $mime = $this->quillFile->getMimeType();
+        $type = str_starts_with($mime, 'image') ? 'image' : 'video';
+
+        $this->dispatch('quill-upload-finished', url: $url, type: $type);
     }
 
     public function update()

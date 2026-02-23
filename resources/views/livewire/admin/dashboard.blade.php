@@ -78,36 +78,32 @@
     {{-- Middle Section: Visitors & Quick Actions --}}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {{-- Visitor Stats (Placeholder for now) --}}
+        {{-- Visitor Stats --}}
         <div class="lg:col-span-2 bg-[#1c1c1e] p-8 rounded-3xl border border-white/5 relative overflow-hidden">
             <div class="relative z-10">
                 <div class="flex items-center justify-between mb-8">
                     <div>
                         <h3 class="text-xl font-bold text-white">Visitor Statistics</h3>
-                        <p class="text-sm text-gray-500">Weekly traffic overview</p>
+                        <p class="text-sm text-gray-500">Weekly traffic overview (Total: {{ $visitorCount }})</p>
                     </div>
-                    <select
-                        class="bg-black/20 border border-white/10 text-white text-xs rounded-lg px-3 py-2 outline-none focus:border-swiss-blue">
-                        <option>This Week</option>
-                        <option>Last Week</option>
-                        <option>This Month</option>
-                    </select>
                 </div>
 
-                {{-- Mock Chart Bars --}}
+                {{-- Chart --}}
                 <div class="flex items-end justify-between gap-2 h-48 w-full">
-                    @foreach ([40, 65, 45, 80, 55, 90, 70] as $height)
+                    @foreach ($visitorChartData as $height)
                         <div class="w-full bg-white/5 rounded-t-xl hover:bg-swiss-blue/50 transition-colors relative group"
-                            style="height: {{ $height }}%">
+                            style="height: {{ $height > 0 ? ($height / max($visitorChartData)) * 100 : 0 }}%">
                             <div
                                 class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                                {{ $height * 10 }}
+                                {{ $height }}
                             </div>
                         </div>
                     @endforeach
                 </div>
                 <div class="flex justify-between mt-4 text-xs text-gray-500 font-bold uppercase tracking-wider">
-                    <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                    @foreach ($visitorChartLabels as $label)
+                        <span>{{ $label }}</span>
+                    @endforeach
                 </div>
             </div>
 
