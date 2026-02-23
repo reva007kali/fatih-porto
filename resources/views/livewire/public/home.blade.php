@@ -98,7 +98,7 @@
                 </p>
 
                 {{-- Action Group --}}
-                <div class="flex flex-col sm:flex-row items-center gap-4 md:gap-6">
+                <div class="flex flex-col sm:flex-row items-center gap-4 md:gap-6 mb-4">
                     {{-- Main CTA --}}
                     <div class="flex flex-row items-center gap-4 w-full sm:w-auto justify-center">
                         
