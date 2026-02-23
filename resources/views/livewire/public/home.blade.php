@@ -119,8 +119,6 @@
                             class="inline-flex flex-1 sm:flex-none items-center justify-center uppercase text-[10px] md:text-xs font-bold tracking-widest px-6 py-3.5 md:px-10 md:py-5 bg-white/5 border border-orange-700/50 text-white rounded-full hover:bg-orange-700/20 transition-all duration-300 backdrop-blur-sm whitespace-nowrap">
                             Download CV
                         </a>
-                        
-                    </div>
                 </div>
                     {{-- Social Icons: Refined --}}
                     <div class="flex items-center gap-5 pl-2 sm:border-l sm:border-white/10 sm:pl-8">
