@@ -141,12 +141,6 @@
                 </div>
             </div>
 
-            {{-- Scroll Indicator --}}
-            <div id="hero-scroll"
-                class="absolute bottom-10 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-4 opacity-30">
-                <span class="text-[10px] font-black uppercase tracking-[0.4em] rotate-90 mb-8">Scroll</span>
-                <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"></div>
-            </div>
         </section>
 
 
