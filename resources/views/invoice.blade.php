@@ -19,7 +19,7 @@
 <body class="bg-zinc-950 py-12 px-4 antialiased">
     <!-- Tombol Kembali/Cetak (Hanya Muncul di Layar) -->
     <div class="max-w-3xl mx-auto mb-6 flex justify-between items-center no-print">
-        <a href="{{ route('orders.index') }}" class="text-zinc-400 hover:text-orange-500 flex items-center gap-2 text-sm transition">
+        <a href="{{ route('admin.orders.index') }}" class="text-zinc-400 hover:text-orange-500 flex items-center gap-2 text-sm transition">
             ← Kembali ke Daftar
         </a>
         <button onclick="window.print()" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full text-xs font-bold shadow-lg shadow-orange-500/20 transition">
@@ -112,7 +112,7 @@
                         <div class="space-y-3">
                             <div>
                                 <p class="text-[10px] text-zinc-400 uppercase font-bold">Nama Bank</p>
-                                <p class="text-sm font-bold text-zinc-800 tracking-tight">BANK BCA (014)</p>
+                                <p class="text-sm font-bold text-zinc-800 tracking-tight">BANK BCA (Bank Central Asia)</p>
                             </div>
                             <div>
                                 <p class="text-[10px] text-zinc-400 uppercase font-bold">Nomor Rekening</p>

@@ -7,67 +7,53 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 
-
-
 #[Layout('layouts.app')]
 class OrderForm extends Component
 {
-    // Form Fields
-    public $name, $email, $whatsapp, $description;
-    public $website_type = 'landing_page';
-    public $selected_features = [];
-
-    // Data Referensi
-    public $packages = [
-        'landing_page' => ['name' => 'Landing Page', 'price' => 1500000],
-        'company_profile' => ['name' => 'Company Profile', 'price' => 3000000],
-        'ecommerce' => ['name' => 'E-Commerce', 'price' => 5000000],
-    ];
-
-    public $features_list = [
-        'seo' => ['name' => 'Optimasi SEO', 'price' => 500000],
-        'logo' => ['name' => 'Desain Logo', 'price' => 300000],
-        'copywriting' => ['name' => 'Copywriting Content', 'price' => 700000],
-    ];
-
-    public function getTotalPriceProperty()
-    {
-        $basePrice = $this->packages[$this->website_type]['price'] ?? 0;
-        $extraPrice = 0;
-
-        foreach ($this->selected_features as $feature) {
-            $extraPrice += $this->features_list[$feature]['price'] ?? 0;
-        }
-
-        return $basePrice + $extraPrice;
-    }
+    // Form Fields - Disesuaikan dengan input fleksibel
+    public $name, $email, $whatsapp, $website_description;
+    public $estimated_price = 0; // Input harga manual
 
     public function submit()
     {
+        // Validasi data
         $this->validate([
             'name' => 'required|string|min:3',
             'email' => 'required|email',
             'whatsapp' => 'required|numeric',
-            'website_type' => 'required',
+            'website_description' => 'required|string|min:10',
+            'estimated_price' => 'required|numeric|min:1000',
         ]);
 
+        // Simpan ke Database
         $order = Order::create([
-            'invoice_number' => 'INV-' . strtoupper(Str::random(8)),
+            // Generate Invoice dengan prefix REVA
+            'invoice_number' => 'REVA-' . strtoupper(Str::random(6)), 
             'name' => $this->name,
             'email' => $this->email,
             'whatsapp' => $this->whatsapp,
-            'website_type' => $this->packages[$this->website_type]['name'],
-            'description' => $this->description,
-            'features' => json_encode($this->selected_features),
-            'total_price' => $this->total_price,
+            'website_type' => 'Custom Request', // Menjadi fleksibel
+            'description' => $this->website_description,
+            // Fitur default yang include (sesuai permintaan di form)
+            'features' => json_encode([
+                'Domain .com', 
+                'Hosting Unlimited', 
+                'SSL Security', 
+                'Responsive Design', 
+                'WA Integration', 
+                '3x Revision'
+            ]),
+            // Mengambil harga murni dari inputan user di form
+            'total_price' => $this->estimated_price, 
         ]);
 
+        // Redirect ke halaman invoice yang sudah kita buat
         return redirect()->route('invoice', ['order' => $order->id]);
-
     }
 
     public function render()
     {
+        // Pastikan nama file view sesuai dengan lokasi file blade Anda
         return view('livewire.admin.order-form');
     }
 }
