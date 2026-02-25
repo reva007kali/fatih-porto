@@ -19,12 +19,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
-    <title>Reva Adhitya | Portfolio</title>
+    <title>Abdi Adhitya | Portfolio</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
@@ -54,7 +55,7 @@
         .nav-scrolled {
             padding-top: 1rem !important;
             padding-bottom: 1rem !important;
-            background-color: rgba(11, 11, 13, 0.85) !important;
+            background-color: rgba(254, 254, 254, 0.905) !important;
             backdrop-filter: blur(20px) !important;
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -115,48 +116,62 @@
     </style>
 </head>
 
-<body class="font-sans antialiased text-white bg-[#0b0b0d]">
+<body class="font-sans antialiased bg-black text-zinc-800">
 
     <!-- ================= NAVBAR ================= -->
     @php
         $navItems = \App\Models\NavigationItem::where('is_active', true)->orderBy('sort_order')->get();
     @endphp
-    <nav id="navbar" class="fixed top-0 left-0 w-full z-[100] py-7 px-6 md:px-12 transition-all duration-300 pointer-events-none">
+    <nav id="navbar"
+        class="fixed top-0 left-0 w-full z-[100] py-7 px-6 md:px-12 transition-all duration-300 pointer-events-none">
         <div class="max-w-7xl mx-auto flex justify-between md:px-8 items-center pointer-events-auto">
 
-            <a href="/" class="relative z-[110] text-2xl font-black tracking-tighter group transition-transform duration-300 hover:scale-105">
-                REVA<span class="text-orange-500 group-hover:animate-pulse">.</span>
+            <a href="/"
+                class="relative z-[110] text-2xl md:text-3xl font-black tracking-tighter group transition-transform duration-300 hover:scale-105">
+                Abdi<span class="text-blue-500 group-hover:animate-pulse">.</span>
             </a>
 
             <div class="hidden md:flex items-center space-x-10">
                 @forelse($navItems as $item)
-                    <a href="{{ $item->url }}" class="text-[11px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-orange-500 transition-colors">
+                    <a href="{{ $item->url }}"
+                        class="text-[14px] font-semibold tracking-[0.1em] text-zinc-800 hover:text-blue-500 transition-colors">
                         {{ $item->label }}
                     </a>
                 @empty
-                    <a href="#works" class="text-[11px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-orange-500 transition-colors">Works</a>
-                    <a href="#services" class="text-[11px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-orange-500 transition-colors">Services</a>
-                    <a href="{{ route('websites') }}" class="text-[11px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-orange-500 transition-colors">Websites</a>
-                    <a href="{{ route('three-d.gallery') }}" class="text-[11px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-orange-500 transition-colors">3D</a>
-                    <a href="#about" class="text-[11px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-orange-500 transition-colors">About</a>
+                    <a href="#works"
+                        class="text-[11px] font-black uppercase tracking-[0.3em] text-zinc-700 hover:text-blue-500 transition-colors">Works</a>
+                    <a href="#services"
+                        class="text-[11px] font-black uppercase tracking-[0.3em] text-zinc-700 hover:text-blue-500 transition-colors">Services</a>
+                    <a href="{{ route('websites') }}"
+                        class="text-[11px] font-black uppercase tracking-[0.3em] text-zinc-700 hover:text-blue-500 transition-colors">Websites</a>
+                    <a href="{{ route('three-d.gallery') }}"
+                        class="text-[11px] font-black uppercase tracking-[0.3em] text-zinc-700 hover:text-blue-500 transition-colors">3D</a>
+                    <a href="#about"
+                        class="text-[11px] font-black uppercase tracking-[0.3em] text-zinc-700 hover:text-blue-500 transition-colors">About</a>
                 @endforelse
 
                 <livewire:public.components.music-player />
 
-                <a href="/#contact" class="px-8 py-3 rounded-full bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all duration-300">
+                <a href="/#contact"
+                    class="px-8 py-3 rounded-full bg-blue-400 text-black text-[10px] font-black uppercase tracking-widest hover:bg-blue-500 hover:text-white transition-all duration-300">
                     Let's Talk
                 </a>
             </div>
 
-            <button id="menu-toggle" style="z-index: 120;" class="relative w-11 h-11 flex flex-col justify-center items-center focus:outline-none md:hidden bg-white/5 rounded-full border border-white/10 transition-colors hover:bg-white/10">
-                <span class="line block w-5 h-0.5 bg-white transition-all duration-300 pointer-events-none" style="transform: translateY(-3px)"></span>
-                <span class="line block w-5 h-0.5 bg-white transition-all duration-300 pointer-events-none" style="transform: translateY(3px)"></span>
+            <button id="menu-toggle" style="z-index: 120;"
+                class="relative w-11 h-11 flex flex-col justify-center items-center focus:outline-none md:hidden bg-white/5 rounded-full border border-white/10 transition-colors hover:bg-white/10">
+                <span class="line block w-5 h-0.5 bg-white transition-all duration-300 pointer-events-none"
+                    style="transform: translateY(-3px)"></span>
+                <span class="line block w-5 h-0.5 bg-white transition-all duration-300 pointer-events-none"
+                    style="transform: translateY(3px)"></span>
             </button>
         </div>
     </nav>
 
-    <div id="mobile-menu" class="fixed inset-0 bg-[#0b0b0d] z-[105] flex flex-col justify-center items-center space-y-8 transform translate-x-full md:hidden transition-transform duration-500 ease-in-out pointer-events-auto">
-        <button id="mobile-menu-close" style="pointer-events: auto !important; z-index: 200 !important;" class="absolute top-7 right-6 w-11 h-11 flex flex-col justify-center items-center focus:outline-none bg-white/5 rounded-full border border-white/10 transition-colors hover:bg-white/10">
+    <div id="mobile-menu"
+        class="fixed inset-0 bg-[#0b0b0d] z-[105] flex flex-col justify-center items-center space-y-8 transform translate-x-full md:hidden transition-transform duration-500 ease-in-out pointer-events-auto">
+        <button id="mobile-menu-close" style="pointer-events: auto !important; z-index: 200 !important;"
+            class="absolute top-7 right-6 w-11 h-11 flex flex-col justify-center items-center focus:outline-none bg-white/5 rounded-full border border-white/10 transition-colors hover:bg-white/10">
             <span class="block w-5 h-0.5 bg-white transform rotate-45 translate-y-[1px]"></span>
             <span class="block w-5 h-0.5 bg-white transform -rotate-45 -translate-y-[1px]"></span>
         </button>
@@ -166,8 +181,9 @@
         </div>
 
         @forelse($navItems as $item)
-            <a href="{{ $item->url }}" class="text-5xl font-black tracking-tighter hover:text-orange-500 transition-all duration-300 active:scale-90">
-                {{ $item->label }}<span class="text-orange-500">.</span>
+            <a href="{{ $item->url }}"
+                class="text-5xl font-black tracking-tighter hover:text-blue-500 transition-all duration-300 active:scale-90">
+                {{ $item->label }}<span class="text-blue-500">.</span>
             </a>
         @empty
             <a href="#works" class="text-5xl font-black tracking-tighter">Works</a>
@@ -185,21 +201,24 @@
     @endphp
 
     <footer id="footer" class="relative bg-[#0b0b0d] pt-32 pb-12 overflow-hidden border-t border-white/5">
-        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 text-[25vw] font-black text-white/[0.02] select-none pointer-events-none leading-none">
-            {{ $details['watermark_text'] ?? 'REVALDY' }}
+        <div
+            class="absolute bottom-0 left-1/2 -translate-x-1/2 text-[25vw] font-black text-white/[0.02] select-none pointer-events-none leading-none">
+            {{ $details['watermark_text'] ?? 'AbdiLDY' }}
         </div>
 
         <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-8 mb-24">
                 <div class="md:col-span-5">
                     <a href="/" class="text-3xl font-black tracking-tighter mb-8 block group">
-                        REVA<span class="text-orange-500 group-hover:animate-pulse">.</span>
+                        Abdi<span class="text-blue-500 group-hover:animate-pulse">.</span>
                     </a>
                     <p class="text-white/40 text-lg leading-relaxed max-w-sm mb-10">
                         {{ $footerSettings->about_text ?? 'Crafting high-performance digital experiences that merge aesthetic precision with technical excellence.' }}
                     </p>
                     <div class="flex items-center gap-4">
-                        <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+                        <div
+                            class="w-3 h-3 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]">
+                        </div>
                         <span class="text-xs font-black uppercase tracking-widest text-white/60">
                             {{ $details['availability_text'] ?? 'Available for projects' }}
                         </span>
@@ -207,42 +226,54 @@
                 </div>
 
                 <div class="md:col-span-3">
-                    <h4 class="text-orange-500 font-black text-[10px] uppercase tracking-[0.4em] mb-8">Navigation</h4>
+                    <h4 class="text-blue-500 font-black text-[10px] uppercase tracking-[0.4em] mb-8">Navigation</h4>
                     <ul class="space-y-4">
                         @forelse($navItems as $item)
                             <li>
-                                <a href="{{ $item->url }}" class="text-white/60 hover:text-orange-500 font-bold transition-colors">
+                                <a href="{{ $item->url }}"
+                                    class="text-white/60 hover:text-blue-500 font-bold transition-colors">
                                     {{ $item->label }}
                                 </a>
                             </li>
                         @empty
-                            <li><a href="#works" class="text-white/60 hover:text-orange-500 font-bold transition-colors">Works</a></li>
-                            <li><a href="#services" class="text-white/60 hover:text-orange-500 font-bold transition-colors">Expertise</a></li>
-                            <li><a href="#about" class="text-white/60 hover:text-orange-500 font-bold transition-colors">My Story</a></li>
+                            <li><a href="#works"
+                                    class="text-white/60 hover:text-blue-500 font-bold transition-colors">Works</a>
+                            </li>
+                            <li><a href="#services"
+                                    class="text-white/60 hover:text-blue-500 font-bold transition-colors">Expertise</a>
+                            </li>
+                            <li><a href="#about"
+                                    class="text-white/60 hover:text-blue-500 font-bold transition-colors">My Story</a>
+                            </li>
                         @endforelse
                     </ul>
                 </div>
 
                 <div class="md:col-span-4">
-                    <h4 class="text-orange-500 font-black text-[10px] uppercase tracking-[0.4em] mb-8">Connect</h4>
-                    @if($details['email'] ?? false)
-                    <a href="mailto:{{ $details['email'] }}" class="text-xl font-bold mb-2 hover:text-orange-500 transition-colors cursor-pointer block">
-                        {{ $details['email'] }}
-                    </a>
+                    <h4 class="text-blue-500 font-black text-[10px] uppercase tracking-[0.4em] mb-8">Connect</h4>
+                    @if ($details['email'] ?? false)
+                        <a href="mailto:{{ $details['email'] }}"
+                            class="text-xl font-bold mb-2 hover:text-blue-500 transition-colors cursor-pointer block">
+                            {{ $details['email'] }}
+                        </a>
                     @endif
-                    @if($details['phone'] ?? false)
-                    <a href="tel:{{ str_replace(' ', '', $details['phone']) }}" class="text-xl font-bold mb-8 hover:text-orange-500 transition-colors cursor-pointer block">
-                        {{ $details['phone'] }}
-                    </a>
+                    @if ($details['phone'] ?? false)
+                        <a href="tel:{{ str_replace(' ', '', $details['phone']) }}"
+                            class="text-xl font-bold mb-8 hover:text-blue-500 transition-colors cursor-pointer block">
+                            {{ $details['phone'] }}
+                        </a>
                     @endif
-                    
+
                     <div class="flex flex-wrap gap-4">
                         @foreach ($footerSocialLinks as $link)
-                            <a href="{{ $link->url }}" target="_blank" class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group hover:bg-orange-500 hover:border-orange-500 transition-all duration-500">
+                            <a href="{{ $link->url }}" target="_blank"
+                                class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group hover:bg-blue-500 hover:border-blue-500 transition-all duration-500">
                                 @if ($link->icon)
-                                    <img src="{{ asset('storage/' . $link->icon) }}" class="w-5 h-5 object-contain opacity-60 group-hover:brightness-0 transition-all">
+                                    <img src="{{ asset('storage/' . $link->icon) }}"
+                                        class="w-5 h-5 object-contain opacity-60 group-hover:brightness-0 transition-all">
                                 @else
-                                    <span class="text-[10px] font-black text-white group-hover:text-black">{{ substr($link->platform, 0, 2) }}</span>
+                                    <span
+                                        class="text-[10px] font-black text-white group-hover:text-black">{{ substr($link->platform, 0, 2) }}</span>
                                 @endif
                             </a>
                         @endforeach
@@ -250,7 +281,8 @@
                 </div>
             </div>
 
-            <div class="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">
+            <div
+                class="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">
                 <div>&copy; {{ $footerSettings->copyright_text }}</div>
                 <div class="flex gap-8">
                     <a href="{{ route('privacy-policy') }}" class="hover:text-white transition">Privacy</a>
@@ -261,7 +293,7 @@
     </footer>
 
 
-    <livewire:chat-bot />
+    {{-- <livewire:chat-bot /> --}}
 
     <script>
         const navbar = document.getElementById('navbar');
@@ -277,7 +309,9 @@
                     navbar.classList.remove('nav-scrolled');
                 }
             }
-        }, { passive: true });
+        }, {
+            passive: true
+        });
 
         const toggle = document.getElementById('menu-toggle');
         const mobileClose = document.getElementById('mobile-menu-close');

@@ -12,7 +12,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Montserrat', ...defaultTheme.fontFamily.sans],
             },
              animation: {
                 'blob-bounce': 'blob-bounce 12s cubic-bezier(0.77, 0, 0.175, 1) infinite',
