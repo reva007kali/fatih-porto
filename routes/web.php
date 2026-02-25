@@ -25,6 +25,10 @@ use App\Livewire\Public\ServiceDetail;
 use App\Livewire\Public\TermsOfService;
 use App\Livewire\Public\ThreeDGallery;
 use App\Livewire\Public\ThreeDViewer;
+use App\Http\Controllers\InvoiceController;
+use App\Livewire\Admin\OrderForm;
+use App\Livewire\Admin\OrderList;
+
 
 use App\Livewire\Public\ThreeShowcase;
 use App\Livewire\Public\Websites;
@@ -47,6 +51,7 @@ Route::get('/about', About::class)->name('about');
 Route::get('/privacy-policy', PrivacyPolicy::class)->name('privacy-policy');
 Route::get('/terms-of-service', TermsOfService::class)->name('terms-of-service');
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);
+Route::get('/invoice/{order}', [InvoiceController::class, 'show'])->name('invoice');
 
 Route::get('/redis-check', function () {
     return Redis::connection()->ping();
@@ -87,6 +92,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('music', App\Livewire\Admin\Music\Index::class)->name('music.index');
     Route::get('music/create', App\Livewire\Admin\Music\Create::class)->name('music.create');
     Route::get('music/{music}/edit', App\Livewire\Admin\Music\Edit::class)->name('music.edit');
+
+    Route::get('/order-form', OrderForm::class)->name('order-form');
+    Route::get('/orders', OrderList::class)->name('orders.index');
+
 });
 
 Route::get('/websites/{slug}', function ($slug) {
