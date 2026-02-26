@@ -1,16 +1,19 @@
 <div class="w-full bg-[#0b0b0d] text-white overflow-x-hidden relative" x-data="{ loading: true }" x-init="setTimeout(() => loading = false, 1000)">
 
     @section('meta_title', 'Reva Adhitya | Creative Developer & Designer')
-    @section('meta_description', $hero->subtitle ?? 'Crafting high-performance digital experiences that merge aesthetic
+    @section('meta_description',
+        $hero->subtitle ??
+        'Crafting high-performance digital experiences that merge aesthetic
         precision with technical excellence.')
-    @section('meta_keywords', 'Portfolio, Web Developer, Laravel, Livewire, Creative Developer, Indonesia, Reva
+    @section('meta_keywords',
+        'Portfolio, Web Developer, Laravel, Livewire, Creative Developer, Indonesia, Reva
         Adhitya')
         @if ($hero->image)
             @section('meta_image', asset('storage/' . $hero->image))
         @endif
 
         {{-- Loading Screen --}}
-        <div x-show="loading" x-transition:leave="transition ease-in-out duration-1000"
+        {{-- <div x-show="loading" x-transition:leave="transition ease-in-out duration-1000"
             x-transition:leave-start="opacity-100 transform translate-y-0"
             x-transition:leave-end="opacity-0 transform -translate-y-full"
             class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0b0b0d] text-white">
@@ -28,7 +31,7 @@
             <p class="mt-4 text-white/40 text-sm font-bold tracking-[0.2em] uppercase animate-pulse">
                 Loading Experience...
             </p>
-        </div>
+        </div> --}}
 
         {{-- Global Ambient Glow - Orange --}}
         <div
@@ -38,14 +41,8 @@
         {{-- 3D Background Canvas --}}
         <div id="canvas-container" class="fixed inset-0 z-[20] pointer-events-none md:block hidden"></div>
 
-        <!-- Tooltip Element -->
-        <div id="robot-tooltip" class="robot-tooltip-hidden">
-            Chat with AI
-            <div class="tooltip-arrow"></div>
-        </div>
-
         <!-- ================= HERO ================= -->
-        <section id="home" class="relative min-h-screen flex items-end md:items-center overflow-hidden">
+        <section id="home" class="relative min-h-screen flex items-end md:items-end overflow-hidden">
 
             {{-- Hero Background Image logic preserved --}}
             <div class="absolute inset-0 overflow-hidden">
@@ -53,9 +50,9 @@
                     class="hero-img w-full h-full object-cover object-[80%_center] md:object-center transition-transform duration-700">
 
                 {{-- Layered Overlays for Depth --}}
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0b0b0d] via-[#0b0b0d]/40 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#0b0b0d]/40 to-transparent"></div>
                 <div
-                    class="absolute inset-0 bg-gradient-to-r from-[#0b0b0d]/60 via-transparent to-transparent hidden md:block">
+                    class="absolute inset-0 bg-gradient-to-r from-[#050505]/60 via-transparent to-transparent hidden md:block">
                 </div>
 
                 {{-- Subtle Orange Ambient Glow --}}
@@ -75,13 +72,13 @@
                                 class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
                         </span>
-                        <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white/80">Available for new
+                        <span class="text-[8px] uppercase tracking-[0.2em] text-white/80">Available for new
                             projects</span>
                     </div>
 
                     {{-- Main Heading: Poster Style --}}
                     <h1
-                        class="text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.85] text-white mb-4 md:mb-8">
+                        class="text-6xl md:text-7xl lg:text-8xl font-extrabold leading-[0.85] text-white mb-4 md:mb-8">
                         @php
                             $titleParts = explode(' ', $hero->title ?? 'Reva Adhitya');
                             $lastWord = array_pop($titleParts);
@@ -89,13 +86,13 @@
                         @endphp
 
                         {{ $firstPart }} <br />
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
+                        <span class="text-transparent font-bold bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
                             {{ $lastWord }}<span class="text-white">.</span>
                         </span>
                     </h1>
 
                     {{-- Subtitle --}}
-                    <p class="text-sm md:text-2xl text-white/50 max-w-lg leading-relaxed mb-2 md:mb-12 font-medium">
+                    <p class="text-sm md:text-xl text-white/70 max-w-lg leading-relaxed mb-2 md:mb-12 font-medium">
                         {{ $hero->subtitle ?? 'I craft precise digital experiences with clarity & emotional impact.' }}
                     </p>
 
@@ -129,7 +126,7 @@
                                     class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:border-orange-500 group transition-all duration-500">
                                     @if ($link->icon)
                                         <img src="{{ asset('storage/' . $link->icon) }}"
-                                            class="w-4 h-4 object-contain  transition-all">
+                                            class="w-5 h-5 object-contain filter grayscale transition-all">
                                     @else
                                         <span
                                             class="text-[10px] font-black text-white/50 group-hover:text-black transition-colors">{{ substr($link->platform, 0, 1) }}</span>
@@ -147,7 +144,7 @@
 
         <!-- ================= FEATURED WORK ================= -->
         @if ($projects->count() > 0)
-            <section id="works" class="py-24 bg-[#111113]">
+            <section id="works" class="py-24 bg-[#050505]">
                 <div class="max-w-7xl mx-auto px-6 md:px-6">
 
                     {{-- Refined Header --}}
@@ -247,7 +244,7 @@
 
         <!-- ================= FEATURED WEBSITES ================= -->
         @if ($websites->count() > 0)
-            <section id="websites" class="py-24 bg-[#0b0b0d]">
+            <section id="websites" class="py-24 bg-[#050505]">
                 <div class="max-w-7xl mx-auto px-6 md:px-6">
 
                     {{-- Refined Header --}}
@@ -337,7 +334,7 @@
 
         <!-- ================= SERVICES ================= -->
         @if ($services->count() > 0)
-            <section id="services" class="py-12 md:py-24 bg-[#0b0b0d] relative">
+            <section id="services" class="py-12 md:py-24 bg-[#020202] relative">
                 <div id="servicesHeader" class="max-w-7xl mx-auto px-6 md:px-6">
 
                     {{-- Refined Header --}}
@@ -444,7 +441,7 @@
 
         <!-- ================= WHY CHOOSE ME ================= -->
         @if ($features->count() > 0)
-            <section id="features" class="py-24 relative bg-zinc-950">
+            <section id="features" class="py-24 relative bg-black">
                 {{-- Section Background Ambient Glow --}}
                 <div
                     class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-orange-600/10 blur-[120px] rounded-full pointer-events-none">
@@ -527,7 +524,7 @@
 
 
         <!-- ================= ABOUT ================= -->
-        <section id="about" class="relative py-32 overflow-hidden bg-[#0b0b0d]">
+        <section id="about" class="relative py-32 overflow-hidden bg-[#000000]">
 
             {{-- Large Decorative Background Text --}}
             <div
@@ -653,727 +650,732 @@
                 </div>
 
             </div>
-    </div>
-    </section>
+
+        </section>
 
 
 
 
-    <!-- ================= PRICING / INVESTMENT ================= -->
-    <section id="pricing" class="py-32 relative z-[25] overflow-hidden">
+        <!-- ================= PRICING / INVESTMENT ================= -->
+        <section id="pricing" class="py-32 relative z-[25] overflow-hidden bg-black">
 
-        {{-- Background Decorative Glows --}}
-        <div
-            class="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-600/5 blur-[120px] rounded-full pointer-events-none">
-        </div>
-        <div
-            class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-900/5 blur-[120px] rounded-full pointer-events-none">
-        </div>
-
-        <div class="max-w-7xl mx-auto px-6 md:px-6 relative z-10">
-
-            {{-- Header with Strategic Copy --}}
-            <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                <div
-                    class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                    <span class="relative flex h-2 w-2">
-                        <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                    </span>
-                    <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Pricing</p>
-                </div>
-
-                <h2 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
-                    Ready to <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Level
-                        Up?</span>
-                </h2>
-
-                <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
-                    Choose a plan that fits your stage of growth. No hidden fees, just high-impact digital solutions
-                    designed to convert.
-                </p>
-            </div>
-
-            {{-- Pricing Bento Grid --}}
-            <div class="max-w-7xl mx-auto px-4 py-12 relative z-10" id="pricing-grid">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
-                    @foreach ($pricing_plans as $index => $plan)
-                        @php
-                            // Logic to make the middle/popular card stand out in the Bento Grid
-                            $isMain = $index === 1; // Assuming the 2nd plan is the "Pro" one
-                            $gridClass = $isMain ? 'lg:col-span-4' : ($index === 0 ? 'lg:col-span-4' : 'lg:col-span-4');
-                        @endphp
-
-                        <div
-                            class="{{ $gridClass }} group relative flex flex-col bg-[#111113] rounded-[32px] border border-white/5 overflow-hidden transition-all duration-500 hover:border-orange-500/40 hover:shadow-[0_0_40px_-15px_rgba(249,115,22,0.2)]">
-
-                            {{-- Background Glow Decoration --}}
-                            <div
-                                class="absolute -top-24 -right-24 w-48 h-48 bg-orange-500/10 blur-[80px] rounded-full group-hover:bg-orange-500/20 transition-all duration-700">
-                            </div>
-
-                            {{-- Card Content --}}
-                            <div class="relative z-10 flex flex-col h-full p-8 md:p-10">
-
-                                {{-- Header --}}
-                                <div class="mb-8">
-                                    <div class="flex items-center justify-between mb-4">
-                                        <h3 class="text-orange-500 font-bold text-sm uppercase tracking-[0.2em]">
-                                            {{ $plan->name }}
-                                        </h3>
-                                        @if ($isMain)
-                                            <span
-                                                class="bg-orange-500 text-black text-[10px] font-black px-3 py-1 rounded-full uppercase">
-                                                Most Popular
-                                            </span>
-                                        @endif
-                                    </div>
-
-                                    <div class="flex items-baseline gap-1">
-                                        <span class="text-4xl md:text-5xl font-black text-white tracking-tighter">
-                                            {{ $plan->price }}
-                                        </span>
-                                    </div>
-
-                                    <p class="mt-4 text-white/50 text-sm leading-relaxed max-w-[280px]">
-                                        {{ $plan->description }}
-                                    </p>
-                                </div>
-
-                                {{-- Bento Feature List (Visible by default in Bento style) --}}
-
-
-                                {{-- CTA Button --}}
-                                <div class="mt-auto">
-                                    <a href="{{ $plan->cta_link ?? '#' }}"
-                                        class="relative group/btn overflow-hidden block w-full text-center py-4 rounded-2xl font-bold uppercase tracking-widest text-[11px] transition-all duration-300 {{ $isMain ? 'bg-orange-500 text-black' : 'bg-white/5 text-white hover:bg-white/10' }} border border-white/5">
-
-                                        <span class="relative z-10">{{ $plan->cta_text ?? 'Get Started' }}</span>
-
-                                        {{-- Shine effect on hover --}}
-                                        <div
-                                            class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-shine">
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <style>
-                @keyframes shine {
-                    100% {
-                        transform: translateX(100%);
-                    }
-                }
-
-                .animate-shine {
-                    animation: shine 0.8s forwards;
-                }
-            </style>
-
-            {{-- Bottom Value Proposition --}}
+            {{-- Background Decorative Glows --}}
             <div
-                class="mt-20 p-10 rounded-[40px] border border-white/5 bg-white/[0.01] flex flex-col md:flex-row items-center justify-between gap-8">
-                <div class="flex items-center gap-6">
-                    <div class="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center">
-                        <span class="text-orange-500 text-3xl">💡</span>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-bold text-white">Need a custom solution?</h4>
-                        <p class="text-white/40">If your project doesn't fit these plans, let's talk and build a custom
-                            quote.</p>
-                    </div>
-                </div>
-                <a href="#contact"
-                    class="text-orange-500 font-black uppercase tracking-widest text-sm border-b-2 border-orange-500/20 hover:border-orange-500 transition-all pb-1">
-                    Contact for Custom Work →
-                </a>
+                class="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-600/5 blur-[120px] rounded-full pointer-events-none">
             </div>
-        </div>
-    </section>
-
-
-
-    <!-- ================= TESTIMONIALS ================= -->
-    <section id="testimonials"
-        class="py-24 bg-gradient-to-b relative from-zinc-900 to-transparent text-white rounded-[40px] md:rounded-[60px] mx-4 shadow-2xl shadow-orange-500/5">
-        <div class="max-w-7xl mx-auto px-6 md:px-6">
-
-            {{-- Refined Header --}}
-            <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                <div
-                    class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                    <span class="relative flex h-2 w-2">
-                        <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                    </span>
-                    <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Reviews</p>
-                </div>
-
-                <h3 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
-                    Client <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Feedback.</span>
-                </h3>
-
-                <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
-                    Trust is earned. Here's what my partners have to say about our collaboration.
-                </p>
+            <div
+                class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-900/5 blur-[120px] rounded-full pointer-events-none">
             </div>
 
-            <div class="swiper testimonialSwiper !pb-12 relative z-10" id="testimonials-swiper">
-                <div class="swiper-wrapper">
-                    @foreach ($testimonials as $testimonial)
-                        <div class="swiper-slide !h-auto py-10"> {{-- Added padding for hover lift --}}
-                            <div class="group relative h-full transition-all duration-500">
+            <div class="max-w-7xl mx-auto px-6 md:px-6 relative z-10">
 
-                                {{-- 1. Hover Glow Effect (Behind the card) --}}
+                {{-- Header with Strategic Copy --}}
+                <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
+                    <div
+                        class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                        </span>
+                        <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Pricing</p>
+                    </div>
+
+                    <h2 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
+                        Ready to <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Level
+                            Up?</span>
+                    </h2>
+
+                    <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
+                        Choose a plan that fits your stage of growth. No hidden fees, just high-impact digital solutions
+                        designed to convert.
+                    </p>
+                </div>
+
+                {{-- Pricing Bento Grid --}}
+                <div class="max-w-7xl mx-auto px-4 py-12 relative z-10" id="pricing-grid">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+                        @foreach ($pricing_plans as $index => $plan)
+                            @php
+                                // Logic to make the middle/popular card stand out in the Bento Grid
+                                $isMain = $index === 1; // Assuming the 2nd plan is the "Pro" one
+                                $gridClass = $isMain
+                                    ? 'lg:col-span-4'
+                                    : ($index === 0
+                                        ? 'lg:col-span-4'
+                                        : 'lg:col-span-4');
+                            @endphp
+
+                            <div
+                                class="{{ $gridClass }} group relative flex flex-col bg-[#111113] rounded-[32px] border border-white/5 overflow-hidden transition-all duration-500 hover:border-orange-500/40 hover:shadow-[0_0_40px_-15px_rgba(249,115,22,0.2)]">
+
+                                {{-- Background Glow Decoration --}}
                                 <div
-                                    class="absolute -inset-2 bg-gradient-to-r from-orange-600 to-orange-400 rounded-[45px] opacity-0 group-hover:opacity-20 blur-2xl transition-opacity duration-500">
+                                    class="absolute -top-24 -right-24 w-48 h-48 bg-orange-500/10 blur-[80px] rounded-full group-hover:bg-orange-500/20 transition-all duration-700">
                                 </div>
 
-                                {{-- 2. Main Glass Card --}}
-                                <div
-                                    class="relative h-full flex flex-col p-8 md:p-10 rounded-[40px] bg-white/[0.03] backdrop-blur-xl border border-white/10 group-hover:border-orange-500/50 group-hover:-translate-y-2 transition-all duration-500 shadow-2xl">
+                                {{-- Card Content --}}
+                                <div class="relative z-10 flex flex-col h-full p-8 md:p-10">
 
-                                    {{-- Decorative Quote Icon --}}
-                                    <div
-                                        class="absolute top-8 right-10 text-orange-500/10 group-hover:text-orange-500/20 transition-colors">
-                                        <svg class="w-16 h-16 fill-currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V12C14.017 12.5523 13.5693 13 13.017 13H11.017C10.4647 13 10.017 12.5523 10.017 12V9C10.017 7.34315 11.3601 6 13.017 6H19.017C20.6738 6 22.017 7.34315 22.017 9V15C22.017 17.7614 19.7784 20 17.017 20H14.017V21ZM5.017 21L5.017 18C5.017 16.8954 5.91243 16 7.017 16H10.017C10.5693 16 11.017 15.5523 11.017 15V9C11.017 8.44772 10.5693 8 10.017 8H6.017C5.46472 8 5.017 8.44772 5.017 9V12C5.017 12.5523 4.56929 13 4.017 13H2.017C1.46472 13 1.017 12.5523 1.017 12V9C1.017 7.34315 2.36015 6 4.017 6H10.017C11.6738 6 13.017 7.34315 13.017 9V15C13.017 17.7614 10.7786 20 8.017 20H5.017V21Z" />
-                                        </svg>
-                                    </div>
-
-                                    {{-- Star Rating --}}
-                                    <div class="flex gap-1 mb-8">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <svg class="w-5 h-5 text-orange-500 group-hover:scale-110 transition-transform duration-300"
-                                                fill="currentColor" viewBox="0 0 20 20">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                            </svg>
-                                        @endfor
-                                    </div>
-
-                                    {{-- Testimonial Content --}}
-                                    <p class="text-xl md:text-2xl leading-relaxed text-white/90 mb-10 font-medium italic">
-                                        "{{ $testimonial->content }}"
-                                    </p>
-
-                                    {{-- Author Info --}}
-                                    <div class="flex items-center gap-5 mt-auto">
-                                        <div class="relative">
-                                            {{-- Avatar Ring --}}
-                                            <div
-                                                class="absolute -inset-1 bg-gradient-to-tr from-orange-600 to-orange-400 rounded-full opacity-50">
-                                            </div>
-                                            <div
-                                                class="relative w-16 h-16 rounded-full overflow-hidden border-2 border-[#0b0b0d] bg-zinc-800">
-                                                @if ($testimonial->avatar)
-                                                    <img src="{{ asset('storage/' . $testimonial->avatar) }}"
-                                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-                                                @else
-                                                    <div
-                                                        class="w-full h-full flex items-center justify-center text-white/20 font-black">
-                                                        {{ substr($testimonial->name, 0, 1) }}
-                                                    </div>
-                                                @endif
-                                            </div>
+                                    {{-- Header --}}
+                                    <div class="mb-8">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <h3 class="text-orange-500 font-bold text-sm uppercase tracking-[0.2em]">
+                                                {{ $plan->name }}
+                                            </h3>
+                                            @if ($isMain)
+                                                <span
+                                                    class="bg-orange-500 text-black text-[10px] font-black px-3 py-1 rounded-full uppercase">
+                                                    Most Popular
+                                                </span>
+                                            @endif
                                         </div>
-                                        <div>
-                                            <h4
-                                                class="text-lg font-black text-white group-hover:text-orange-500 transition-colors">
-                                                {{ $testimonial->name }}
-                                            </h4>
-                                            <p
-                                                class="text-[10px] text-orange-500/60 font-black uppercase tracking-[0.2em]">
-                                                {{ $testimonial->position ?? 'CEO & Founder' }}
-                                            </p>
+
+                                        <div class="flex items-baseline gap-1">
+                                            <span class="text-4xl md:text-5xl font-black text-white tracking-tighter">
+                                                {{ $plan->price }}
+                                            </span>
+                                        </div>
+
+                                        <p class="mt-4 text-white/50 text-sm leading-relaxed max-w-[280px]">
+                                            {{ $plan->description }}
+                                        </p>
+                                    </div>
+
+                                    {{-- Bento Feature List (Visible by default in Bento style) --}}
+
+
+                                    {{-- CTA Button --}}
+                                    <div class="mt-auto">
+                                        <a href="{{ $plan->cta_link ?? '#' }}"
+                                            class="relative group/btn overflow-hidden block w-full text-center py-4 rounded-2xl font-bold uppercase tracking-widest text-[11px] transition-all duration-300 {{ $isMain ? 'bg-orange-500 text-black' : 'bg-white/5 text-white hover:bg-white/10' }} border border-white/5">
+
+                                            <span class="relative z-10">{{ $plan->cta_text ?? 'Get Started' }}</span>
+
+                                            {{-- Shine effect on hover --}}
+                                            <div
+                                                class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-shine">
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <style>
+                    @keyframes shine {
+                        100% {
+                            transform: translateX(100%);
+                        }
+                    }
+
+                    .animate-shine {
+                        animation: shine 0.8s forwards;
+                    }
+                </style>
+
+                {{-- Bottom Value Proposition --}}
+                <div
+                    class="mt-20 p-10 rounded-[40px] border border-white/5 bg-white/[0.01] flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="flex items-center gap-6">
+                        <div class="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center">
+                            <span class="text-orange-500 text-3xl">💡</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white">Need a custom solution?</h4>
+                            <p class="text-white/40">If your project doesn't fit these plans, let's talk and build a custom
+                                quote.</p>
+                        </div>
+                    </div>
+                    <a href="#contact"
+                        class="text-orange-500 font-black uppercase tracking-widest text-sm border-b-2 border-orange-500/20 hover:border-orange-500 transition-all pb-1">
+                        Contact for Custom Work →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- ================= TESTIMONIALS ================= -->
+        <section id="testimonials"
+            class="py-24 bg-gradient-to-b mt-10 relative from-black to-black/90 text-white rounded-[40px] md:rounded-[60px] mx-4 shadow-2xl shadow-orange-500/5">
+            <div class="max-w-7xl mx-auto">
+
+                {{-- Refined Header --}}
+                <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
+                    <div
+                        class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                        </span>
+                        <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Reviews</p>
+                    </div>
+
+                    <h3 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
+                        Client <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Feedback.</span>
+                    </h3>
+
+                    <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
+                        Trust is earned. Here's what my partners have to say about our collaboration.
+                    </p>
+                </div>
+
+                <div class="swiper testimonialSwiper !pb-12 relative z-10" id="testimonials-swiper">
+                    <div class="swiper-wrapper">
+                        @foreach ($testimonials as $testimonial)
+                            <div class="swiper-slide !h-auto py-10"> {{-- Added padding for hover lift --}}
+                                <div class="group relative h-full transition-all duration-500">
+
+                                    {{-- 1. Hover Glow Effect (Behind the card) --}}
+                                    <div
+                                        class="absolute -inset-2 bg-gradient-to-r from-orange-600 to-orange-400 rounded-[45px] opacity-0 group-hover:opacity-20 blur-2xl transition-opacity duration-500">
+                                    </div>
+
+                                    {{-- 2. Main Glass Card --}}
+                                    <div
+                                        class="relative h-full flex flex-col p-8 md:p-10 rounded-[40px] bg-white/[0.03] backdrop-blur-xl border border-white/10 group-hover:border-orange-500/50 group-hover:-translate-y-2 transition-all duration-500 shadow-2xl">
+
+                                        {{-- Decorative Quote Icon --}}
+                                        <div
+                                            class="absolute top-8 right-10 text-orange-500/10 group-hover:text-orange-500/20 transition-colors">
+                                            <svg class="w-16 h-16 fill-currentColor" viewBox="0 0 24 24">
+                                                <path
+                                                    d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V12C14.017 12.5523 13.5693 13 13.017 13H11.017C10.4647 13 10.017 12.5523 10.017 12V9C10.017 7.34315 11.3601 6 13.017 6H19.017C20.6738 6 22.017 7.34315 22.017 9V15C22.017 17.7614 19.7784 20 17.017 20H14.017V21ZM5.017 21L5.017 18C5.017 16.8954 5.91243 16 7.017 16H10.017C10.5693 16 11.017 15.5523 11.017 15V9C11.017 8.44772 10.5693 8 10.017 8H6.017C5.46472 8 5.017 8.44772 5.017 9V12C5.017 12.5523 4.56929 13 4.017 13H2.017C1.46472 13 1.017 12.5523 1.017 12V9C1.017 7.34315 2.36015 6 4.017 6H10.017C11.6738 6 13.017 7.34315 13.017 9V15C13.017 17.7614 10.7786 20 8.017 20H5.017V21Z" />
+                                            </svg>
+                                        </div>
+
+                                        {{-- Star Rating --}}
+                                        <div class="flex gap-1 mb-8">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <svg class="w-5 h-5 text-orange-500 group-hover:scale-110 transition-transform duration-300"
+                                                    fill="currentColor" viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                </svg>
+                                            @endfor
+                                        </div>
+
+                                        {{-- Testimonial Content --}}
+                                        <p
+                                            class="text-xl md:text-2xl leading-relaxed text-white/90 mb-10 font-medium italic">
+                                            "{{ $testimonial->content }}"
+                                        </p>
+
+                                        {{-- Author Info --}}
+                                        <div class="flex items-center gap-5 mt-auto">
+                                            <div class="relative">
+                                                {{-- Avatar Ring --}}
+                                                <div
+                                                    class="absolute -inset-1 bg-gradient-to-tr from-orange-600 to-orange-400 rounded-full opacity-50">
+                                                </div>
+                                                <div
+                                                    class="relative w-16 h-16 rounded-full overflow-hidden border-2 border-[#0b0b0d] bg-zinc-800">
+                                                    @if ($testimonial->avatar)
+                                                        <img src="{{ asset('storage/' . $testimonial->avatar) }}"
+                                                            class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                                                    @else
+                                                        <div
+                                                            class="w-full h-full flex items-center justify-center text-white/20 font-black">
+                                                            {{ substr($testimonial->name, 0, 1) }}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4
+                                                    class="text-lg font-black text-white group-hover:text-orange-500 transition-colors">
+                                                    {{ $testimonial->name }}
+                                                </h4>
+                                                <p
+                                                    class="text-[10px] text-orange-500/60 font-black uppercase tracking-[0.2em]">
+                                                    {{ $testimonial->position ?? 'CEO & Founder' }}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
-
-            <div class="max-w-2xl mx-auto mt-12">
-                <livewire:public.components.testimonial-form />
-            </div>
-        </div>
-    </section>
-
-    <!-- ================= CONTACT ================= -->
-    <section id="contact" class="py-24">
-        <div class="max-w-7xl mx-auto px-6 md:px-6">
-
-            {{-- Refined Header --}}
-            <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                <div
-                    class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                    <span class="relative flex h-2 w-2">
-                        <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                    </span>
-                    <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Contact</p>
+                        @endforeach
+                    </div>
+                    <div class="swiper-pagination"></div>
                 </div>
 
-                <h3 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
-                    Let's<span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Connect.</span>
-                </h3>
-
-                <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
-                    Ready to start your next project? I am currently available for new opportunities.
-                </p>
+                <div class="max-w-2xl mx-auto mt-12">
+                    <livewire:public.components.testimonial-form />
+                </div>
             </div>
+        </section>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
-                <div class="hidden">
-                    <p class="text-orange-500 font-bold tracking-[0.3em] uppercase text-xs mb-4">Contact</p>
-                    <h2 class="text-5xl md:text-7xl font-bold leading-tight mb-8">Let's build your <span
-                            class="text-orange-500">vision.</span></h2>
-                    <p class="text-xl text-white/50 leading-relaxed mb-12">I am currently available for new projects
-                        and collaborations. Send me a message and let's talk.</p>
+        <!-- ================= CONTACT ================= -->
+        <section id="contact" class="py-24">
+            <div class="max-w-7xl mx-auto px-6 md:px-6">
+
+                {{-- Refined Header --}}
+                <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
+                    <div
+                        class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                        </span>
+                        <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Contact</p>
+                    </div>
+
+                    <h3 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
+                        Let's<span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Connect.</span>
+                    </h3>
+
+                    <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
+                        Ready to start your next project? I am currently available for new opportunities.
+                    </p>
                 </div>
 
-                <div
-                    class="lg:col-span-2 max-w-3xl mx-auto w-full relative z-10
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                    <div class="hidden">
+                        <p class="text-orange-500 font-bold tracking-[0.3em] uppercase text-xs mb-4">Contact</p>
+                        <h2 class="text-5xl md:text-7xl font-bold leading-tight mb-8">Let's build your <span
+                                class="text-orange-500">vision.</span></h2>
+                        <p class="text-xl text-white/50 leading-relaxed mb-12">I am currently available for new projects
+                            and collaborations. Send me a message and let's talk.</p>
+                    </div>
+
+                    <div
+                        class="lg:col-span-2 max-w-3xl mx-auto w-full relative z-10
                 bg-gradient-to-br from-orange-500/5 to-orange-600/5 p-8 md:p-12 rounded-[40px] border border-orange-500/20 backdrop-blur-xl">
-                    @if (session()->has('message'))
-                        <div
-                            class="mb-8 p-4 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm shadow-lg">
-                            {{ session('message') }}
-                        </div>
-                    @endif
+                        @if (session()->has('message'))
+                            <div
+                                class="mb-8 p-4 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm shadow-lg">
+                                {{ session('message') }}
+                            </div>
+                        @endif
 
-                    <form wire:submit.prevent="sendMessage" class="space-y-6">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <input type="text" wire:model="name" placeholder="Name"
-                                class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-orange-500/20 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
-                                required>
-                            <input type="email" wire:model="email" placeholder="Email"
-                                class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-orange-500/20 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
-                                required>
-                        </div>
-                        <input type="text" wire:model="subject" placeholder="Subject"
-                            class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-orange-500/20 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all">
-                        <textarea wire:model="message" rows="5" placeholder="Your Message"
-                            class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-orange-500/20 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all resize-none"
-                            required></textarea>
-                        <button type="submit"
-                            class="w-full py-5 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold uppercase tracking-widest text-sm hover:from-orange-600 hover:to-orange-700 hover:shadow-lg hover:shadow-orange-500/30 transition-all active:scale-95">Send
-                            Message</button>
-                    </form>
+                        <form wire:submit.prevent="sendMessage" class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <input type="text" wire:model="name" placeholder="Name"
+                                    class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-orange-500/20 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
+                                    required>
+                                <input type="email" wire:model="email" placeholder="Email"
+                                    class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-orange-500/20 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
+                                    required>
+                            </div>
+                            <input type="text" wire:model="subject" placeholder="Subject"
+                                class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-orange-500/20 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all">
+                            <textarea wire:model="message" rows="5" placeholder="Your Message"
+                                class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-orange-500/20 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all resize-none"
+                                required></textarea>
+                            <button type="submit"
+                                class="w-full py-5 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold uppercase tracking-widest text-sm hover:from-orange-600 hover:to-orange-700 hover:shadow-lg hover:shadow-orange-500/30 transition-all active:scale-95">Send
+                                Message</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ================= SCRIPTS ================= -->
-    <script>
-        document.addEventListener('livewire:navigated', () => {
-            initAllSwipers();
-            initParallaxStack();
-            initRevealText();
-            initFeaturesScroll();
-        });
-        document.addEventListener('DOMContentLoaded', () => {
-            initAllSwipers();
-            initParallaxStack();
-            initRevealText();
-            initFeaturesScroll();
-        });
+        <!-- ================= SCRIPTS ================= -->
+        <script>
+            document.addEventListener('livewire:navigated', () => {
+                initAllSwipers();
+                initParallaxStack();
+                initRevealText();
+                initFeaturesScroll();
+            });
+            document.addEventListener('DOMContentLoaded', () => {
+                initAllSwipers();
+                initParallaxStack();
+                initRevealText();
+                initFeaturesScroll();
+            });
 
-        function initFeaturesScroll() {
-            const grid = document.getElementById('features-grid');
-            if (!grid) return;
+            function initFeaturesScroll() {
+                const grid = document.getElementById('features-grid');
+                if (!grid) return;
 
-            const cards = grid.querySelectorAll('.feature-card');
+                const cards = grid.querySelectorAll('.feature-card');
 
-            // Helper to check if element is odd/even in grid context for direction
-            // In grid-cols-2: 
-            // Index 0 (Left) -> Slide in from Bottom-Left
-            // Index 1 (Right) -> Slide in from Bottom-Right
+                // Helper to check if element is odd/even in grid context for direction
+                // In grid-cols-2: 
+                // Index 0 (Left) -> Slide in from Bottom-Left
+                // Index 1 (Right) -> Slide in from Bottom-Right
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const el = entry.target;
-                    const isLeft = Array.from(cards).indexOf(el) % 2 === 0;
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const el = entry.target;
+                        const isLeft = Array.from(cards).indexOf(el) % 2 === 0;
 
-                    if (entry.isIntersecting) {
-                        // ENTRY: Reset transforms to 0
-                        el.classList.remove('opacity-0', 'translate-y-[100px]', 'translate-x-[-100px]',
-                            'translate-x-[100px]');
-                        el.classList.add('opacity-100', 'translate-y-0', 'translate-x-0');
-                    } else {
-                        // EXIT: Apply transforms based on position
-                        // We check if we scrolled PAST it (it went up) or BEFORE it (it went down)
-                        const rect = el.getBoundingClientRect();
-
-                        // Only animate out if we are significantly away to avoid flickering
-                        // Logic: Reset to initial state so it can animate in again
-                        el.classList.remove('opacity-100', 'translate-y-0', 'translate-x-0');
-                        el.classList.add('opacity-0', 'translate-y-[100px]');
-
-                        // Add directional offset back
-                        if (isLeft) {
-                            el.classList.add('translate-x-[-100px]');
+                        if (entry.isIntersecting) {
+                            // ENTRY: Reset transforms to 0
+                            el.classList.remove('opacity-0', 'translate-y-[100px]', 'translate-x-[-100px]',
+                                'translate-x-[100px]');
+                            el.classList.add('opacity-100', 'translate-y-0', 'translate-x-0');
                         } else {
-                            el.classList.add('translate-x-[100px]');
+                            // EXIT: Apply transforms based on position
+                            // We check if we scrolled PAST it (it went up) or BEFORE it (it went down)
+                            const rect = el.getBoundingClientRect();
+
+                            // Only animate out if we are significantly away to avoid flickering
+                            // Logic: Reset to initial state so it can animate in again
+                            el.classList.remove('opacity-100', 'translate-y-0', 'translate-x-0');
+                            el.classList.add('opacity-0', 'translate-y-[100px]');
+
+                            // Add directional offset back
+                            if (isLeft) {
+                                el.classList.add('translate-x-[-100px]');
+                            } else {
+                                el.classList.add('translate-x-[100px]');
+                            }
+                        }
+                    });
+                }, {
+                    threshold: 0.15, // 15% visibility triggers entry
+                    rootMargin: '0px 0px -10% 0px' // Offset bottom slightly so it triggers "inside" view
+                });
+
+                cards.forEach(card => {
+                    observer.observe(card);
+                });
+            }
+
+            function initRevealText() {
+                const revealElements = document.querySelectorAll('.reveal-text');
+
+                // BREAKPOINT CHECK: 
+                // If screen width is less than 1024px (Tablets/Mobile), 
+                // show text immediately and stop the function.
+                if (window.innerWidth < 1024) {
+                    revealElements.forEach(el => {
+                        el.classList.add('is-visible');
+                    });
+                    return;
+                }
+
+                // EXISTING LOGIC (Only runs on large screens now)
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            // Optional: Stop observing once revealed to save performance
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.2,
+                    rootMargin: '0px 0px -50px 0px'
+                });
+
+                revealElements.forEach(el => {
+                    observer.observe(el);
+                });
+            }
+
+            function initParallaxStack() {
+                const container = document.getElementById('services-container');
+                if (!container) return;
+
+                const cards = container.querySelectorAll('.service-card');
+
+                const handleScroll = () => {
+                    const windowHeight = window.innerHeight;
+                    const windowCenter = windowHeight / 1.7;
+
+                    cards.forEach((card, index) => {
+                        const rect = card.getBoundingClientRect();
+                        const cardCenter = rect.top + (rect.height / 2);
+
+                        // Distance from center of viewport (signed)
+                        const dist = cardCenter - windowCenter;
+                        const absDist = Math.abs(dist);
+
+                        // Progress: 0 at center, 1 at distance of 60% viewport height
+                        let progress = absDist / (windowHeight * 0.6);
+                        progress = Math.max(0, Math.min(progress, 1));
+
+                        // Styles
+                        const scale = 1 - (progress * 0.2); // 1 -> 0.8
+                        const opacity = 1 - (progress * 0.5); // 1 -> 0.3
+                        const blur = progress * 0; // 0px -> 5px
+                        const rotateX = (dist / windowHeight) * 20; // Rotate based on scroll direction
+
+                        // Apply
+                        card.style.transform = `scale(${scale}) perspective(1000px) rotateX(${rotateX}deg)`;
+                        card.style.opacity = opacity;
+                        card.style.filter = `blur(${blur}px)`;
+
+                        // Z-Index logic: Card closest to center gets highest Z
+                        // We inverse the progress for Z-index
+                        card.style.zIndex = Math.round((1 - progress) * 100);
+                    });
+                };
+
+                window.addEventListener('scroll', handleScroll);
+                handleScroll(); // Init
+            }
+
+            function initAllSwipers() {
+                // Pricing Swiper (Coverflow)
+                new Swiper('.pricingSwiper', {
+                    effect: 'coverflow',
+                    grabCursor: true,
+                    centeredSlides: true,
+                    slidesPerView: 'auto',
+                    initialSlide: 1, // Start at the middle card (assuming 3 cards)
+                    coverflowEffect: {
+                        rotate: 0,
+                        stretch: 0,
+                        depth: 100,
+                        modifier: 2.5,
+                        slideShadows: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true
+                    },
+                    breakpoints: {
+                        // When window width is <= 640px (Mobile)
+                        320: {
+                            effect: 'slide', // Disable coverflow on mobile for better UX
+                            slidesPerView: 1.1,
+                            spaceBetween: 20,
+                            centeredSlides: true,
+                        },
+                        // Desktop
+                        768: {
+                            effect: 'coverflow',
+                            slidesPerView: 'auto',
                         }
                     }
                 });
-            }, {
-                threshold: 0.15, // 15% visibility triggers entry
-                rootMargin: '0px 0px -10% 0px' // Offset bottom slightly so it triggers "inside" view
-            });
 
-            cards.forEach(card => {
-                observer.observe(card);
-            });
-        }
-
-        function initRevealText() {
-            const revealElements = document.querySelectorAll('.reveal-text');
-
-            // BREAKPOINT CHECK: 
-            // If screen width is less than 1024px (Tablets/Mobile), 
-            // show text immediately and stop the function.
-            if (window.innerWidth < 1024) {
-                revealElements.forEach(el => {
-                    el.classList.add('is-visible');
-                });
-                return;
-            }
-
-            // EXISTING LOGIC (Only runs on large screens now)
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        // Optional: Stop observing once revealed to save performance
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.2,
-                rootMargin: '0px 0px -50px 0px'
-            });
-
-            revealElements.forEach(el => {
-                observer.observe(el);
-            });
-        }
-
-        function initParallaxStack() {
-            const container = document.getElementById('services-container');
-            if (!container) return;
-
-            const cards = container.querySelectorAll('.service-card');
-
-            const handleScroll = () => {
-                const windowHeight = window.innerHeight;
-                const windowCenter = windowHeight / 1.7;
-
-                cards.forEach((card, index) => {
-                    const rect = card.getBoundingClientRect();
-                    const cardCenter = rect.top + (rect.height / 2);
-
-                    // Distance from center of viewport (signed)
-                    const dist = cardCenter - windowCenter;
-                    const absDist = Math.abs(dist);
-
-                    // Progress: 0 at center, 1 at distance of 60% viewport height
-                    let progress = absDist / (windowHeight * 0.6);
-                    progress = Math.max(0, Math.min(progress, 1));
-
-                    // Styles
-                    const scale = 1 - (progress * 0.2); // 1 -> 0.8
-                    const opacity = 1 - (progress * 0.5); // 1 -> 0.3
-                    const blur = progress * 0; // 0px -> 5px
-                    const rotateX = (dist / windowHeight) * 20; // Rotate based on scroll direction
-
-                    // Apply
-                    card.style.transform = `scale(${scale}) perspective(1000px) rotateX(${rotateX}deg)`;
-                    card.style.opacity = opacity;
-                    card.style.filter = `blur(${blur}px)`;
-
-                    // Z-Index logic: Card closest to center gets highest Z
-                    // We inverse the progress for Z-index
-                    card.style.zIndex = Math.round((1 - progress) * 100);
-                });
-            };
-
-            window.addEventListener('scroll', handleScroll);
-            handleScroll(); // Init
-        }
-
-        function initAllSwipers() {
-            // Pricing Swiper (Coverflow)
-            new Swiper('.pricingSwiper', {
-                effect: 'coverflow',
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: 'auto',
-                initialSlide: 1, // Start at the middle card (assuming 3 cards)
-                coverflowEffect: {
-                    rotate: 0,
-                    stretch: 0,
-                    depth: 100,
-                    modifier: 2.5,
-                    slideShadows: false,
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true
-                },
-                breakpoints: {
-                    // When window width is <= 640px (Mobile)
-                    320: {
-                        effect: 'slide', // Disable coverflow on mobile for better UX
-                        slidesPerView: 1.1,
-                        spaceBetween: 20,
-                        centeredSlides: true,
+                // Services Swiper (3D Perspective Vertical)
+                new Swiper('.servicesSwiper', {
+                    direction: 'vertical',
+                    effect: 'coverflow',
+                    grabCursor: true,
+                    centeredSlides: true,
+                    slidesPerView: 'auto',
+                    spaceBetween: 30,
+                    initialSlide: 0,
+                    mousewheel: {
+                        invert: false,
+                        forceToAxis: true,
+                        sensitivity: 1,
+                        releaseOnEdges: true,
                     },
-                    // Desktop
-                    768: {
-                        effect: 'coverflow',
-                        slidesPerView: 'auto',
-                    }
-                }
-            });
-
-            // Services Swiper (3D Perspective Vertical)
-            new Swiper('.servicesSwiper', {
-                direction: 'vertical',
-                effect: 'coverflow',
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: 'auto',
-                spaceBetween: 30,
-                initialSlide: 0,
-                mousewheel: {
-                    invert: false,
-                    forceToAxis: true,
-                    sensitivity: 1,
-                    releaseOnEdges: true,
-                },
-                coverflowEffect: {
-                    rotate: 0,
-                    stretch: 0,
-                    depth: 100,
-                    modifier: 2.5,
-                    slideShadows: true,
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                    dynamicBullets: true,
-                },
-            });
-
-            // Projects Swiper
-            new Swiper('.mySwiper', {
-                slidesPerView: 1.2,
-                spaceBetween: 20,
-                grabCursor: true,
-                speed: 500,
-                effect: 'slide',
-                easing: 'ease-in-out',
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next-custom',
-                    prevEl: '.swiper-button-prev-custom',
-                },
-                breakpoints: {
-                    640: {
-                        slidesPerView: 2.2,
-                        spaceBetween: 30
+                    coverflowEffect: {
+                        rotate: 0,
+                        stretch: 0,
+                        depth: 100,
+                        modifier: 2.5,
+                        slideShadows: true,
                     },
-                    1024: {
-                        slidesPerView: 1.5,
-                        spaceBetween: 40
-                    }
-                }
-            });
-
-            // Testimonials Swiper
-            new Swiper(".testimonialSwiper", {
-                slidesPerView: 1,
-                spaceBetween: 30,
-                grabCursor: true,
-                autoplay: {
-                    delay: 5000
-                },
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true
-                },
-                breakpoints: {
-                    768: {
-                        slidesPerView: 2
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                        dynamicBullets: true,
                     },
-                    1024: {
-                        slidesPerView: 2
+                });
+
+                // Projects Swiper
+                new Swiper('.mySwiper', {
+                    slidesPerView: 1.2,
+                    spaceBetween: 20,
+                    grabCursor: true,
+                    speed: 500,
+                    effect: 'slide',
+                    easing: 'ease-in-out',
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next-custom',
+                        prevEl: '.swiper-button-prev-custom',
+                    },
+                    breakpoints: {
+                        640: {
+                            slidesPerView: 2.2,
+                            spaceBetween: 30
+                        },
+                        1024: {
+                            slidesPerView: 1.5,
+                            spaceBetween: 40
+                        }
                     }
-                }
-            });
-        }
-    </script>
+                });
 
-    <style>
-        .reveal-text {
-            opacity: 0.1;
-            filter: blur(8px);
-            transform: translateY(30px);
-            transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+                // Testimonials Swiper
+                new Swiper(".testimonialSwiper", {
+                    slidesPerView: 1,
+                    spaceBetween: 30,
+                    grabCursor: true,
+                    autoplay: {
+                        delay: 5000
+                    },
+                    pagination: {
+                        el: ".swiper-pagination",
+                        clickable: true
+                    },
+                    breakpoints: {
+                        768: {
+                            slidesPerView: 2
+                        },
+                        1024: {
+                            slidesPerView: 2
+                        }
+                    }
+                });
+            }
+        </script>
 
-        .reveal-text.is-visible {
-            opacity: 1;
-            filter: blur(0);
-            transform: translateY(0);
-        }
-
-        [x-cloak] {
-            display: none !important;
-        }
-
-        @keyframes loading-bar {
-            0% {
-                width: 0%;
+        <style>
+            .reveal-text {
+                opacity: 0.1;
+                filter: blur(8px);
+                transform: translateY(30px);
+                transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
             }
 
-            100% {
-                width: 100%;
-            }
-        }
-
-        .animate-loading-bar {
-            animation: loading-bar 0.5s ease-in-out forwards;
-        }
-
-        @keyframes fade-in-up {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
+            .reveal-text.is-visible {
                 opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-fade-in-up {
-            animation: fade-in-up 1s ease-out forwards;
-        }
-
-        @keyframes bounce-slow {
-
-            0%,
-            100% {
+                filter: blur(0);
                 transform: translateY(0);
             }
 
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .animate-bounce-slow {
-            animation: bounce-slow 4s ease-in-out infinite;
-        }
-
-        @keyframes blob {
-            0% {
-                transform: translate(0px, 0px) scale(1);
+            [x-cloak] {
+                display: none !important;
             }
 
-            33% {
-                transform: translate(30px, -50px) scale(1.1);
+            @keyframes loading-bar {
+                0% {
+                    width: 0%;
+                }
+
+                100% {
+                    width: 100%;
+                }
             }
 
-            66% {
-                transform: translate(-20px, 20px) scale(0.9);
+            .animate-loading-bar {
+                animation: loading-bar 0.5s ease-in-out forwards;
             }
 
-            100% {
-                transform: translate(0px, 0px) scale(1);
+            @keyframes fade-in-up {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
-        }
 
-        .animate-blob {
-            animation: blob 7s infinite;
-        }
+            .animate-fade-in-up {
+                animation: fade-in-up 1s ease-out forwards;
+            }
 
-        .animation-delay-2000 {
-            animation-delay: 2s;
-        }
+            @keyframes bounce-slow {
 
-        /* Orange-themed Swiper pagination */
-        .swiper-pagination-bullet {
-            background: rgba(249, 115, 22, 0.3);
-        }
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
 
-        .swiper-pagination-bullet-active {
-            background: rgb(249, 115, 22);
-        }
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
 
-        #robot-tooltip {
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            /* Supaya tidak menghalangi klik ke robot */
-            background: rgba(22, 22, 24, 0.9);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            z-index: 9999;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            white-space: nowrap;
-        }
+            .animate-bounce-slow {
+                animation: bounce-slow 4s ease-in-out infinite;
+            }
 
-        .robot-tooltip-hidden {
-            opacity: 0;
-            transform: translate(-50%, -100%) scale(0.8);
-        }
+            @keyframes blob {
+                0% {
+                    transform: translate(0px, 0px) scale(1);
+                }
 
-        .robot-tooltip-visible {
-            opacity: 1;
-            transform: translate(-50%, -120%) scale(1);
-        }
+                33% {
+                    transform: translate(30px, -50px) scale(1.1);
+                }
 
-        .tooltip-arrow {
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 5px solid rgba(22, 22, 24, 0.9);
-        }
-    </style>
+                66% {
+                    transform: translate(-20px, 20px) scale(0.9);
+                }
+
+                100% {
+                    transform: translate(0px, 0px) scale(1);
+                }
+            }
+
+            .animate-blob {
+                animation: blob 7s infinite;
+            }
+
+            .animation-delay-2000 {
+                animation-delay: 2s;
+            }
+
+            /* Orange-themed Swiper pagination */
+            .swiper-pagination-bullet {
+                background: rgba(249, 115, 22, 0.3);
+            }
+
+            .swiper-pagination-bullet-active {
+                background: rgb(249, 115, 22);
+            }
+
+            #robot-tooltip {
+                position: fixed;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+                /* Supaya tidak menghalangi klik ke robot */
+                background: rgba(22, 22, 24, 0.9);
+                color: white;
+                padding: 8px 14px;
+                border-radius: 8px;
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+                z-index: 9999;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                white-space: nowrap;
+            }
+
+            .robot-tooltip-hidden {
+                opacity: 0;
+                transform: translate(-50%, -100%) scale(0.8);
+            }
+
+            .robot-tooltip-visible {
+                opacity: 1;
+                transform: translate(-50%, -120%) scale(1);
+            }
+
+            .tooltip-arrow {
+                position: absolute;
+                bottom: -5px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 5px solid rgba(22, 22, 24, 0.9);
+            }
+        </style>
     </div>
