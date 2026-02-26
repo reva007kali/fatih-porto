@@ -27,33 +27,27 @@
     </div>
 
     {{-- 2. Cinematic Hero Section --}}
-    <header class="relative min-h-[60vh] flex items-end pt-24 pb-10 overflow-hidden">
+    <header class="relative min-h-[500px] max-w-7xl mx-auto flex items-end pt-24 pb-10 overflow-hidden lg:my-36 md:rounded-[30px]">
         @if ($project->image)
             <div
-                class="absolute right-0 top-1/2 -translate-y-1/2 w-full lg:w-1/2 h-full opacity-20 pointer-events-none">
+                class="absolute inset-0 w-full h-full pointer-events-none">
                 <img src="{{ asset('storage/' . $project->image) }}"
-                    class="w-full h-full object-cover blur-[4px] lg:blur-[2px]">
+                    class="w-full h-full object-cover">
             </div>
         @endif
 
         {{-- Ambient Glows --}}
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-orange-600/10 blur-[120px] rounded-full"></div>
+        <div class="absolute inset-0 bg-gradient-to-tr from-black via-black/60 to-transparent"></div>
 
         <div class="relative w-full max-w-7xl mx-auto px-6 md:px-12">
             <div class="max-w-4xl">
-                {{-- Breadcrumb Label --}}
-                <div class="flex items-center gap-3 mb-8">
-                    <span class="w-12 h-[2px] bg-orange-500"></span>
-                    <span class="text-orange-500 text-xs font-black uppercase tracking-[0.4em]">
-                        {{ $project->title }}</span>
-                </div>
 
                 <h1
-                    class="text-3xl md:text-6xl lg:text-6xl font-black tracking-tighter leading-[0.85] text-white mb-10">
+                    class="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tighter leading-[0.85] text-white mb-4 md:mb-10">
                     {{ $project->title }}<span class="text-orange-500">.</span>
                 </h1>
 
-                <p class="text-xl md:text-xl text-white/40 font-medium leading-relaxed max-w-2xl">
+                <p class="text-sm md:text-xl text-white/40 font-medium leading-relaxed max-w-2xl">
                     {{ Str::limit(strip_tags($project->description), 150) }}
                 </p>
             </div>
@@ -151,13 +145,13 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     @foreach ($project->media as $index => $media)
                         <div
-                            class="group relative rounded-[48px] overflow-hidden bg-[#161618] border border-white/5 {{ $index % 3 == 0 ? 'md:col-span-2' : '' }}">
+                            class="group relative rounded-[48px] h-[400px] overflow-hidden bg-[#161618] border border-white/5 {{ $index % 3 == 0 ? 'md:col-span-2' : '' }}">
                             @if ($media->file_type === 'video')
                                 <video src="{{ asset('storage/' . $media->file_path) }}" controls
-                                    class="w-full h-full object-cover min-h-[400px]"></video>
+                                    class="w-full h-full object-cover"></video>
                             @else
                                 <img src="{{ asset('storage/' . $media->file_path) }}"
                                     class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">

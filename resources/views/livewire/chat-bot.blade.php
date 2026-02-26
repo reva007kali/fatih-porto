@@ -55,44 +55,19 @@
 
     <!-- TRIGGER BUTTON -->
     <button wire:click="toggleChat"
-    class="fixed bottom-12 right-8 z-[1000] flex items-center gap-3 px-3 md:px-5 py-3 bg-orange-700 md:bg-[#161618] border border-white/10 rounded-full shadow-2xl hover:scale-105 transition-all group">
+        class="fixed bottom-12 right-8 z-[1000] flex items-center gap-3 px-3 md:px-5 py-3 bg-orange-700 md:bg-[#161618] border border-white/10 rounded-full shadow-2xl hover:scale-105 transition-all group">
 
-    <!-- Status Indicator -->
-    <div class="relative hidden md:block">
-        <span class="w-2 h-2 bg-green-500 rounded-full block"></span>
-        <span class="absolute inset-0 bg-green-500 rounded-full animate-ping"></span>
-    </div>
+        <!-- Status Indicator -->
+        <div class="relative hidden md:block">
+            <span class="w-2 h-2 bg-green-500 rounded-full block"></span>
+            <span class="absolute inset-0 bg-green-500 rounded-full animate-ping"></span>
+        </div>
 
-    <!-- AI Icon -->
-    <svg xmlns="http://www.w3.org/2000/svg"
-    class="w-5 h-5 text-white"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.8"
-    stroke-linecap="round"
-    stroke-linejoin="round">
-
-    <!-- Antenna -->
-    <line x1="12" y1="2" x2="12" y2="5" />
-    <circle cx="12" cy="2" r="1.2" fill="currentColor"/>
-
-    <!-- Head -->
-    <rect x="4" y="6" width="16" height="12" rx="3" />
-
-    <!-- Eyes -->
-    <circle cx="9" cy="12" r="1.2" fill="currentColor"/>
-    <circle cx="15" cy="12" r="1.2" fill="currentColor"/>
-
-    <!-- Mouth -->
-    <line x1="9" y1="16" x2="15" y2="16" />
-</svg>
-
-    <!-- Text (Desktop Only) -->
-    <span class="hidden md:inline text-[10px] font-black uppercase tracking-widest text-white">
-        AI Assistant
-    </span>
-</button>
+        <!-- Text (Desktop Only) -->
+        <span class="hidden md:inline text-[10px] font-medium uppercase tracking-widest text-white">
+            AI Assistant
+        </span>
+    </button>
 
     @if ($isOpen)
         <div x-transition
@@ -119,21 +94,18 @@
             </div>
 
             <!-- Chat Area (The Fix is here: @wheel.stop and @touchmove.stop) -->
-            <div 
-                x-ref="chatContainer" 
-                @wheel.stop 
-                @touchmove.stop
-                @mousedown.stop
-                class="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide chat-scroll-container"
-            >
+            <div x-ref="chatContainer" @wheel.stop @touchmove.stop @mousedown.stop
+                class="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide chat-scroll-container">
                 @foreach ($messages as $index => $message)
                     @if (($message['role'] === 'user' || $message['role'] === 'assistant') && isset($message['content']))
                         <div class="flex {{ $message['role'] === 'user' ? 'justify-end' : 'justify-start' }}">
                             <div class="max-w-[85%]">
-                                <span class="text-[9px] font-bold text-white/20 uppercase mb-1 block {{ $message['role'] === 'user' ? 'text-right' : 'text-left' }}">
+                                <span
+                                    class="text-[9px] font-bold text-white/20 uppercase mb-1 block {{ $message['role'] === 'user' ? 'text-right' : 'text-left' }}">
                                     {{ $message['role'] === 'user' ? 'You' : 'AI Reva' }}
                                 </span>
-                                <div class="p-4 rounded-2xl text-[13px] {{ $message['role'] === 'user' ? 'bg-orange-500 text-black font-semibold' : 'bg-white/5 text-gray-300 border border-white/10' }}">
+                                <div
+                                    class="p-4 rounded-2xl text-[13px] {{ $message['role'] === 'user' ? 'bg-orange-500 text-black font-semibold' : 'bg-white/5 text-gray-300 border border-white/10' }}">
                                     @if ($message['role'] === 'user')
                                         {{ $message['content'] }}
                                     @else
@@ -163,19 +135,24 @@
                 @if ($showLeadForm)
                     <div class="flex justify-start pb-4">
                         <div class="max-w-[90%] w-full">
-                            <span class="text-[9px] font-bold text-white/20 uppercase mb-1 block text-left">System</span>
+                            <span
+                                class="text-[9px] font-bold text-white/20 uppercase mb-1 block text-left">System</span>
                             <div class="bg-white/10 border border-white/20 p-5 rounded-2xl shadow-xl">
                                 <h4 class="text-white font-bold mb-3 text-sm">Formulir Pemesanan</h4>
                                 <form wire:submit.prevent="submitLeadForm" class="space-y-3">
                                     <div>
                                         <input wire:model="leadForm.name" type="text" placeholder="Nama Kamu"
                                             class="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-orange-500 outline-none">
-                                        @error('leadForm.name') <span class="text-[10px] text-red-400">{{ $message }}</span> @enderror
+                                        @error('leadForm.name')
+                                            <span class="text-[10px] text-red-400">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div>
                                         <input wire:model="leadForm.contact" type="text" placeholder="No. WA / Email"
                                             class="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-orange-500 outline-none">
-                                        @error('leadForm.contact') <span class="text-[10px] text-red-400">{{ $message }}</span> @enderror
+                                        @error('leadForm.contact')
+                                            <span class="text-[10px] text-red-400">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div>
                                         <select wire:model="leadForm.budget"
@@ -186,18 +163,23 @@
                                             <option value="3jt - 5jt">3 Juta - 5 Juta</option>
                                             <option value="5jt+">Diatas 5 Juta</option>
                                         </select>
-                                        @error('leadForm.budget') <span class="text-[10px] text-red-400">{{ $message }}</span> @enderror
+                                        @error('leadForm.budget')
+                                            <span class="text-[10px] text-red-400">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div>
                                         <textarea wire:model="leadForm.description" rows="2" placeholder="Jelasin singkat kebutuhanmu..."
                                             class="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-orange-500 outline-none resize-none"></textarea>
-                                        @error('leadForm.description') <span class="text-[10px] text-red-400">{{ $message }}</span> @enderror
+                                        @error('leadForm.description')
+                                            <span class="text-[10px] text-red-400">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="flex justify-end gap-2 pt-2">
                                         <button type="button" wire:click="$set('showLeadForm', false)"
                                             class="text-xs text-gray-400 hover:text-white px-3 py-2">Batal</button>
                                         <button type="submit"
-                                            class="bg-orange-500 text-black text-xs font-bold px-4 py-2 rounded-lg hover:bg-orange-400 transition-colors">Kirim Data</button>
+                                            class="bg-orange-500 text-black text-xs font-bold px-4 py-2 rounded-lg hover:bg-orange-400 transition-colors">Kirim
+                                            Data</button>
                                     </div>
                                 </form>
                             </div>
@@ -206,7 +188,8 @@
                 @endif
 
                 <div wire:loading wire:target="sendMessage" class="flex justify-start">
-                    <div class="bg-white/5 p-4 rounded-2xl animate-pulse text-[10px] text-white/40 uppercase tracking-widest">
+                    <div
+                        class="bg-white/5 p-4 rounded-2xl animate-pulse text-[10px] text-white/40 uppercase tracking-widest">
                         Reva Thinking...
                     </div>
                 </div>
@@ -215,17 +198,12 @@
             <!-- Input Area -->
             <div class="p-5 border-t border-white/5 bg-white/[0.02]">
                 <form wire:submit.prevent="sendMessage" class="relative flex items-end gap-2">
-                    <textarea 
-                        wire:model="userInput" 
-                        @keydown.enter.prevent.exact="$wire.sendMessage()"
-                        @keydown.ctrl.enter.prevent="$wire.sendMessage()" 
-                        placeholder="Tanya harga atau contoh web..."
+                    <textarea wire:model="userInput" @keydown.enter.prevent.exact="$wire.sendMessage()"
+                        @keydown.ctrl.enter.prevent="$wire.sendMessage()" placeholder="Tanya harga atau contoh web..."
                         class="w-full bg-white/5 border border-white/10 rounded-2xl pl-5 pr-14 py-4 text-xs text-white focus:outline-none focus:border-orange-500 focus:bg-white/10 transition-all resize-none scrollbar-hide min-h-[50px] max-h-[120px]"
-                        rows="1" 
-                        x-data="{ resize() { $el.style.height = '50px'; $el.style.height = $el.scrollHeight + 'px' } }" 
-                        x-init="$nextTick(() => { $el.focus(); resize(); })" 
-                        @input="resize()"
-                    ></textarea>
+                        rows="1" x-data="{ resize() { $el.style.height = '50px';
+                                $el.style.height = $el.scrollHeight + 'px' } }" x-init="$nextTick(() => { $el.focus();
+                                    resize(); })" @input="resize()"></textarea>
 
                     <button type="submit"
                         class="absolute right-3 bottom-3 p-2 bg-orange-500 hover:bg-orange-400 text-black rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-orange-500/20"
@@ -240,7 +218,8 @@
                         <!-- Loading Spinner -->
                         <svg wire:loading wire:target="sendMessage" class="animate-spin w-4 h-4 text-black"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor"
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                             </path>

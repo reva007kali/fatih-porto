@@ -44,19 +44,36 @@
         <!-- ================= HERO ================= -->
         <section id="home" class="relative min-h-screen flex items-end md:items-end overflow-hidden">
 
+            <div class="absolute right-10 top-1/2 z-[30] flex flex-col -translate-y-[50%] items-center gap-5">
+                @foreach ($social_links as $link)
+                    <a href="{{ $link->url }}" target="_blank"
+                        class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:border-orange-500 group transition-all duration-500">
+                        @if ($link->icon)
+                            <img src="{{ asset('storage/' . $link->icon) }}"
+                                class="w-5 h-5 object-contain filter grayscale transition-all">
+                        @else
+                            <span
+                                class="text-[10px] font-black text-white/50 group-hover:text-black transition-colors">{{ substr($link->platform, 0, 1) }}</span>
+                        @endif
+                    </a>
+                @endforeach
+            </div>
+
             {{-- Hero Background Image logic preserved --}}
-            <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute inset-0 md:z-[20] overflow-hidden pointer-events-none">
                 <img src="{{ asset('storage/' . ($hero->image ?? 'default.jpg')) }}" alt="Profile"
-                    class="hero-img w-full h-full object-cover object-[80%_center] md:object-center transition-transform duration-700">
+                    class="hero-img w-full h-full object-cover object-center md:object-center transition-transform duration-700">
 
                 {{-- Layered Overlays for Depth --}}
-                <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#0b0b0d]/40 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#050505]/20 via-[#0b0b0d]/40 to-transparent"></div>
                 <div
-                    class="absolute inset-0 bg-gradient-to-r from-[#050505]/60 via-transparent to-transparent hidden md:block">
+                    class="absolute inset-0 bg-gradient-to-r from-[#050505]/10 via-transparent to-transparent hidden md:block">
                 </div>
 
                 {{-- Subtle Orange Ambient Glow --}}
-                <div class="absolute top-1/4 -right-20 w-96 h-96 bg-orange-600/20 blur-[120px] rounded-full"></div>
+                <div
+                    class="absolute hidden md:block top-1/4 -right-20 w-96 h-96 bg-orange-600/20 blur-[120px] rounded-full">
+                </div>
             </div>
 
             <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-6 pb-10 md:pb-12 md:pt-20">
@@ -77,8 +94,7 @@
                     </div>
 
                     {{-- Main Heading: Poster Style --}}
-                    <h1
-                        class="text-6xl md:text-7xl lg:text-8xl font-extrabold leading-[0.85] text-white mb-4 md:mb-8">
+                    <h1 class="text-6xl md:text-7xl lg:text-8xl font-black leading-[0.85] text-white mb-4 md:mb-8">
                         @php
                             $titleParts = explode(' ', $hero->title ?? 'Reva Adhitya');
                             $lastWord = array_pop($titleParts);
@@ -86,7 +102,8 @@
                         @endphp
 
                         {{ $firstPart }} <br />
-                        <span class="text-transparent font-bold bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
+                        <span
+                            class="text-transparent font-black bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
                             {{ $lastWord }}<span class="text-white">.</span>
                         </span>
                     </h1>
@@ -119,21 +136,8 @@
                                 Download CV
                             </a>
                         </div>
-                        {{-- Social Icons: Refined --}}
-                        <div class="flex items-center gap-5 pl-2 sm:border-l sm:border-white/10 sm:pl-8">
-                            @foreach ($social_links as $link)
-                                <a href="{{ $link->url }}" target="_blank"
-                                    class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:border-orange-500 group transition-all duration-500">
-                                    @if ($link->icon)
-                                        <img src="{{ asset('storage/' . $link->icon) }}"
-                                            class="w-5 h-5 object-contain filter grayscale transition-all">
-                                    @else
-                                        <span
-                                            class="text-[10px] font-black text-white/50 group-hover:text-black transition-colors">{{ substr($link->platform, 0, 1) }}</span>
-                                    @endif
-                                </a>
-                            @endforeach
-                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -148,41 +152,29 @@
                 <div class="max-w-7xl mx-auto px-6 md:px-6">
 
                     {{-- Refined Header --}}
-                    <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                        <div
-                            class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                            <span class="relative flex h-2 w-2">
-                                <span
-                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                            </span>
-                            <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Portfolio</p>
-                        </div>
+                    <div class=" lg:flex lg:justify-between lg:items-center max-w-7xl mx-auto mb-24 reveal-text">
 
                         <h3
-                            class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
-                            Creative <span
+                            class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
+                            Creative <br><span
                                 class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Highlights.</span>
                         </h3>
+                        <div class="">
+                            <a href="{{ route('works') }}" wire:navigate
+                                class="inline-block text-sm font-semibold border-b border-orange-500/40 hover:border-orange-500 hover:text-orange-500 transition pb-1 text-white/60">
+                                View All Projects →
+                            </a>
+                        </div>
 
-                        <a href="{{ route('works') }}" wire:navigate
-                            class="inline-block text-sm font-semibold border-b border-orange-500/40 hover:border-orange-500 hover:text-orange-500 transition pb-1 text-white/60">
-                            View All Projects →
-                        </a>
                     </div>
 
                     <div class="relative">
-                        {{-- Side Gradients --}}
-                        <div
-                            class="absolute inset-y-0 right-0 z-10 w-12 md:w-32 bg-gradient-to-l from-[#111113] via-[#111113]/50 to-transparent pointer-events-none">
-                        </div>
-
                         <div class="swiper mySwiper !pb-14 relative z-6" id="works-swiper">
                             <div class="swiper-wrapper">
                                 @foreach ($projects as $project)
                                     <div class="swiper-slide !h-auto">
                                         <a href="{{ route('works.show', $project->slug) }}"
-                                            class="relative aspect-[4/5] md:aspect-[5/3] rounded-[32px] overflow-hidden group border border-orange-500/20 hover:border-orange-500/40 bg-[#111113] block transition-all">
+                                            class="relative aspect-[4/5] md:aspect-[5/3] rounded-[20px] overflow-hidden group hover:border-orange-500/40 bg-[#111113] block transition-all">
                                             @if ($project->image)
                                                 @php
                                                     $fileUrl = Str::startsWith($project->image, 'http')
@@ -204,40 +196,34 @@
                                                         class="w-full h-full object-cover transition duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100">
                                                 @endif
                                             @endif
-                                            <div
-                                                class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent p-8 lg:p-14 flex flex-col justify-end">
-                                                <h4
-                                                    class="text-lg lg:text-4xl leading-[1] font-bold mb-2 group-hover:text-orange-500 transition-colors">
-                                                    {{ $project->title }}</h4>
-                                                <div class="lg:max-w-[50%]">
-                                                    <p class="text-sm text-white/60 line-clamp-2">
-                                                        {{ $project->description }}
-                                                    </p>
-                                                </div>
-
-                                            </div>
                                         </a>
+                                        <div
+                                            class="flex flex-col mt-5">
+                                            <h4
+                                                class="text-lg lg:text-2xl leading-[1] font-semibold mb-2 group-hover:text-orange-500 transition-colors">
+                                                {{ $project->title }}</h4>
+                                            <div class="lg:max-w-[50%]">
+                                                <p class="text-sm text-white/60 line-clamp-2">
+                                                    {{ $project->description }}
+                                                </p>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>
-                            <div class="swiper-pagination"></div>
+                            {{-- pagination swiper --}}
+                            <div class="max-w-4xl mx-auto mt-14">
+                                <div class="swiper-pagination"></div>
+                            </div>
+
                         </div>
 
-                        {{-- Navigation Buttons --}}
-                        <button
-                            class="swiper-button-prev-custom hidden md:flex absolute top-1/2 -left-4 md:-left-20 -translate-y-1/2 z-10 w-12 h-12 rounded-full border border-white/10 bg-[#111113] items-center justify-center text-white/50 hover:text-orange-500 hover:border-orange-500 transition-all disabled:opacity-0 disabled:pointer-events-none">
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                            </svg>
-                        </button>
-                        <button
-                            class="swiper-button-next-custom hidden md:flex absolute top-1/2 -right-4 md:-right-20 -translate-y-1/2 z-10 w-12 h-12 rounded-full border border-white/10 bg-[#111113] items-center justify-center text-white/50 hover:text-orange-500 hover:border-orange-500 transition-all disabled:opacity-0 disabled:pointer-events-none">
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </button>
                     </div>
+
+
                 </div>
+
             </section>
         @endif
 
@@ -248,33 +234,26 @@
                 <div class="max-w-7xl mx-auto px-6 md:px-6">
 
                     {{-- Refined Header --}}
-                    <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                        <div
-                            class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                            <span class="relative flex h-2 w-2">
-                                <span
-                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                            </span>
-                            <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Showcase</p>
-                        </div>
+                    <div class="flex lg:justify-between lg:items-center max-w-7xl mx-auto mb-24 reveal-text">
 
                         <h3
-                            class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
-                            Website <span
-                                class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Gallery.</span>
+                            class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
+                            Websites <br><span
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Collection.</span>
                         </h3>
+                        <div class="">
+                            <a href="{{ route('websites') }}" wire:navigate
+                                class="inline-block text-sm font-semibold border-b border-orange-500/40 hover:border-orange-500 hover:text-orange-500 transition pb-1 text-white/60">
+                                View All Websites →
+                            </a>
+                        </div>
 
-                        <a href="{{ route('websites') }}" wire:navigate
-                            class="inline-block text-sm font-semibold border-b border-orange-500/40 hover:border-orange-500 hover:text-orange-500 transition pb-1 text-white/60">
-                            View All Websites →
-                        </a>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10" id="websites-grid">
                         @foreach ($websites as $website)
                             <div
-                                class="group relative aspect-[4/3] overflow-hidden rounded-[22px] bg-[#161618] border border-white/5 transition-all duration-500 hover:border-orange-500/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.2)]">
+                                class="group relative aspect-[4/3] overflow-hidden rounded-[16px] bg-[#161618] border border-white/5 transition-all duration-500">
 
                                 {{-- Image Layer --}}
                                 <div class="absolute inset-0 w-full h-full">
@@ -339,18 +318,8 @@
 
                     {{-- Refined Header --}}
                     <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                        <div
-                            class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                            <span class="relative flex h-2 w-2">
-                                <span
-                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                            </span>
-                            <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Expertise</p>
-                        </div>
-
                         <h3
-                            class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
+                            class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
                             Specialized <span
                                 class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Solutions.</span>
                         </h3>
@@ -370,7 +339,7 @@
 
                                     {{-- The Card --}}
                                     <div
-                                        class="relative h-full lg:min-h-[500px] p-10 rounded-[40px] bg-[#161618] border border-white/5 overflow-hidden transition-all duration-700 group-hover:border-orange-500/30 shadow-2xl">
+                                        class="relative h-full flex flex-col justify-end lg:min-h-[500px] p-10 rounded-[18px] lg:rounded-[60px] bg-[#161618] border border-white/5 overflow-hidden transition-all duration-700 group-hover:border-orange-500/30 shadow-2xl">
 
                                         {{-- 1. Background Image Layer (Service Icon) --}}
                                         @if ($service->icon)
@@ -380,7 +349,7 @@
 
                                                 {{-- 2. Dark Gradient Overlay (Ensures Text Legibility) --}}
                                                 <div
-                                                    class="absolute inset-0 bg-gradient-to-t from-[#161618] via-[#161618]/80 to-transparent">
+                                                    class="absolute inset-0 bg-gradient-to-tr from-[#000000] via-[#000000]/80 to-transparent">
                                                 </div>
                                             </div>
                                         @endif
@@ -390,44 +359,16 @@
                                             class="absolute -bottom-20 -right-20 w-64 h-64 bg-orange-600/10 blur-[100px] group-hover:bg-orange-600/30 transition-all duration-700">
                                         </div>
 
-                                        {{-- 4. Top Decorative Elements (Numbering) --}}
-                                        <div class="relative z-10 flex justify-between items-start mb-12">
-                                            {{-- Dynamic Numbering --}}
-                                            <div
-                                                class="text-5xl lg:text-8xl font-black text-white/[0.05] group-hover:text-orange-500/20 transition-colors duration-500 italic">
-                                                {{ sprintf('%02d', $index + 1) }}
-                                            </div>
-                                        </div>
-
                                         {{-- 5. Text Content --}}
                                         <div class="relative z-10">
                                             <h4
-                                                class="text-3xl lg:text-6xl font-black text-white mb-4 tracking-tighter group-hover:text-orange-400 transition-colors">
+                                                class="text-3xl lg:text-5xl font-bold text-white mb-4 tracking-tighter group-hover:text-orange-400 transition-colors">
                                                 {{ $service->title }}
                                             </h4>
                                             <p
-                                                class="text-white/50 leading-relaxed text-sm lg:text-2xl max-w-lg group-hover:text-white/80 transition-colors line-clamp-4">
+                                                class="text-white/50 leading-relaxed text-sm lg:text-xl max-w-lg group-hover:text-white/80 transition-colors line-clamp-4">
                                                 {{ $service->description }}
                                             </p>
-                                        </div>
-
-                                        {{-- 6. Bottom Interaction Reveal --}}
-                                        <div
-                                            class="absolute bottom-7 left-10 right-10 flex items-center justify-between opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                                            <div class="flex items-center gap-3">
-                                                <span
-                                                    class="text-orange-500 text-[10px] font-black uppercase tracking-[0.3em]">Learn
-                                                    More</span>
-                                                <div
-                                                    class="w-12 h-[1px] bg-orange-500/50 group-hover:w-20 transition-all duration-700">
-                                                </div>
-                                            </div>
-
-                                            {{-- Tiny arrow indicator --}}
-                                            <div
-                                                class="w-8 h-8 rounded-full border border-orange-500/30 flex items-center justify-center text-orange-500 text-xs group-hover:bg-orange-500 group-hover:text-black transition-all">
-                                                →
-                                            </div>
                                         </div>
                                     </div>
                                 </a>
@@ -450,23 +391,13 @@
                 <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
                     {{-- Refined Header --}}
                     <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                        <div
-                            class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                            <span class="relative flex h-2 w-2">
-                                <span
-                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                            </span>
-                            <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Advantage</p>
-                        </div>
-
                         <h3
-                            class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
+                            class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
                             Driven by <span
                                 class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Purpose.</span>
                         </h3>
 
-                        <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
+                        <p class="text-white/40 text-xl md:text-xl leading-relaxed max-w-2xl mx-auto">
                             Every decision is intentional. From strategy to execution, I design systems that perform, adapt,
                             and create measurable impact.
                         </p>
@@ -534,24 +465,15 @@
 
             <div class="max-w-7xl mx-auto px-6 md:px-6 relative z-10">
                 {{-- Refined Header --}}
-                <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                    <div
-                        class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <span class="relative flex h-2 w-2">
-                            <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                        </span>
-                        <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Story</p>
-                    </div>
+                <div class="text-center max-w-7xl mx-auto mb-24 reveal-text">
 
-                    <h3 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
+                    <h3 class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
                         Designing <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Precision.</span>
                     </h3>
 
                     <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
-                        Form follows function, but emotion leads the way. I create digital experiences that resonate.
+                        Form follows function, but emotion leads the way. <br>I create digital experiences that resonate.
                     </p>
                 </div>
 
@@ -670,24 +592,15 @@
             <div class="max-w-7xl mx-auto px-6 md:px-6 relative z-10">
 
                 {{-- Header with Strategic Copy --}}
-                <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                    <div
-                        class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <span class="relative flex h-2 w-2">
-                            <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                        </span>
-                        <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Pricing</p>
-                    </div>
+                <div class="text-center max-w-7xl mx-auto mb-24 reveal-text">
 
-                    <h2 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
+                    <h2 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white mb-8 leading-[0.9]">
                         Ready to <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Level
                             Up?</span>
                     </h2>
 
-                    <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
+                    <p class="text-white/40 text-xl md:text-xl leading-relaxed max-w-2xl mx-auto">
                         Choose a plan that fits your stage of growth. No hidden fees, just high-impact digital solutions
                         designed to convert.
                     </p>
@@ -716,26 +629,19 @@
                                 </div>
 
                                 {{-- Card Content --}}
-                                <div class="relative z-10 flex flex-col h-full p-8 md:p-10">
+                                <div class="relative z-10 flex flex-col justify-between h-full p-8 md:p-10">
 
                                     {{-- Header --}}
                                     <div class="mb-8">
-                                        <div class="flex items-center justify-between mb-4">
-                                            <h3 class="text-orange-500 font-bold text-sm uppercase tracking-[0.2em]">
+                                        <div class="flex items-baseline gap-1 mb-8">
+                                            <span class="text-4xl md:text-4xl font-bold text-white tracking-tighter">
                                                 {{ $plan->name }}
-                                            </h3>
-                                            @if ($isMain)
-                                                <span
-                                                    class="bg-orange-500 text-black text-[10px] font-black px-3 py-1 rounded-full uppercase">
-                                                    Most Popular
-                                                </span>
-                                            @endif
-                                        </div>
-
-                                        <div class="flex items-baseline gap-1">
-                                            <span class="text-4xl md:text-5xl font-black text-white tracking-tighter">
-                                                {{ $plan->price }}
                                             </span>
+                                        </div>
+                                        <div class="flex items-center justify-between mb-4">
+                                            <h3 class="text-orange-500 font-extrabold text-2xl uppercase tracking-[0.2em]">
+                                                {{ $plan->price }}
+                                            </h3>
                                         </div>
 
                                         <p class="mt-4 text-white/50 text-sm leading-relaxed max-w-[280px]">
@@ -781,9 +687,6 @@
                 <div
                     class="mt-20 p-10 rounded-[40px] border border-white/5 bg-white/[0.01] flex flex-col md:flex-row items-center justify-between gap-8">
                     <div class="flex items-center gap-6">
-                        <div class="w-16 h-16 rounded-2xl bg-orange-500/10 flex items-center justify-center">
-                            <span class="text-orange-500 text-3xl">💡</span>
-                        </div>
                         <div>
                             <h4 class="text-xl font-bold text-white">Need a custom solution?</h4>
                             <p class="text-white/40">If your project doesn't fit these plans, let's talk and build a custom
@@ -802,27 +705,18 @@
 
         <!-- ================= TESTIMONIALS ================= -->
         <section id="testimonials"
-            class="py-24 bg-gradient-to-b mt-10 relative from-black to-black/90 text-white rounded-[40px] md:rounded-[60px] mx-4 shadow-2xl shadow-orange-500/5">
-            <div class="max-w-7xl mx-auto">
+            class="py-24 bg-gradient-to-b mt-10 relative from-black to-black/90 text-white rounded-[40px] md:rounded-[60px] mx-4 lg:mx-10 shadow-2xl shadow-orange-500/5">
+            <div class="max-w-6xl mx-auto">
 
                 {{-- Refined Header --}}
                 <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                    <div
-                        class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <span class="relative flex h-2 w-2">
-                            <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                        </span>
-                        <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Reviews</p>
-                    </div>
 
-                    <h3 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
+                    <h3 class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
                         Client <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Feedback.</span>
                     </h3>
 
-                    <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
+                    <p class="text-white/40 text-xl md:text-xl leading-relaxed max-w-2xl mx-auto">
                         Trust is earned. Here's what my partners have to say about our collaboration.
                     </p>
                 </div>
@@ -1155,58 +1049,24 @@
                     }
                 });
 
-                // Services Swiper (3D Perspective Vertical)
-                new Swiper('.servicesSwiper', {
-                    direction: 'vertical',
-                    effect: 'coverflow',
-                    grabCursor: true,
-                    centeredSlides: true,
-                    slidesPerView: 'auto',
-                    spaceBetween: 30,
-                    initialSlide: 0,
-                    mousewheel: {
-                        invert: false,
-                        forceToAxis: true,
-                        sensitivity: 1,
-                        releaseOnEdges: true,
-                    },
-                    coverflowEffect: {
-                        rotate: 0,
-                        stretch: 0,
-                        depth: 100,
-                        modifier: 2.5,
-                        slideShadows: true,
-                    },
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                        dynamicBullets: true,
-                    },
-                });
-
                 // Projects Swiper
                 new Swiper('.mySwiper', {
                     slidesPerView: 1.2,
-                    spaceBetween: 20,
+                    spaceBetween: 30,
                     grabCursor: true,
                     speed: 500,
-                    effect: 'slide',
                     easing: 'ease-in-out',
                     pagination: {
                         el: '.swiper-pagination',
-                        clickable: true
-                    },
-                    navigation: {
-                        nextEl: '.swiper-button-next-custom',
-                        prevEl: '.swiper-button-prev-custom',
+                        clickable: true,
                     },
                     breakpoints: {
                         640: {
-                            slidesPerView: 2.2,
+                            slidesPerView: 1,
                             spaceBetween: 30
                         },
                         1024: {
-                            slidesPerView: 1.5,
+                            slidesPerView: 1.4,
                             spaceBetween: 40
                         }
                     }
@@ -1328,11 +1188,16 @@
 
             /* Orange-themed Swiper pagination */
             .swiper-pagination-bullet {
-                background: rgba(249, 115, 22, 0.3);
+                background: rgb(83, 83, 83);
+                transition: 200ms ease;
+                width: 10px;
+                height: 10px;
             }
 
             .swiper-pagination-bullet-active {
+                border-radius: 5px;
                 background: rgb(249, 115, 22);
+                width: 40px;
             }
 
             #robot-tooltip {

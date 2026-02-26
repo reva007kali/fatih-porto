@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-[#0b0b0d] text-white antialiased selection:bg-orange-500 selection:text-white">
+<div class="min-h-screen bg-[#030303] text-white antialiased selection:bg-orange-500 selection:text-white lg:pt-28">
 
     {{-- 1. Floating Back Button --}}
     <div class="fixed bottom-8 left-6 md:left-12 z-[100]">
@@ -20,33 +20,27 @@
     </div>
 
     {{-- 2. Atmospheric Hero Section --}}
-    <header class="relative min-h-[60vh] flex items-end pt-24 pb-10 overflow-hidden">
+    <header class="relative min-h-[70vh] flex items-end max-w-7xl mx-auto rounded-[30px] pt-24 pb-10 overflow-hidden ">
         {{-- Background Texture (Service Icon used as a large watermark) --}}
         @if ($service->icon)
-            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-1/2 h-full opacity-20 pointer-events-none">
+            <div class="absolute inset-0 pointer-events-none">
                 <img src="{{ asset('storage/' . $service->icon) }}"
-                    class="w-full h-full object-contain filter grayscale blur-sm">
+                    class="w-full h-full object-cover">
             </div>
         @endif
 
         {{-- Ambient Glows --}}
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-orange-600/10 blur-[120px] rounded-full"></div>
+        <div class="absolute inset-0 bg-gradient-to-tr from-black via-black/80 to-black/20"></div>
 
         <div class="relative w-full max-w-7xl mx-auto px-6 md:px-12">
             <div class="max-w-4xl">
-                {{-- Breadcrumb Label --}}
-                <div class="flex items-center gap-3 mb-8">
-                    <span class="w-12 h-[2px] bg-orange-500"></span>
-                    <span class="text-orange-500 text-xs font-black uppercase tracking-[0.4em]">Expertise /
-                        {{ $service->title }}</span>
-                </div>
 
                 <h1
-                    class="text-5xl md:text-6xl lg:text-6xl font-black tracking-tighter leading-[0.85] text-white mb-10">
+                    class="text-5xl md:text-6xl lg:text-6xl font-black tracking-tighter leading-[0.85] text-white mb-5">
                     {{ $service->title }}<span class="text-orange-500">.</span>
                 </h1>
 
-                <p class="text-xl md:text-3xl text-white/40 font-medium leading-relaxed max-w-2xl">
+                <p class="text-xl md:text-2xl text-white/40 font-medium leading-relaxed max-w-2xl">
                     {{ Str::limit(strip_tags($service->description), 150) }}
                 </p>
             </div>
@@ -60,16 +54,8 @@
             {{-- Left Side: Deep Dive Content --}}
             <div class="lg:col-span-7">
                 <div class="flex items-center gap-4 mb-12">
-                    <div
-                        class="w-16 h-16 rounded-3xl bg-[#161618] border border-white/10 flex items-center justify-center">
-                        @if ($service->icon)
-                            <img src="{{ asset('storage/' . $service->icon) }}" class="w-8 h-8 object-contain">
-                        @else
-                            <span class="text-orange-500 font-black text-2xl">✦</span>
-                        @endif
-                    </div>
                     <div>
-                        <h3 class="text-white font-black text-xl tracking-tight">Service Overview</h3>
+                        <h3 class="text-white font-bold text-xl md:text-2xl tracking-tight">Service Overview</h3>
                         <p class="text-orange-500 font-bold text-[10px] uppercase tracking-widest">In-depth capabilities
                         </p>
                     </div>
@@ -156,7 +142,7 @@
             ACTION
         </div>
 
-        <div class="relative z-10 max-w-3xl mx-auto">
+        <div class="relative z-10 max-w-6xl mx-auto">
             <p class="text-gray-400 font-black uppercase tracking-[0.4em] text-xs mb-8">Collaborate</p>
             <h2 class="text-5xl md:text-8xl font-black tracking-tighter mb-12">Let's build <br /> something epic.</h2>
 
