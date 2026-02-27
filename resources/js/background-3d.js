@@ -76,11 +76,11 @@ export function init3DBackground() {
 
     // --- LOAD MODEL ---
     const mtlLoader = new MTLLoader();
-    mtlLoader.load("/untitled.mtl", (materials) => {
+    mtlLoader.load("", (materials) => {
         materials.preload();
         const loader = new OBJLoader();
         loader.setMaterials(materials);
-        loader.load("/untitled.obj", (object) => {
+        loader.load("/model.obj", (object) => {
             activeModel = object;
             activeModel.traverse((child) => {
                 if (child.isMesh) {

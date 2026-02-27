@@ -172,6 +172,10 @@
             @endforeach
         </div>
 
+        <div class="mt-14">
+            {{ $projects->links() }}
+        </div>
+
         {{-- 4. Bottom Call-to-Action --}}
         <section
             class="mt-32 p-12 md:p-20 rounded-[60px] bg-white/5 border border-white/10 overflow-hidden relative text-center">

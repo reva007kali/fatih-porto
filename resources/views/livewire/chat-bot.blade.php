@@ -51,23 +51,38 @@
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ai-sphere {
+            animation: spin 8s linear infinite;
+
+        }
     </style>
 
-    <!-- TRIGGER BUTTON -->
-    <button wire:click="toggleChat"
-        class="fixed bottom-12 right-8 z-[1000] flex items-center gap-3 px-3 md:px-5 py-3 bg-orange-700 md:bg-[#161618] border border-white/10 rounded-full shadow-2xl hover:scale-105 transition-all group">
+    <button wire:click="toggleChat" class="fixed bottom-12 right-8 z-[1000] group w-12 h-12">
+        <img class="ai-sphere" src="img/ai-sphere.png" alt="Reva AI">
 
-        <!-- Status Indicator -->
-        <div class="relative hidden md:block">
-            <span class="w-2 h-2 bg-green-500 rounded-full block"></span>
-            <span class="absolute inset-0 bg-green-500 rounded-full animate-ping"></span>
-        </div>
-
-        <!-- Text (Desktop Only) -->
-        <span class="hidden md:inline text-[10px] font-medium uppercase tracking-widest text-white">
-            AI Assistant
+        <!-- Tooltip -->
+        <span
+            class="absolute right-14 top-1/2 -translate-y-1/2 
+                 bg-black text-white text-xs px-3 py-1 rounded-full 
+                 opacity-0 group-hover:opacity-100 
+                 translate-x-2 group-hover:translate-x-0
+                 transition-all duration-300 
+                 whitespace-nowrap shadow-lg">
+            Reva AI
         </span>
     </button>
+
 
     @if ($isOpen)
         <div x-transition
@@ -201,9 +216,15 @@
                     <textarea wire:model="userInput" @keydown.enter.prevent.exact="$wire.sendMessage()"
                         @keydown.ctrl.enter.prevent="$wire.sendMessage()" placeholder="Tanya harga atau contoh web..."
                         class="w-full bg-white/5 border border-white/10 rounded-2xl pl-5 pr-14 py-4 text-xs text-white focus:outline-none focus:border-orange-500 focus:bg-white/10 transition-all resize-none scrollbar-hide min-h-[50px] max-h-[120px]"
-                        rows="1" x-data="{ resize() { $el.style.height = '50px';
-                                $el.style.height = $el.scrollHeight + 'px' } }" x-init="$nextTick(() => { $el.focus();
-                                    resize(); })" @input="resize()"></textarea>
+                        rows="1" x-data="{
+                            resize() {
+                                $el.style.height = '50px';
+                                $el.style.height = $el.scrollHeight + 'px'
+                            }
+                        }" x-init="$nextTick(() => {
+                            $el.focus();
+                            resize();
+                        })" @input="resize()"></textarea>
 
                     <button type="submit"
                         class="absolute right-3 bottom-3 p-2 bg-orange-500 hover:bg-orange-400 text-black rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-orange-500/20"

@@ -39,8 +39,7 @@
         </div>
 
         {{-- 3D Background Canvas --}}
-        <div id="canvas-container" class="fixed inset-0 z-[20] pointer-events-none md:block hidden"></div>
-
+        
         <!-- ================= HERO ================= -->
         <section id="home" class="relative min-h-screen flex items-end md:items-end overflow-hidden">
 
