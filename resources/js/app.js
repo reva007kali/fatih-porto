@@ -1,7 +1,6 @@
 import './bootstrap';
 import LocomotiveScroll from 'locomotive-scroll';
 import 'locomotive-scroll/dist/locomotive-scroll.css';
-import { init3DBackground } from './background-3d';
 import { initShowcase3D, cleanupShowcase3D } from './showcase-3d';
 
 let scroll;
