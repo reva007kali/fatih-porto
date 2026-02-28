@@ -4,19 +4,24 @@
 
     {{-- Overlay UI --}}
     <div class="absolute inset-0 z-10 pointer-events-none">
-        
+
         {{-- Header --}}
         <div class="absolute top-0 left-0 w-full p-8 flex justify-between items-start pointer-events-auto">
-            <a href="{{ route('home') }}" class="group flex items-center gap-3 text-white/50 hover:text-white transition-colors">
-                <div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            <a href="{{ route('home') }}"
+                class="group flex items-center gap-3 text-white/50 hover:text-white transition-colors">
+                <div
+                    class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
                 </div>
                 <span class="text-xs font-black uppercase tracking-[0.2em]">Back to Home</span>
             </a>
 
             <div class="text-right">
                 <h1 class="text-4xl md:text-6xl font-black tracking-tighter text-white mb-2">
-                    3D <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">SKILLS</span>
+                    3D <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">SKILLS</span>
                 </h1>
                 <p class="text-xs font-bold uppercase tracking-[0.4em] text-white/30">Interactive Showcase</p>
             </div>

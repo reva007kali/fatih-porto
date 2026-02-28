@@ -1,9 +1,7 @@
 <div class="bg-[#0b0b0d] min-h-screen text-white relative overflow-hidden flex flex-col">
-    @section('meta_title', $model->title . ' | 3D Viewer')
-    @section('meta_description', $model->description)
 
     {{-- Back Button --}}
-    <div class="absolute top-24 left-6 md:left-12 z-10">
+    <div class="absolute top-24 left-6 md:left-24 lg:left-28 z-10">
         <a href="{{ route('three-d.gallery') }}"
             class="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/5">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,8 +34,6 @@
             <p class="text-white/60 text-lg max-w-2xl leading-relaxed">{{ $model->description }}</p>
         </div>
     </div>
-
-    {{-- Three.js Logic --}}
     <script type="module">
         import * as THREE from 'https://cdn.skypack.dev/three@0.132.2';
         import {
@@ -170,7 +166,7 @@
                         if (child.material) {
                             child.material.envMapIntensity = 1.0;
                             child.material.side = THREE
-                            .DoubleSide; // Fix for invisible/inside-out faces
+                                .DoubleSide; // Fix for invisible/inside-out faces
                             child.material.needsUpdate = true;
                         }
                     }
@@ -235,4 +231,5 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
+
 </div>

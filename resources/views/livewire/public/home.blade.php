@@ -13,7 +13,7 @@
         @endif
 
         {{-- Loading Screen --}}
-        {{-- <div x-show="loading" x-transition:leave="transition ease-in-out duration-1000"
+        <div x-show="loading" x-transition:leave="transition ease-in-out duration-1000"
             x-transition:leave-start="opacity-100 transform translate-y-0"
             x-transition:leave-end="opacity-0 transform -translate-y-full"
             class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0b0b0d] text-white">
@@ -31,7 +31,7 @@
             <p class="mt-4 text-white/40 text-sm font-bold tracking-[0.2em] uppercase animate-pulse">
                 Loading Experience...
             </p>
-        </div> --}}
+        </div>
 
         {{-- Global Ambient Glow - Orange --}}
         <div

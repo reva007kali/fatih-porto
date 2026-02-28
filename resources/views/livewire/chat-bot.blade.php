@@ -69,7 +69,7 @@
     </style>
 
     <button wire:click="toggleChat" class="fixed bottom-12 right-8 z-[1000] group w-12 h-12">
-        <img class="ai-sphere" src="img/ai-sphere.png" alt="Reva AI">
+        <img class="ai-sphere" src="/img/ai-sphere.png" alt="Reva AI">
 
         <!-- Tooltip -->
         <span
