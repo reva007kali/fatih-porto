@@ -1,4 +1,13 @@
-<div class="bg-[#0b0b0d] min-h-screen text-white pt-32 pb-24" x-data="{ modalOpen: @entangle('selectedMedia') }">
+<div class="bg-[#0b0b0d] min-h-screen text-white pt-32 pb-24" x-data="{
+    modalOpen: @entangle('selectedMedia'),
+    lockScroll(value) {
+        if (value) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }
+}" x-init="$watch('modalOpen', value => lockScroll(value))">
 
     @section('meta_title', 'Visual Gallery | Reva Adhitya')
     @section('meta_description', 'A curated selection of moments, designs, and visual experiments by Reva Adhitya.')
@@ -25,34 +34,18 @@
         {{-- Toolbar: Filters & Sorting --}}
         <div
             class="flex flex-col md:flex-row justify-between items-center gap-8 mb-12 p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
-
             {{-- Type Filters --}}
             <div class="flex items-center gap-2 p-1 bg-black/40 rounded-xl border border-white/5">
                 <button wire:click="setFilter('all')"
                     class="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all {{ $filter === 'all' ? 'bg-orange-600 text-white shadow-lg shadow-orange-600/20' : 'text-white/40 hover:text-white' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                    </svg>
                     All
                 </button>
                 <button wire:click="setFilter('image')"
                     class="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all {{ $filter === 'image' ? 'bg-orange-600 text-white shadow-lg shadow-orange-600/20' : 'text-white/40 hover:text-white' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
                     Images
                 </button>
                 <button wire:click="setFilter('video')"
                     class="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all {{ $filter === 'video' ? 'bg-orange-600 text-white shadow-lg shadow-orange-600/20' : 'text-white/40 hover:text-white' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
                     Videos
                 </button>
             </div>
@@ -100,10 +93,9 @@
                     @endif
 
                     <div
-                        class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                        <p class="text-white text-xs font-bold truncate">{{ $item['name'] }}</p>
-                        <p class="text-white/50 text-[10px] uppercase tracking-tighter">
-                            {{ round($item['size'] / 1024 / 1024, 2) }} MB</p>
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                        <p class="text-white text-[10px] font-bold truncate uppercase tracking-widest">
+                            {{ $item['name'] }}</p>
                     </div>
                 </div>
             @endforeach
@@ -111,81 +103,57 @@
 
         @if (count($media) === 0)
             <div class="text-center py-32 border border-dashed border-white/10 rounded-3xl bg-white/[0.02]">
-                <div class="mb-4 opacity-20 flex justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                </div>
-                <p class="text-white/30 text-xl font-medium">No {{ $filter !== 'all' ? $filter . 's' : 'media' }}
-                    found.
-                </p>
+                <p class="text-white/30 text-xl font-medium">No items found.</p>
             </div>
         @endif
     </div>
 
-    {{-- Fullscreen Scrollable Modal --}}
+    {{-- Improved Fullscreen Modal --}}
     @if ($selectedMedia)
-        <div class="fixed inset-0 z-[100] overflow-y-auto" role="dialog" aria-modal="true">
-            {{-- Backdrop (Fixed) --}}
-            <div class="fixed inset-0 bg-black/95 backdrop-blur-xl transition-opacity" wire:click="closeModal"></div>
+        <div class="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-12"
+            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
 
-            {{-- Fixed Close Button (Always visible) --}}
+            {{-- Backdrop --}}
+            <div class="fixed inset-0 bg-black/95 backdrop-blur-2xl" wire:click="closeModal"></div>
+
+            {{-- Close Button --}}
             <button wire:click="closeModal"
-                class="fixed top-6 right-6 md:top-10 md:right-10 text-white/50 hover:text-white transition-colors z-[120] bg-black/20 p-2 rounded-full">
+                class="fixed top-6 right-6 text-white/50 hover:text-white transition-all z-[120] p-2 hover:rotate-90 duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 md:w-10 md:h-10" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
 
-            {{-- Scrolling Content Wrapper --}}
-            <div class="relative min-h-screen flex items-center justify-center p-4 md:p-12 pointer-events-none">
+            {{-- Media Content Wrapper --}}
+            <div class="relative z-[110] max-w-full max-h-[80vh] flex items-center justify-center"
+                x-on:click.away="$wire.closeModal()">
 
-                {{-- Content Card (Pointer events restored here) --}}
-                <div class="relative w-full max-w-5xl flex flex-col items-center pointer-events-auto"
-                    x-on:click.away="$wire.closeModal()">
-
-                    {{-- Media Container --}}
-                    <div class="w-full flex justify-center bg-black/40 rounded-2xl overflow-hidden shadow-2xl">
-                        @if ($selectedMedia['type'] === 'image')
-                            <img src="{{ $selectedMedia['url'] }}"
-                                class="w-auto h-auto max-w-full block shadow-2xl shadow-black transition-all">
-                        @else
-                            <video src="{{ $selectedMedia['url'] }}" controls autoplay
-                                class="w-full max-h-[85vh] shadow-2xl shadow-black"></video>
-                        @endif
-                    </div>
-
-                    {{-- Metadata Footer --}}
-                    <div class="mt-8 text-center pb-12">
-                        <h3 class="text-white text-xl md:text-2xl font-black tracking-tight uppercase italic mb-2">
-                            {{ $selectedMedia['name'] }}
-                        </h3>
-                        <div
-                            class="flex flex-wrap justify-center items-center gap-4 text-white/40 text-[10px] font-black uppercase tracking-[0.2em]">
-                            <span>{{ date('F d, Y', $selectedMedia['date']) }}</span>
-                            <span class="w-1 h-1 rounded-full bg-orange-500"></span>
-                            <span>{{ round($selectedMedia['size'] / 1024 / 1024, 2) }} MB</span>
-                            <span class="w-1 h-1 rounded-full bg-orange-500"></span>
-                            <span>{{ strtoupper($selectedMedia['type']) }}</span>
-                        </div>
-
-                        <div class="mt-8">
-                            <a href="{{ $selectedMedia['url'] }}" download
-                                class="inline-flex items-center gap-3 px-8 py-4 bg-orange-600 hover:bg-orange-500 text-white text-[11px] font-black uppercase tracking-widest rounded-full transition-all hover:scale-105 active:scale-95 shadow-xl shadow-orange-600/20">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                </svg>
-                                Download Original
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                @if ($selectedMedia['type'] === 'image')
+                    <img src="{{ $selectedMedia['url'] }}" alt="{{ $selectedMedia['name'] }}"
+                        class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10">
+                @else
+                    <video src="{{ $selectedMedia['url'] }}" controls autoplay
+                        class="max-w-full max-h-[80vh] rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10">
+                    </video>
+                @endif
             </div>
         </div>
     @endif
+
+    <style>
+        /* Prevent layout shift when scrollbar disappears */
+        body.overflow-hidden {
+            padding-right: 15px;
+        }
+
+        @media (max-width: 768px) {
+            body.overflow-hidden {
+                padding-right: 0;
+            }
+        }
+    </style>
+
 </div>
