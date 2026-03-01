@@ -12,6 +12,74 @@
         </a>
     </div>
 
+    {{-- Interaction Instructions --}}
+    <div class="absolute top-24 right-6 md:right-12 z-10 flex flex-col items-end gap-2">
+        <button id="info-toggle"
+            class="bg-black/20 backdrop-blur-md border border-white/10 p-2 rounded-full hover:bg-white/10 transition-all group">
+            <svg class="w-5 h-5 text-white/70 group-hover:text-white" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </button>
+
+        <div id="controls-card"
+            class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-4 w-48 transition-all duration-300 transform origin-top-right">
+            <h3 class="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-500 mb-3">Controls</h3>
+
+            <div class="space-y-3">
+                {{-- Rotate --}}
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-white/40 uppercase font-bold">Rotate</p>
+                        <p class="text-xs text-white/80">Left Click + Drag</p>
+                    </div>
+                </div>
+
+                {{-- Zoom --}}
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-white/40 uppercase font-bold">Zoom</p>
+                        <p class="text-xs text-white/80">Scroll Wheel</p>
+                    </div>
+                </div>
+
+                {{-- Pan --}}
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-white/40 uppercase font-bold">Pan</p>
+                        <p class="text-xs text-white/80">Right Click + Drag</p>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Mobile Hint --}}
+            <div class="mt-4 pt-3 border-t border-white/5 lg:hidden">
+                <p class="text-[9px] text-white/30 italic text-center uppercase tracking-widest">Supports Touch & Pinch
+                </p>
+            </div>
+        </div>
+    </div>
+
     {{-- Viewer Container --}}
     <div id="canvas-container" class="flex-grow w-full h-screen relative outline-none cursor-move">
         {{-- Loading Indicator --}}
@@ -206,15 +274,6 @@
             // Try to load MTL first
             const mtlLoader = new MTLLoader();
 
-            // We need to check if MTL exists or just try to load it. 
-            // Since we can't easily check file existence via JS on client side for arbitrary URLs without a HEAD request,
-            // we will try to load it. If it fails, we fallback to just loading OBJ.
-            // However, typically in this setup, if you uploaded an OBJ, you might not have uploaded the MTL.
-            // But if the user says "same as home page", the home page uses MTL.
-
-            // Assuming for now we just load OBJ directly if we don't have a way to associate MTL in DB yet.
-            // If you want to support MTL, we should probably add an MTL upload field in the admin.
-            // For now, let's stick to the previous logic but improve material handling.
 
             const loader = new OBJLoader();
             loadModel(loader, modelUrl);
@@ -230,6 +289,23 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
+
+        // Toggle Controls Info
+        const infoToggle = document.getElementById('info-toggle');
+        const controlsCard = document.getElementById('controls-card');
+
+        infoToggle.addEventListener('click', () => {
+            controlsCard.classList.toggle('opacity-0');
+            controlsCard.classList.toggle('pointer-events-none');
+            controlsCard.classList.toggle('translate-y-[-10px]');
+        });
+
+        // Auto-hide controls after 5 seconds to keep it clean
+        setTimeout(() => {
+            if (!controlsCard.classList.contains('opacity-0')) {
+                controlsCard.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+            }
+        }, 5000);
     </script>
 
 </div>
