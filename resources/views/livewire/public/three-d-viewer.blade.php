@@ -114,10 +114,10 @@
         });
 
         // Lighting - High Quality Studio Setup
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft fill light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Soft fill light
         scene.add(ambientLight);
 
-        const keyLight = new THREE.DirectionalLight(0xffffff, 2.5); // Main strong light
+        const keyLight = new THREE.DirectionalLight(0xffffff, 3.5); // Main strong light
         keyLight.position.set(5, 10, 7);
         keyLight.castShadow = true;
         keyLight.shadow.mapSize.width = 2048; // High res shadow map
@@ -156,7 +156,7 @@
 
                 // Scale to reasonable size
                 const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = 3.5 / maxDim; // Increased scale factor from 2 to 3.5
+                const scale = 1 / maxDim; // Increased scale factor from 2 to 3.5
                 model.scale.set(scale, scale, scale);
 
                 model.traverse((child) => {
