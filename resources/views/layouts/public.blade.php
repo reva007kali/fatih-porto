@@ -131,7 +131,7 @@
                 REVA<span class="text-orange-500 group-hover:animate-pulse">.</span>
             </a>
 
-            <div class="hidden md:flex items-center space-x-10">
+            <div class="hidden xl:flex items-center space-x-10">
                 @forelse($navItems as $item)
                     <a href="{{ $item->url }}"
                         class="text-[11px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-orange-500 transition-colors">
@@ -159,7 +159,7 @@
             </div>
 
             <button id="menu-toggle" style="z-index: 120;"
-                class="relative w-11 h-11 flex flex-col justify-center items-center focus:outline-none md:hidden bg-white/5 rounded-full border border-white/10 transition-colors hover:bg-white/10">
+                class="relative w-11 h-11 flex flex-col justify-center items-center focus:outline-none xl:hidden bg-white/5 rounded-full border border-white/10 transition-colors hover:bg-white/10">
                 <span class="line block w-5 h-0.5 bg-white transition-all duration-300 pointer-events-none"
                     style="transform: translateY(-3px)"></span>
                 <span class="line block w-5 h-0.5 bg-white transition-all duration-300 pointer-events-none"
@@ -169,7 +169,7 @@
     </nav>
 
     <div id="mobile-menu"
-        class="fixed inset-0 bg-[#0b0b0d] z-[105] flex flex-col justify-center items-center space-y-8 transform translate-x-full md:hidden transition-transform duration-500 ease-in-out pointer-events-auto">
+        class="fixed inset-0 bg-[#0b0b0d] z-[105] flex flex-col justify-center items-center space-y-8 transform translate-x-full xl:hidden transition-transform duration-500 ease-in-out pointer-events-auto">
         <button id="mobile-menu-close" style="pointer-events: auto !important; z-index: 200 !important;"
             class="absolute top-7 right-6 w-11 h-11 flex flex-col justify-center items-center focus:outline-none bg-white/5 rounded-full border border-white/10 transition-colors hover:bg-white/10">
             <span class="block w-5 h-0.5 bg-white transform rotate-45 translate-y-[1px]"></span>

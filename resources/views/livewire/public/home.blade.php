@@ -48,7 +48,7 @@
         </div>
 
         {{-- Hero Background Image logic preserved --}}
-        <div class="absolute inset-0 md:z-[20] overflow-hidden pointer-events-none">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <img src="{{ asset('storage/' . ($hero->image ?? 'default.jpg')) }}" alt="Profile"
                 class="hero-img w-full h-full object-cover object-center md:object-center transition-transform duration-700">
 
@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-6 pb-10 md:pb-12 md:pt-20">
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-10 md:pb-12 md:pt-20">
 
             {{-- Glass Content Box --}}
             <div class="max-w-3xl p-2 md:p-0">
@@ -137,7 +137,7 @@
     <!-- ================= FEATURED WORK ================= -->
     @if ($projects->count() > 0)
         <section id="works" class="py-24 bg-[#050505]">
-            <div class="max-w-7xl mx-auto px-6 md:px-6">
+            <div class="max-w-7xl mx-auto px-6 md:px-12">
 
                 {{-- Refined Header --}}
                 <div class=" lg:flex lg:justify-between lg:items-center max-w-7xl mx-auto mb-24 reveal-text">
@@ -216,7 +216,7 @@
     <!-- ================= FEATURED WEBSITES ================= -->
     @if ($websites->count() > 0)
         <section id="websites" class="py-24 bg-[#050505]">
-            <div class="max-w-7xl mx-auto px-6 md:px-6">
+            <div class="max-w-7xl mx-auto px-6 md:px-12">
 
                 {{-- Refined Header --}}
                 <div class="flex lg:justify-between lg:items-center max-w-7xl mx-auto mb-24 reveal-text">
@@ -299,7 +299,7 @@
     <!-- ================= SERVICES ================= -->
     @if ($services->count() > 0)
         <section id="services" class="py-12 md:py-24 bg-[#020202] relative">
-            <div id="servicesHeader" class="max-w-7xl mx-auto px-6 md:px-6">
+            <div id="servicesHeader" class="max-w-7xl mx-auto px-6 md:px-12">
 
                 {{-- Refined Header --}}
                 <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
@@ -324,7 +324,7 @@
 
                                 {{-- The Card --}}
                                 <div
-                                    class="relative h-full flex flex-col justify-end lg:min-h-[500px] p-10 rounded-[18px] lg:rounded-[60px] bg-[#161618] border border-white/5 overflow-hidden transition-all duration-700 group-hover:border-orange-500/30 shadow-2xl">
+                                    class="relative h-full flex flex-col justify-end sm:h-300px md:h-[400px] lg:h-[500px] p-10 rounded-[20px] md:rounded-[30px] lg:rounded-[60px] bg-[#161618] border border-white/5 overflow-hidden transition-all duration-700 group-hover:border-orange-500/30 shadow-2xl">
 
                                     {{-- 1. Background Image Layer (Service Icon) --}}
                                     @if ($service->icon)
@@ -448,7 +448,7 @@
             STORY
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 md:px-6 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
             {{-- Refined Header --}}
             <div class="text-center max-w-7xl mx-auto mb-24 reveal-text">
 
@@ -575,7 +575,7 @@
             class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-900/5 blur-[120px] rounded-full pointer-events-none">
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 md:px-6 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
 
             {{-- Header with Strategic Copy --}}
             <div class="text-center max-w-7xl mx-auto mb-24 reveal-text">
@@ -792,7 +792,7 @@
 
     <!-- ================= CONTACT ================= -->
     <section id="contact" class="py-24">
-        <div class="max-w-7xl mx-auto px-6 md:px-6">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
 
             {{-- Refined Header --}}
             <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
@@ -1045,7 +1045,7 @@
                 },
                 breakpoints: {
                     640: {
-                        slidesPerView: 1,
+                        slidesPerView: 1.4,
                         spaceBetween: 30
                     },
                     1024: {
