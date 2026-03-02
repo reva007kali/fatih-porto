@@ -36,7 +36,7 @@
         .glass-panel {
             background: rgba(22, 22, 24, 0.85) !important;
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
             /* Ensure it stays interactive even with Locomotive Scroll overlay */
             pointer-events: auto !important;
         }
@@ -68,8 +68,9 @@
         }
     </style>
 
+    <!-- Trigger Button -->
     <button wire:click="toggleChat" class="fixed bottom-12 right-8 z-[1000] group w-12 h-12">
-        <img class="ai-sphere" src="/img/ai-sphere.png" alt="Reva AI">
+        <img class="ai-sphere" src="/img/ai-sphere.png" alt="{{ $assistantName }}">
 
         <!-- Tooltip -->
         <span
@@ -79,36 +80,59 @@
                  translate-x-2 group-hover:translate-x-0
                  transition-all duration-300 
                  whitespace-nowrap shadow-lg">
-            Reva AI
+            {{ $assistantName }}
         </span>
     </button>
 
 
-    @if ($isOpen)
-        <div x-transition
-            class="fixed bottom-0 md:bottom-8 right-0 md:right-8 pb-20 md:pb-0 w-[100vw] md:w-[420px] h-full md:h-[600px] max-h-[100vh] flex flex-col z-[1001] md:rounded-3xl overflow-hidden shadow-2xl glass-panel">
+    <!-- Chat Sidebar (Slide Over) -->
+    <div 
+        class="fixed inset-0 z-[1001] pointer-events-none" 
+        x-show="$wire.isOpen"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+    >
+        <!-- Backdrop -->
+        <div 
+            class="absolute inset-0 bg-black/50 backdrop-blur-sm pointer-events-auto" 
+            @click="$wire.toggleChat()"
+        ></div>
 
+        <!-- Sidebar Panel -->
+        <div 
+            class="absolute top-0 right-0 h-full w-full md:w-[450px] glass-panel shadow-2xl flex flex-col pointer-events-auto transform transition-transform duration-300 ease-in-out"
+            x-show="$wire.isOpen"
+            x-transition:enter="translate-x-full"
+            x-transition:enter-start="translate-x-full"
+            x-transition:enter-end="translate-x-0"
+            x-transition:leave="translate-x-full"
+            x-transition:leave-start="translate-x-0"
+            x-transition:leave-end="translate-x-full"
+        >
+            
             <!-- Header -->
-            <div class="px-6 py-5 border-b border-white/5 bg-white/[0.02] flex justify-between items-center">
+            <div class="px-6 py-5 border-b border-white/5 bg-white/[0.02] flex justify-between items-center shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="p-2 bg-orange-500 rounded-lg text-black">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
+                    <div class="">
+                                <img class="ai-sphere w-10 h-10" src="/img/ai-sphere.png" alt="{{ $assistantName }}">
                     </div>
                     <div>
-                        <h3 class="text-xs font-black uppercase tracking-widest text-white">Reva AI</h3>
+                        <h3 class="text-xs font-black uppercase tracking-widest text-white">{{ $assistantName }}</h3>
                         <p class="text-[9px] text-green-500 font-bold uppercase">Online Now</p>
                     </div>
                 </div>
-                <button wire:click="toggleChat" class="text-white/20 hover:text-white">
+                <button wire:click="toggleChat" class="text-white/20 hover:text-white transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
 
-            <!-- Chat Area (The Fix is here: @wheel.stop and @touchmove.stop) -->
+            <!-- Chat Area -->
             <div x-ref="chatContainer" @wheel.stop @touchmove.stop @mousedown.stop
                 class="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide chat-scroll-container">
                 @foreach ($messages as $index => $message)
@@ -117,7 +141,7 @@
                             <div class="max-w-[85%]">
                                 <span
                                     class="text-[9px] font-bold text-white/20 uppercase mb-1 block {{ $message['role'] === 'user' ? 'text-right' : 'text-left' }}">
-                                    {{ $message['role'] === 'user' ? 'You' : 'AI Reva' }}
+                                    {{ $message['role'] === 'user' ? 'You' : $assistantName }}
                                 </span>
                                 <div
                                     class="p-4 rounded-2xl text-[13px] {{ $message['role'] === 'user' ? 'bg-orange-500 text-black font-semibold' : 'bg-white/5 text-gray-300 border border-white/10' }}">
@@ -211,7 +235,7 @@
             </div>
 
             <!-- Input Area -->
-            <div class="p-5 border-t border-white/5 bg-white/[0.02]">
+            <div class="p-5 border-t border-white/5 bg-white/[0.02] shrink-0 pb-8 md:pb-5">
                 <form wire:submit.prevent="sendMessage" class="relative flex items-end gap-2">
                     <textarea wire:model="userInput" @keydown.enter.prevent.exact="$wire.sendMessage()"
                         @keydown.ctrl.enter.prevent="$wire.sendMessage()" placeholder="Tanya harga atau contoh web..."
@@ -249,5 +273,5 @@
                 </form>
             </div>
         </div>
-    @endif
+    </div>
 </div>

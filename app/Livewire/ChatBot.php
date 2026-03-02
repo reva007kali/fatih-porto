@@ -12,6 +12,7 @@ use App\Models\PricingPlan;
 use App\Models\Lead;
 use App\Models\Website;
 use App\Models\ChatSession;
+use App\Models\AiSetting;
 use OpenAI;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Request;
@@ -26,6 +27,7 @@ class ChatBot extends Component
     public $messages = [];
     public $maxHistory = 15; // Sedikit lebih panjang untuk konteks yang lebih baik
     public $sessionId;
+    public $assistantName = 'Reva AI'; // Default name
 
     // FORM STATES
     public $showLeadForm = false;
@@ -39,6 +41,12 @@ class ChatBot extends Component
     public function mount()
     {
         $this->sessionId = Session::getId();
+
+        $settings = AiSetting::first();
+        if ($settings) {
+            $this->assistantName = $settings->assistant_name;
+        }
+
         $this->loadChatHistory();
     }
 
@@ -79,7 +87,7 @@ class ChatBot extends Component
         } else {
             $this->messages[] = [
                 'role' => 'assistant',
-                'content' => 'Halo! Saya asisten AI Revaldy. Ada yang bisa saya bantu mengenai pembuatan website, katalog contoh, atau estimasi biaya?'
+                'content' => "Halo! Saya {$this->assistantName}. Ada yang bisa saya bantu mengenai pembuatan website, katalog contoh, atau estimasi biaya?"
             ];
             $this->saveChatHistory();
         }
@@ -249,17 +257,23 @@ class ChatBot extends Component
         }
 
         try {
+            $settings = AiSetting::first();
+
+            if ($settings && !$settings->is_active) {
+                $this->messages[] = ['role' => 'assistant', 'content' => 'Maaf, saat ini saya sedang istirahat. Silahkan hubungi Reva via WhatsApp ya!'];
+                $this->saveChatHistory();
+                return;
+            }
+
             $about = AboutSection::first();
-            $systemPrompt = "Anda adalah AI Sales Consultant Revaldy Adhitya (Web Developer).
-            Gunakan bahasa gaul/kekinian yang sopan (pake 'aku-kamu'). 
-            Identitas Reva: " . ($about->description ?? 'Expert Web Developer') . ". 
-            WA: 082260894009.
-            
-            Jika user tertarik memesan, ingin konsultasi serius, atau tanya harga detail:
-            JANGAN tanya data manual satu-satu.
-            PANGGIL fungsi 'trigger_lead_form' untuk menampilkan formulir ke user.
-            
-            Jika user sudah mengisi formulir sebelumnya dan ingin order lagi, panggil lagi formnya.";
+            $basePrompt = $settings->system_prompt ?? "Anda adalah AI Sales Consultant Revaldy Adhitya (Web Developer). Gunakan bahasa gaul/kekinian yang sopan (pake 'aku-kamu'). Identitas Reva: Expert Web Developer. WA: 082260894009.";
+
+            // Append context if it's not likely in the custom prompt, or assume custom prompt is complete.
+            // But to ensure tools work, we must instruct it to use tools.
+            // Let's prepend the dynamic data to ensure the AI knows about Reva's current state.
+            $systemPrompt = $basePrompt . "\n\n[CONTEXT DATA]\n" .
+                "About Reva: " . ($about->description ?? 'Expert Web Developer') . "\n" .
+                "Tools Instruction: Jika user tertarik memesan, ingin konsultasi serius, atau tanya harga detail: JANGAN tanya data manual satu-satu. PANGGIL fungsi 'trigger_lead_form'.";
 
             $apiKey = config('services.openai.key');
             if (empty($apiKey)) {
@@ -270,10 +284,12 @@ class ChatBot extends Component
             $client = OpenAI::client($apiKey);
 
             $response = $client->chat()->create([
-                'model' => 'gpt-4o-mini',
+                'model' => $settings ? $settings->model : 'gpt-4o-mini',
                 'messages' => array_merge([['role' => 'system', 'content' => $systemPrompt]], array_slice($this->messages, -$this->maxHistory)),
                 'tools' => $this->getTools(),
                 'tool_choice' => 'auto',
+                'temperature' => $settings ? (float) $settings->temperature : 0.7,
+                'max_tokens' => $settings ? (int) $settings->max_tokens : 2048,
             ]);
 
             $aiMessage = $response->choices[0]->message;

@@ -199,7 +199,7 @@
                         </div>
                         {{-- pagination swiper --}}
                         <div class="max-w-4xl mx-auto mt-14">
-                            <div class="swiper-pagination"></div>
+                            <div class="swiper-pagination swiper-pagination-works"></div>
                         </div>
 
                     </div>
@@ -781,7 +781,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="swiper-pagination"></div>
+                <div class="swiper-pagination swiper-pagination-testimonials"></div>
             </div>
 
             <div class="max-w-2xl mx-auto mt-12">
@@ -998,40 +998,6 @@
         }
 
         function initAllSwipers() {
-            // Pricing Swiper (Coverflow)
-            new Swiper('.pricingSwiper', {
-                effect: 'coverflow',
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: 'auto',
-                initialSlide: 1, // Start at the middle card (assuming 3 cards)
-                coverflowEffect: {
-                    rotate: 0,
-                    stretch: 0,
-                    depth: 100,
-                    modifier: 2.5,
-                    slideShadows: false,
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true
-                },
-                breakpoints: {
-                    // When window width is <= 640px (Mobile)
-                    320: {
-                        effect: 'slide', // Disable coverflow on mobile for better UX
-                        slidesPerView: 1.1,
-                        spaceBetween: 20,
-                        centeredSlides: true,
-                    },
-                    // Desktop
-                    768: {
-                        effect: 'coverflow',
-                        slidesPerView: 'auto',
-                    }
-                }
-            });
-
             // Projects Swiper
             new Swiper('.mySwiper', {
                 slidesPerView: 1.2,
@@ -1040,7 +1006,7 @@
                 speed: 500,
                 easing: 'ease-in-out',
                 pagination: {
-                    el: '.swiper-pagination',
+                    el: '.swiper-pagination-works',
                     clickable: true,
                 },
                 breakpoints: {
@@ -1064,7 +1030,7 @@
                     delay: 5000
                 },
                 pagination: {
-                    el: ".swiper-pagination",
+                    el: ".swiper-pagination-testimonials",
                     clickable: true
                 },
                 breakpoints: {
@@ -1169,8 +1135,8 @@
             animation-delay: 2s;
         }
 
-       /* Swiper Pagination Style Fix */
-       .swiper-pagination-bullet {
+        /* Swiper Pagination Style Fix */
+        .swiper-pagination-bullet {
             background: rgba(255, 255, 255, 0.2) !important;
             opacity: 1 !important;
             width: 12px;
@@ -1179,7 +1145,8 @@
         }
 
         .swiper-pagination-bullet-active {
-            background: #f97316 !important; /* Orange-500 */
+            background: #f97316 !important;
+            /* Orange-500 */
             width: 40px !important;
             border-radius: 20px !important;
         }

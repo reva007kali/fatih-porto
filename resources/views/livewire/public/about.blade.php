@@ -66,6 +66,14 @@
                             class="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 hover:text-orange-500 transition-colors">{{ $social }}</a>
                     @endforeach
                 </div>
+                
+                {{-- Location Display (New) --}}
+                @if($about->location)
+                    <div class="mt-8 flex items-center gap-3 justify-center lg:justify-start text-white/50">
+                        <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <span class="text-sm font-medium tracking-widest uppercase">{{ $about->location }}</span>
+                    </div>
+                @endif
             </div>
 
             {{-- 4. Right Side: The Story --}}
@@ -78,14 +86,14 @@
                     </div>
 
                     <h1
-                        class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.85] text-white mb-10">
+                        class="text-6xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-[0.85] text-white mb-10">
                         {{ $about->title ?? 'About' }}<span class="text-orange-500">.</span>
                     </h1>
 
                     <p
                         class="text-2xl md:text-3xl text-white/80 font-medium leading-relaxed italic border-l-4 border-orange-500 pl-8 mb-12">
                         {{-- First paragraph highlight --}}
-                        "Design is not just what it looks like; it's how it works and feels."
+                        "{{ $about->description ?? "Design is not just what it looks like; it's how it works and feels." }}"
                     </p>
                 </div>
 
@@ -98,16 +106,103 @@
                     {!! $about->content !!}
                 </div>
 
-                {{-- Skill/Tool Mini-Grid --}}
-                <div class="mt-20 pt-12 border-t border-white/5 grid grid-cols-2 md:grid-cols-3 gap-12">
-                    @foreach (['Strategy', 'Design', 'Development'] as $label)
-                        <div>
-                            <h4 class="text-orange-500 font-black text-[10px] uppercase tracking-[0.3em] mb-4">
-                                {{ $label }}</h4>
-                            <p class="text-white/80 text-sm font-bold">Expert Level</p>
+                {{-- Skills Section --}}
+                @if($skills->count() > 0)
+                    <div class="mt-20 pt-12 border-t border-white/5">
+                        <h3 class="text-2xl font-bold text-white mb-8">Skills & Expertise</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-y-8 gap-x-4">
+                            @foreach ($skills as $skill)
+                                <div>
+                                    <h4 class="text-orange-500 font-black text-[10px] uppercase tracking-[0.3em] mb-2">
+                                        {{ $skill->category }}</h4>
+                                    <p class="text-white/80 text-lg font-bold">{{ $skill->name }}</p>
+                                    <div class="w-full bg-white/10 h-1 mt-2 rounded-full overflow-hidden">
+                                        <div class="bg-orange-500 h-full" style="width: {{ $skill->proficiency }}%"></div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endif
+
+                {{-- Experience Section --}}
+                @if($work_experiences->count() > 0)
+                    <div class="mt-20 pt-12 border-t border-white/5">
+                        <h3 class="text-2xl font-bold text-white mb-8">Experience</h3>
+                        <div class="space-y-12">
+                            @foreach($work_experiences as $work)
+                                <div class="relative pl-8 border-l border-white/10">
+                                    <span class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+                                    <h4 class="text-xl font-bold text-white">{{ $work->role }}</h4>
+                                    <p class="text-orange-500 text-sm font-bold uppercase tracking-widest mb-2">{{ $work->company }}</p>
+                                    <p class="text-white/40 text-xs mb-4">{{ $work->period }}</p>
+                                    <p class="text-white/60 leading-relaxed">{{ $work->description }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Education Section --}}
+                @if($educations->count() > 0)
+                    <div class="mt-20 pt-12 border-t border-white/5">
+                        <h3 class="text-2xl font-bold text-white mb-8">Education</h3>
+                        <div class="space-y-12">
+                             @foreach($educations as $edu)
+                                <div class="relative pl-8 border-l border-white/10">
+                                    <span class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-zinc-800 border border-white/20"></span>
+                                    <h4 class="text-xl font-bold text-white">{{ $edu->institution }}</h4>
+                                    <p class="text-orange-500 text-sm font-bold uppercase tracking-widest mb-2">{{ $edu->degree }}</p>
+                                    <p class="text-white/40 text-xs mb-4">{{ $edu->period }}</p>
+                                    <p class="text-white/60 leading-relaxed">{{ $edu->description }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Certifications & Achievements --}}
+                @if($certifications->count() > 0 || $achievements->count() > 0)
+                    <div class="mt-20 pt-12 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-12">
+                        @if($certifications->count() > 0)
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-8">Certifications</h3>
+                                <ul class="space-y-6">
+                                    @foreach($certifications as $cert)
+                                        <li class="flex items-start gap-4">
+                                            <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-500 flex-shrink-0"></div>
+                                            <div>
+                                                <h5 class="text-white font-bold leading-tight">{{ $cert->name }}</h5>
+                                                <p class="text-white/40 text-sm mt-1">{{ $cert->issuer }} • {{ $cert->date }}</p>
+                                                @if($cert->link)
+                                                    <a href="{{ $cert->link }}" target="_blank" class="text-orange-500 text-xs font-bold uppercase tracking-widest mt-2 inline-block hover:underline">View Credential</a>
+                                                @endif
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        @if($achievements->count() > 0)
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-8">Achievements</h3>
+                                <ul class="space-y-6">
+                                    @foreach($achievements as $ach)
+                                        <li class="flex items-start gap-4">
+                                             <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-500 flex-shrink-0"></div>
+                                            <div>
+                                                <h5 class="text-white font-bold leading-tight">{{ $ach->title }}</h5>
+                                                <p class="text-white/40 text-sm mt-1">{{ $ach->date }}</p>
+                                                <p class="text-white/60 text-sm mt-2 leading-relaxed">{{ $ach->description }}</p>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
+                @endif
             </div>
 
         </div>
@@ -124,9 +219,9 @@
             <div class="flex flex-col sm:flex-row items-center justify-center gap-8">
                 <a href="{{ route('home') }}#contact"
                     class="px-12 py-6 rounded-full bg-black text-white font-black uppercase tracking-widest text-sm hover:bg-orange-600 transition-all shadow-2xl">
-                    Get in Touch
+                    {{ $about->button_text ?? 'Get in Touch' }}
                 </a>
-                <a href="{{ route('works') }}"
+                <a href="{{ $about->button_link ?? route('works') }}"
                     class="text-sm font-black uppercase tracking-[0.2em] border-b-2 border-black/10 hover:border-black transition-all pb-1">
                     See my works
                 </a>

@@ -96,6 +96,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/order-form', OrderForm::class)->name('order-form');
     Route::get('/orders', OrderList::class)->name('orders.index');
 
+    Route::get('/ai-settings', App\Livewire\Admin\AiSettings::class)->name('ai-settings');
 });
 
 Route::get('/websites/{slug}', function ($slug) {

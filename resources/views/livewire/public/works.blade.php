@@ -6,9 +6,6 @@
 
     {{-- 1. Premium Ambient Background --}}
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute -top-[10%] -left-[10%] w-[70%] h-[50%] bg-orange-600/10 blur-[120px] rounded-full"></div>
-        <div class="absolute bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-orange-900/10 blur-[120px] rounded-full"></div>
-
         {{-- Large Background Text --}}
         <div
             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[25vw] font-black text-white/[0.01] select-none uppercase leading-none">
@@ -101,14 +98,14 @@
             @foreach ($projects as $index => $project)
                 <div class="group h-full perspective-1000"> {{-- Perspective adds depth --}}
                     <a href="{{ route('works.show', $project->slug) }}"
-                        class="relative flex flex-col h-full rounded-[48px] overflow-hidden bg-[#161618] border border-white/5 
+                        class="relative flex flex-col h-full rounded-[28px] overflow-hidden bg-[#161618] border border-white/5 
                        {{-- Hardware Acceleration & Smoothness --}}
                        transform-gpu will-change-transform 
                        transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
-                       hover:border-orange-500/40 hover:-translate-y-3 hover:shadow-[0_30px_60px_-15px_rgba(255,107,0,0.2)] block">
+                       hover:border-orange-500/10 hover:-translate-y-3 hover:shadow-[0_30px_60px_-15px_rgba(255,107,0,0.1)] block">
 
                         {{-- Image Container --}}
-                        <div class="relative aspect-[4/3] md:aspect-[4/3] overflow-hidden rounded-t-[48px]">
+                        <div class="relative aspect-[4/3] md:aspect-[4/3] overflow-hidden">
                             @if ($project->image)
                                 <img src="{{ Str::startsWith($project->image, 'http') ? $project->image : asset('storage/' . $project->image) }}"
                                     class="w-full h-full object-cover 
@@ -116,16 +113,6 @@
                                    transform-gpu transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
                                    group-hover:scale-105 opacity-80 group-hover:opacity-100">
                             @endif
-
-                            {{-- Case Study Tag --}}
-                            <div
-                                class="absolute top-6 right-6 z-20 translate-y-0 group-hover:-translate-y-1 transition-transform duration-500">
-                                <span
-                                    class="px-4 py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[9px] font-black uppercase tracking-widest text-white/60 group-hover:text-orange-500 transition-colors">
-                                    Full Case
-                                </span>
-                            </div>
-
                             {{-- Gradient Overlay --}}
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-[#161618] via-transparent to-transparent opacity-60">
@@ -133,7 +120,7 @@
                         </div>
 
                         {{-- Card Content --}}
-                        <div class="p-8 md:p-10 flex flex-col flex-grow relative z-10 bg-[#161618]">
+                        <div class="p-5 md:p-6 flex flex-col flex-grow relative z-10 bg-[#161618]">
                             <div class="mb-4 flex items-center gap-3">
                                 <span class="text-orange-500 font-black text-[10px] uppercase tracking-widest">
                                     {{ sprintf('%02d', $index + 1) }}
@@ -143,14 +130,9 @@
                             </div>
 
                             <h4
-                                class="text-2xl md:text-3xl font-black text-white mb-4 tracking-tighter group-hover:text-orange-500 transition-colors duration-500">
+                                class="text-xl md:text-2xl font-bold text-white mb-4 tracking-tighter group-hover:text-orange-500 transition-colors duration-500">
                                 {{ $project->title }}
                             </h4>
-
-                            <p
-                                class="text-sm md:text-base text-white/40 line-clamp-2 leading-relaxed mb-8 flex-grow group-hover:text-white/60 transition-colors duration-500">
-                                {{ $project->description }}
-                            </p>
 
                             {{-- Bottom Link Indicator --}}
                             <div class="flex items-center gap-3 mt-auto">
