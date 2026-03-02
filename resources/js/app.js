@@ -8,18 +8,19 @@ let scroll;
 function initScroll() {
     // Disable Locomotive Scroll for Admin/Dashboard pages and 3D Viewer
     const is3DViewer = window.location.pathname.startsWith('/3d-gallery/') && window.location.pathname.split('/').length > 2;
+    const isLunaAi = window.location.pathname.startsWith('/luna-ai');
     const isAdmin = window.location.pathname.startsWith('/admin') || 
                    window.location.pathname.startsWith('/dashboard') || 
                    window.location.pathname.startsWith('/profile');
 
-    if (isAdmin || is3DViewer) {
+    if (isAdmin || is3DViewer || isLunaAi) {
         
         if (scroll) {
             scroll.destroy();
             scroll = undefined;
         }
 
-        if (is3DViewer) {
+        if (is3DViewer || isLunaAi) {
             document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
         } else {

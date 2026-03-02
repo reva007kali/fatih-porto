@@ -99,6 +99,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/ai-settings', App\Livewire\Admin\AiSettings::class)->name('ai-settings');
 });
 
+Route::get('/luna-ai', App\Livewire\Public\LunaAi::class)->name('luna-ai');
 Route::get('/websites/{slug}', function ($slug) {
     $website = \App\Models\Website::where('slug', $slug)->firstOrFail();
     return view("websites.{$slug}", ['website' => $website]);
