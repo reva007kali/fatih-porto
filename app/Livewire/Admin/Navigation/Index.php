@@ -14,12 +14,14 @@ class Index extends Component
     public $is_active = true;
     public $sort_order = 0;
     public $navId;
+    public $parent_id = null;
     public $isEditing = false;
 
     public function render()
     {
         return view('livewire.admin.navigation.index', [
-            'navItems' => NavigationItem::orderBy('sort_order')->get(),
+            'navItems' => NavigationItem::with('children')->whereNull('parent_id')->orderBy('sort_order')->get(),
+            'parentItems' => NavigationItem::whereNull('parent_id')->orderBy('sort_order')->get(),
         ]);
     }
 
@@ -29,6 +31,7 @@ class Index extends Component
             'label' => 'required|string|max:255',
             'url' => 'required|string|max:255',
             'sort_order' => 'integer',
+            'parent_id' => 'nullable|exists:navigation_items,id',
         ]);
 
         NavigationItem::create([
@@ -36,9 +39,10 @@ class Index extends Component
             'url' => $this->url,
             'is_active' => $this->is_active,
             'sort_order' => $this->sort_order,
+            'parent_id' => $this->parent_id ?: null,
         ]);
 
-        $this->reset(['label', 'url', 'is_active', 'sort_order']);
+        $this->reset(['label', 'url', 'is_active', 'sort_order', 'parent_id']);
         session()->flash('message', 'Menu item added successfully.');
     }
 
@@ -50,6 +54,7 @@ class Index extends Component
         $this->url = $item->url;
         $this->is_active = $item->is_active;
         $this->sort_order = $item->sort_order;
+        $this->parent_id = $item->parent_id;
         $this->isEditing = true;
     }
 
@@ -59,17 +64,26 @@ class Index extends Component
             'label' => 'required|string|max:255',
             'url' => 'required|string|max:255',
             'sort_order' => 'integer',
+            'parent_id' => 'nullable|exists:navigation_items,id',
         ]);
 
         $item = NavigationItem::findOrFail($this->navId);
+        
+        // Prevent setting parent to itself
+        if ($this->parent_id == $item->id) {
+            $this->addError('parent_id', 'A menu item cannot be its own parent.');
+            return;
+        }
+
         $item->update([
             'label' => $this->label,
             'url' => $this->url,
             'is_active' => $this->is_active,
             'sort_order' => $this->sort_order,
+            'parent_id' => $this->parent_id ?: null,
         ]);
 
-        $this->reset(['label', 'url', 'is_active', 'sort_order', 'navId', 'isEditing']);
+        $this->reset(['label', 'url', 'is_active', 'sort_order', 'navId', 'isEditing', 'parent_id']);
         session()->flash('message', 'Menu item updated successfully.');
     }
 
@@ -82,7 +96,7 @@ class Index extends Component
 
     public function cancel()
     {
-        $this->reset(['label', 'url', 'is_active', 'sort_order', 'navId', 'isEditing']);
+        $this->reset(['label', 'url', 'is_active', 'sort_order', 'navId', 'isEditing', 'parent_id']);
     }
 
     public function toggleActive($id)

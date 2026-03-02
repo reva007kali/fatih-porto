@@ -35,6 +35,20 @@
                                 <x-input-error class="mt-2 text-xs text-red-500" :messages="$errors->get('url')" />
                             </div>
 
+                            <div>
+                                <label for="parent_id" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Parent Menu (Optional)</label>
+                                <select wire:model="parent_id" id="parent_id"
+                                    class="w-full bg-[#0b0b0d] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:border-swiss-blue focus:ring-1 focus:ring-swiss-blue transition-all outline-none">
+                                    <option value="">No Parent (Top Level)</option>
+                                    @foreach($parentItems as $parent)
+                                        @if($navId !== $parent->id) {{-- Prevent selecting self as parent --}}
+                                            <option value="{{ $parent->id }}">{{ $parent->label }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                <x-input-error class="mt-2 text-xs text-red-500" :messages="$errors->get('parent_id')" />
+                            </div>
+
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label for="sort_order" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Sort Order</label>
@@ -92,9 +106,15 @@
                             </thead>
                             <tbody class="divide-y divide-white/5">
                                 @forelse($navItems as $item)
+                                    {{-- Parent Item --}}
                                     <tr class="hover:bg-white/[0.02] transition-colors group">
                                         <td class="px-6 py-4 text-sm text-gray-500 font-mono">{{ $item->sort_order }}</td>
-                                        <td class="px-6 py-4 font-bold text-white text-sm">{{ $item->label }}</td>
+                                        <td class="px-6 py-4 font-bold text-white text-sm">
+                                            {{ $item->label }}
+                                            @if($item->children->count() > 0)
+                                                <span class="ml-2 px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-500 text-[10px] uppercase font-bold tracking-wider">Dropdown</span>
+                                            @endif
+                                        </td>
                                         <td class="px-6 py-4 text-xs font-mono text-swiss-blue">{{ $item->url }}</td>
                                         <td class="px-6 py-4">
                                             <button wire:click="toggleActive({{ $item->id }})" 
@@ -120,6 +140,41 @@
                                             </div>
                                         </td>
                                     </tr>
+
+                                    {{-- Child Items --}}
+                                    @foreach($item->children as $child)
+                                        <tr class="hover:bg-white/[0.02] transition-colors group bg-white/[0.01]">
+                                            <td class="px-6 py-4 text-sm text-gray-600 font-mono pl-10">↳ {{ $child->sort_order }}</td>
+                                            <td class="px-6 py-4 text-sm text-gray-300 pl-10 flex items-center gap-2">
+                                                <span class="w-1 h-1 rounded-full bg-gray-500"></span>
+                                                {{ $child->label }}
+                                            </td>
+                                            <td class="px-6 py-4 text-xs font-mono text-gray-500">{{ $child->url }}</td>
+                                            <td class="px-6 py-4">
+                                                <button wire:click="toggleActive({{ $child->id }})" 
+                                                    class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider transition-colors
+                                                    {{ $child->is_active ? 'bg-green-500/10 text-green-500 hover:bg-green-500/20' : 'bg-red-500/10 text-red-500 hover:bg-red-500/20' }}">
+                                                    {{ $child->is_active ? 'Active' : 'Inactive' }}
+                                                </button>
+                                            </td>
+                                            <td class="px-6 py-4 text-right">
+                                                <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <button wire:click="edit({{ $child->id }})" 
+                                                        class="p-2 rounded-lg bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all">
+                                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                        </svg>
+                                                    </button>
+                                                    <button wire:click="delete({{ $child->id }})" wire:confirm="Are you sure?"
+                                                        class="p-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all">
+                                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 @empty
                                     <tr>
                                         <td colspan="5" class="px-6 py-8 text-center text-gray-500">

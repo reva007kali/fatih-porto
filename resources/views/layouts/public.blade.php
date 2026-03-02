@@ -103,6 +103,24 @@
             }
         }
 
+        /* Custom Scrollbar for the whole page */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0b0b0d;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
         .prose-chat a {
             color: #f97316;
             text-decoration: underline;
@@ -120,23 +138,60 @@
 
     <!-- ================= NAVBAR ================= -->
     @php
-        $navItems = \App\Models\NavigationItem::where('is_active', true)->orderBy('sort_order')->get();
+        $navItems = \App\Models\NavigationItem::where('is_active', true)
+            ->whereNull('parent_id')
+            ->with([
+                'children' => function ($query) {
+                    $query->where('is_active', true)->orderBy('sort_order');
+                },
+            ])
+            ->orderBy('sort_order')
+            ->get();
     @endphp
     <nav id="navbar"
         class="fixed top-0 left-0 w-full z-[100] py-7 px-6 md:px-12 transition-all duration-300 pointer-events-none">
-        <div class="max-w-7xl mx-auto flex justify-between md:px-8 items-center pointer-events-auto">
+        <div class="max-w-9xl mx-auto flex justify-between items-center pointer-events-auto">
 
             <a href="/"
-                class="relative z-[110] text-2xl font-black tracking-tighter group transition-transform duration-300 hover:scale-105">
-                REVA<span class="text-orange-500 group-hover:animate-pulse">.</span>
+                class="relative lg:pr-10 z-[110] text-2xl font-black tracking-tighter group transition-transform duration-300 hover:scale-105">
+                Reva<span class="text-orange-500 group-hover:animate-pulse">.</span>
             </a>
 
             <div class="hidden xl:flex items-center space-x-10">
                 @forelse($navItems as $item)
-                    <a href="{{ $item->url }}"
-                        class="text-[11px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-orange-500 transition-colors">
-                        {{ $item->label }}
-                    </a>
+                    @if ($item->children->isNotEmpty())
+                        {{-- Dropdown Menu --}}
+                        <div class="relative group" x-data="{ open: false }">
+                            <button @mouseenter="open = true" @mouseleave="open = false"
+                                class="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/50 hover:text-orange-500 transition-colors py-2">
+                                {{ $item->label }}
+                            </button>
+
+                            <div x-show="open" x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 translate-y-2"
+                                x-transition:enter-end="opacity-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 translate-y-2" @mouseenter="open = true"
+                                @mouseleave="open = false"
+                                class="absolute top-full left-0 mt-2 w-48 bg-[#1c1c1e] border border-white/10 rounded-xl overflow-hidden shadow-2xl z-[120]">
+                                <div class="py-2">
+                                    @foreach ($item->children as $child)
+                                        <a href="{{ $child->url }}"
+                                            class="block px-4 py-3 text-xs font-semibold text-white/70 hover:text-white hover:bg-white/5 transition-colors">
+                                            {{ $child->label }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        {{-- Regular Menu --}}
+                        <a href="{{ $item->url }}"
+                            class="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/50 hover:text-orange-500 transition-colors">
+                            {{ $item->label }}
+                        </a>
+                    @endif
                 @empty
                     <a href="#works"
                         class="text-[11px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-orange-500 transition-colors">Works</a>
@@ -150,8 +205,10 @@
                         class="text-[11px] font-black uppercase tracking-[0.3em] text-white/50 hover:text-orange-500 transition-colors">About</a>
                 @endforelse
 
-                <livewire:public.components.music-player />
+            </div>
 
+            <div class="hidden xl:flex items-center space-x-4">
+                {{-- <livewire:public.components.music-player /> --}}
                 <a href="/#contact"
                     class="px-8 py-3 rounded-full bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all duration-300">
                     Let's Talk
@@ -165,11 +222,12 @@
                 <span class="line block w-5 h-0.5 bg-white transition-all duration-300 pointer-events-none"
                     style="transform: translateY(3px)"></span>
             </button>
+
         </div>
     </nav>
 
     <div id="mobile-menu"
-        class="fixed inset-0 bg-[#0b0b0d] z-[105] flex flex-col justify-center items-center space-y-8 transform translate-x-full xl:hidden transition-transform duration-500 ease-in-out pointer-events-auto">
+        class="fixed inset-0 bg-[#0b0b0d] z-[105] flex flex-col justify-center items-center space-y-6 transform translate-x-full xl:hidden transition-transform duration-500 ease-in-out pointer-events-auto">
         <button id="mobile-menu-close" style="pointer-events: auto !important; z-index: 200 !important;"
             class="absolute top-7 right-6 w-11 h-11 flex flex-col justify-center items-center focus:outline-none bg-white/5 rounded-full border border-white/10 transition-colors hover:bg-white/10">
             <span class="block w-5 h-0.5 bg-white transform rotate-45 translate-y-[1px]"></span>
@@ -181,10 +239,30 @@
         </div>
 
         @forelse($navItems as $item)
-            <a href="{{ $item->url }}"
-                class="text-5xl font-black tracking-tighter hover:text-orange-500 transition-all duration-300 active:scale-90">
-                {{ $item->label }}<span class="text-orange-500">.</span>
-            </a>
+            @if ($item->children->isNotEmpty())
+                <div x-data="{ expanded: false }" class="text-center w-full">
+                    <button @click="expanded = !expanded"
+                        class="text-4xl md:text-5xl font-black tracking-tighter hover:text-orange-500 transition-all duration-300 flex items-center justify-center gap-3 w-full">
+                        {{ $item->label }}
+                        <svg class="w-6 h-6 transition-transform duration-300" :class="expanded ? 'rotate-180' : ''"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="expanded" x-collapse class="flex flex-col space-y-4 mt-4 bg-white/5 py-4 w-full">
+                        @foreach ($item->children as $child)
+                            <a href="{{ $child->url }}" class="text-2xl font-bold text-white/70 hover:text-white">
+                                {{ $child->label }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @else
+                <a href="{{ $item->url }}"
+                    class="text-4xl md:text-5xl font-black tracking-tighter hover:text-orange-500 transition-all duration-300 active:scale-90">
+                    {{ $item->label }}<span class="text-orange-500">.</span>
+                </a>
+            @endif
         @empty
             <a href="#works" class="text-5xl font-black tracking-tighter">Works</a>
         @endforelse
@@ -243,7 +321,8 @@
                                     class="text-white/60 hover:text-orange-500 font-bold transition-colors">Expertise</a>
                             </li>
                             <li><a href="#about"
-                                    class="text-white/60 hover:text-orange-500 font-bold transition-colors">My Story</a>
+                                    class="text-white/60 hover:text-orange-500 font-bold transition-colors">My
+                                    Story</a>
                             </li>
                         @endforelse
                     </ul>

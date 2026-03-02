@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-10 md:pb-12 md:pt-20">
+        <div class="relative z-10 w-full max-w-9xl mx-auto px-6 md:px-12 pb-10 md:pb-12 md:pt-20">
 
             {{-- Glass Content Box --}}
             <div class="max-w-3xl p-2 md:p-0">
@@ -82,7 +82,7 @@
                 </div>
 
                 {{-- Main Heading: Poster Style --}}
-                <h1 class="text-6xl md:text-7xl lg:text-8xl font-black leading-[0.85] text-white mb-4 md:mb-8">
+                <h1 class="text-6xl md:text-7xl lg:text-8xl font-extrabold leading-[0.85] text-white mb-4 md:mb-8">
                     @php
                         $titleParts = explode(' ', $hero->title ?? 'Reva Adhitya');
                         $lastWord = array_pop($titleParts);
@@ -137,10 +137,10 @@
     <!-- ================= FEATURED WORK ================= -->
     @if ($projects->count() > 0)
         <section id="works" class="py-24 bg-[#050505]">
-            <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="max-w-9xl mx-auto px-6 md:px-12">
 
                 {{-- Refined Header --}}
-                <div class=" lg:flex lg:justify-between lg:items-center max-w-7xl mx-auto mb-24 reveal-text">
+                <div class=" lg:flex lg:justify-between lg:items-center mx-auto mb-24 reveal-text">
 
                     <h3
                         class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
@@ -162,7 +162,7 @@
                             @foreach ($projects as $project)
                                 <div class="swiper-slide !h-auto">
                                     <a href="{{ route('works.show', $project->slug) }}"
-                                        class="relative aspect-[4/5] md:aspect-[5/3] rounded-[20px] overflow-hidden group hover:border-orange-500/40 bg-[#111113] block transition-all">
+                                        class="relative aspect-[5/3] rounded-[20px] overflow-hidden group hover:border-orange-500/40 bg-[#111113] block transition-all">
                                         @if ($project->image)
                                             @php
                                                 $fileUrl = Str::startsWith($project->image, 'http')
@@ -216,10 +216,10 @@
     <!-- ================= FEATURED WEBSITES ================= -->
     @if ($websites->count() > 0)
         <section id="websites" class="py-24 bg-[#050505]">
-            <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="max-w-9xl mx-auto px-6 md:px-12">
 
                 {{-- Refined Header --}}
-                <div class="flex lg:justify-between lg:items-center max-w-7xl mx-auto mb-24 reveal-text">
+                <div class="flex lg:justify-between lg:items-center max-w-9xl mx-auto mb-24 reveal-text">
 
                     <h3
                         class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
@@ -299,7 +299,7 @@
     <!-- ================= SERVICES ================= -->
     @if ($services->count() > 0)
         <section id="services" class="py-12 md:py-24 bg-[#020202] relative">
-            <div id="servicesHeader" class="max-w-7xl mx-auto px-6 md:px-12">
+            <div id="servicesHeader" class="max-w-9xl mx-auto px-6 md:px-12">
 
                 {{-- Refined Header --}}
                 <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
@@ -320,7 +320,7 @@
                     @foreach ($services as $index => $service)
                         <div class="service-card sticky top-32 transition-all duration-700 ease-out">
                             <a href="{{ route('services.show', $service->slug) }}"
-                                class="group relative block w-full max-w-7xl mx-auto z-[1]">
+                                class="group relative block w-full max-w-9xl mx-auto z-[1]">
 
                                 {{-- The Card --}}
                                 <div
@@ -373,7 +373,7 @@
                 class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-orange-600/10 blur-[120px] rounded-full pointer-events-none">
             </div>
 
-            <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <div class="max-w-9xl mx-auto px-6 md:px-12 relative z-10">
                 {{-- Refined Header --}}
                 <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
                     <h3
@@ -388,11 +388,18 @@
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10" id="features-grid">
-                    {{-- Feature Cards Grid --}}
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-6 relative z-10 max-w-7xl mx-auto" id="features-grid">
+                    {{-- Feature Cards Bento Grid --}}
                     @foreach ($features as $index => $feature)
+                        @php
+                            // Bento Grid Logic: Alternating widths
+                            // Pattern: Big (4 cols) - Small (2 cols) | Small (2 cols) - Big (4 cols)
+                            $isBig = $index % 4 == 0 || $index % 4 == 3;
+                            $colSpan = $isBig ? 'md:col-span-4' : 'md:col-span-2';
+                        @endphp
+
                         <div
-                            class="feature-card group relative p-10 rounded-[40px] border border-white/10 bg-[#1c1c1e]/50 backdrop-blur-sm overflow-hidden transition-all duration-700 ease-out hover:border-orange-500/40 hover:-translate-y-2 opacity-0 {{ $index % 2 == 0 ? 'translate-x-[-100px] translate-y-[100px]' : 'translate-x-[100px] translate-y-[100px]' }}">
+                            class="{{ $colSpan }} feature-card group relative p-10 rounded-[40px] border border-white/10 bg-[#1c1c1e]/50 backdrop-blur-sm overflow-hidden transition-all duration-700 ease-out hover:border-orange-500/40 hover:-translate-y-2 opacity-0 {{ $index % 2 == 0 ? 'translate-x-[-100px] translate-y-[100px]' : 'translate-x-[100px] translate-y-[100px]' }}">
 
                             {{-- Animated Blobs --}}
                             {{-- Blob 1 --}}
@@ -405,7 +412,8 @@
                             </div>
 
                             {{-- Card Content --}}
-                            <div class="relative z-10">
+                            <div
+                                class="relative z-10 h-full flex flex-col {{ $isBig ? 'justify-end' : 'justify-between' }}">
                                 <div
                                     class="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 group-hover:bg-orange-500 transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(255,107,0,0.4)] group-hover:scale-110">
                                     @if ($feature->icon)
@@ -416,14 +424,17 @@
                                     @endif
                                 </div>
 
-                                <h4
-                                    class="text-2xl font-bold mb-4 text-white group-hover:text-orange-400 transition-colors">
-                                    {{ $feature->title }}
-                                </h4>
+                                <div>
+                                    <h4
+                                        class="text-2xl font-bold mb-4 text-white group-hover:text-orange-400 transition-colors">
+                                        {{ $feature->title }}
+                                    </h4>
 
-                                <p class="text-white/50 leading-relaxed group-hover:text-white/80 transition-colors">
-                                    {{ $feature->description }}
-                                </p>
+                                    <p
+                                        class="text-white/50 leading-relaxed group-hover:text-white/80 transition-colors {{ $isBig ? 'max-w-lg' : '' }}">
+                                        {{ $feature->description }}
+                                    </p>
+                                </div>
                             </div>
 
                             {{-- Subtle Bottom Glow Line --}}
@@ -448,9 +459,9 @@
             STORY
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+        <div class="max-w-9xl mx-auto px-6 md:px-12 relative z-10">
             {{-- Refined Header --}}
-            <div class="text-center max-w-7xl mx-auto mb-24 reveal-text">
+            <div class="text-center max-w-9xl mx-auto mb-24 reveal-text">
 
                 <h3
                     class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
@@ -575,10 +586,10 @@
             class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-900/5 blur-[120px] rounded-full pointer-events-none">
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+        <div class="max-w-9xl mx-auto px-6 md:px-12 relative z-10">
 
             {{-- Header with Strategic Copy --}}
-            <div class="text-center max-w-7xl mx-auto mb-24 reveal-text">
+            <div class="text-center max-w-9xl mx-auto mb-24 reveal-text">
 
                 <h2 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white mb-8 leading-[0.9]">
                     Ready to <span
@@ -593,7 +604,7 @@
             </div>
 
             {{-- Pricing Bento Grid --}}
-            <div class="max-w-7xl mx-auto px-4 py-12 relative z-10" id="pricing-grid">
+            <div class="max-w-9xl mx-auto px-4 py-12 relative z-10" id="pricing-grid">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
                     @foreach ($pricing_plans as $index => $plan)
                         @php
@@ -792,7 +803,7 @@
 
     <!-- ================= CONTACT ================= -->
     <section id="contact" class="py-24">
-        <div class="max-w-7xl mx-auto px-6 md:px-12">
+        <div class="max-w-9xl mx-auto px-6 md:px-12">
 
             {{-- Refined Header --}}
             <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">

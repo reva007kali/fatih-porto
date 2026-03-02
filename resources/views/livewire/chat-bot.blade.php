@@ -69,7 +69,7 @@
     </style>
 
     <!-- Trigger Button -->
-    <button wire:click="toggleChat" class="fixed bottom-12 right-8 z-[1000] group w-12 h-12">
+    <button wire:click="toggleChat" class="fixed bottom-6 right-6 z-[1000] group w-12 h-12">
         <img class="ai-sphere" src="/img/ai-sphere.png" alt="{{ $assistantName }}">
 
         <!-- Tooltip -->
