@@ -96,9 +96,9 @@
 
     {{-- Info Panel --}}
     <div
-        class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black via-black/80 to-transparent pt-24 pb-12 px-6 md:px-12 pointer-events-none">
+        class="absolute bottom-0 left-0 w-full pt-24 pb-12 px-6 md:px-12 pointer-events-none">
         <div class="max-w-7xl mx-auto pointer-events-auto">
-            <h1 class="text-4xl md:text-6xl font-black text-white mb-4">{{ $model->title }}</h1>
+            <h1 class="text-4xl md:text-4xl font-black text-white mb-4">{{ $model->title }}</h1>
             <p class="text-white/60 text-lg max-w-2xl leading-relaxed">{{ $model->description }}</p>
         </div>
     </div>
@@ -224,7 +224,7 @@
 
                 // Scale to reasonable size
                 const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = 1 / maxDim; // Increased scale factor from 2 to 3.5
+                const scale = 2.4 / maxDim; // Increased scale factor from 2 to 3.5
                 model.scale.set(scale, scale, scale);
 
                 model.traverse((child) => {
