@@ -93,7 +93,7 @@
                     <div class="group">
                         <a href="{{ route('works.show', $project->slug) }}" class="block">
                             {{-- Image Component: B&W to Color Cinematic --}}
-                            <div class="relative aspect-[5/3] overflow-hidden bg-zinc-900 border border-white/5">
+                            <div class="relative aspect-[5/4] overflow-hidden bg-zinc-900 border border-white/5">
                                 @php
                                     $displayImage = $project->cover_image ?? $project->image;
                                 @endphp
