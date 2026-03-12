@@ -96,28 +96,33 @@
 
     {{-- 4. Minimalist Fullscreen Modal --}}
     @if ($selectedMedia)
-        <div class="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-20"
+        <div class="fixed inset-0 z-[99999] flex items-center justify-center overflow-hidden"
             x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0 scale-105"
             x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-400">
 
-            <div class="fixed inset-0 bg-[#070708]/95 backdrop-blur-2xl" wire:click="closeModal"></div>
+            <div class="fixed inset-0 bg-black/90 backdrop-blur-sm" wire:click="closeModal"></div>
 
-            <div class="relative z-[110] w-full h-full flex flex-col items-center justify-center">
+            {{-- Close Button (Top Right) --}}
+            <div class="fixed top-10 right-6 md:right-12 z-[100000]">
+                <button wire:click="closeModal" class="group flex items-center gap-4 focus:outline-none">
+                    <span class="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 group-hover:text-white transition-colors">Close</span>
+                    <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </div>
+                </button>
+            </div>
+
+            <div class="relative z-[11] w-full h-full flex items-center justify-center p-4 md:p-12">
                 @if ($selectedMedia['type'] === 'image')
                     <img src="{{ $selectedMedia['url'] }}" 
-                        class="max-w-full max-h-[80vh] object-contain shadow-2xl border border-white/5">
+                        class="max-w-full max-h-full object-contain shadow-2xl">
                 @else
                     <video src="{{ $selectedMedia['url'] }}" controls autoplay
-                        class="max-w-full max-h-[80vh] shadow-2xl border border-white/5">
+                        class="max-w-full max-h-full object-contain shadow-2xl">
                     </video>
                 @endif
-                
-                <div class="mt-12 text-center">
-                    <h3 class="text-xs font-black uppercase tracking-[1em] text-white mb-2">{{ $selectedMedia['name'] }}</h3>
-                    <button wire:click="closeModal" class="text-[9px] font-bold uppercase tracking-[0.5em] text-white/20 hover:text-orange-600 transition-colors">
-                        [ Close ]
-                    </button>
-                </div>
             </div>
         </div>
     @endif

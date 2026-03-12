@@ -3,12 +3,15 @@
     @section('meta_title', $project->title . ' | Reva Adhitya')
     @section('meta_description', Str::limit(strip_tags($project->description), 160))
     @section('meta_keywords', 'Project, ' . $project->category . ', ' . $project->title . ', Reva Adhitya')
-    @if ($project->image)
-        @section('meta_image', asset('storage/' . $project->image))
+    @php
+        $displayImage = $project->cover_image ?? $project->image;
+    @endphp
+    @if ($displayImage)
+        @section('meta_image', asset('storage/' . $displayImage))
     @endif
 
     {{-- 1. Minimalist Back Button --}}
-    <div class="fixed top-10 left-6 md:left-12 z-[100]">
+    <div class="fixed bottom-8 left-6 md:left-12 z-[100]">
         <button type="button" x-on:click="window.history.back()"
             class="group flex items-center gap-4 bg-transparent focus:outline-none">
             <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
@@ -16,7 +19,6 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path>
                 </svg>
             </div>
-            <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-white/40 group-hover:text-white transition-colors">Return</span>
         </button>
     </div>
 
@@ -41,8 +43,8 @@
 
         {{-- Cinematic Main Image --}}
         <div class="mt-20 relative aspect-video md:aspect-[21/9] overflow-hidden rounded-sm border border-white/5">
-            @if ($project->image)
-                <img id="hero-image" src="{{ asset('storage/' . $project->image) }}"
+            @if ($displayImage)
+                <img id="hero-image" src="{{ asset('storage/' . $displayImage) }}"
                     class="w-full h-full object-cover grayscale brightness-75 transition-all duration-700">
             @endif
             <div class="absolute inset-0 bg-gradient-to-t from-[#070708] via-transparent to-transparent"></div>

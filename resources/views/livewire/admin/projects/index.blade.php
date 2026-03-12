@@ -115,8 +115,11 @@
                                     <div class="flex items-center gap-4">
                                         <div
                                             class="w-10 h-10 rounded-lg bg-[#0b0b0d] border border-white/10 overflow-hidden flex-shrink-0">
-                                            @if ($project->image)
-                                                <img src="{{ asset('storage/' . $project->image) }}"
+                                            @php
+                                                $displayImage = $project->cover_image ?? $project->image;
+                                            @endphp
+                                            @if ($displayImage)
+                                                <img src="{{ asset('storage/' . $displayImage) }}"
                                                     class="w-full h-full object-cover">
                                             @else
                                                 <div

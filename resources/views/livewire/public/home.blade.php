@@ -321,12 +321,15 @@
 
                                     {{-- Image --}}
                                     <div class="relative overflow-hidden aspect-[4/3] mb-5 bg-[#111]">
-                                        @if ($project->image)
+                                        @php
+                                            $displayImage = $project->cover_image ?? $project->image;
+                                        @endphp
+                                        @if ($displayImage)
                                             @php
-                                                $fileUrl = Str::startsWith($project->image, 'http')
-                                                    ? $project->image
-                                                    : asset('storage/' . $project->image);
-                                                $ext = strtolower(pathinfo($project->image, PATHINFO_EXTENSION));
+                                                $fileUrl = Str::startsWith($displayImage, 'http')
+                                                    ? $displayImage
+                                                    : asset('storage/' . $displayImage);
+                                                $ext = strtolower(pathinfo($displayImage, PATHINFO_EXTENSION));
                                                 $isVideo = in_array($ext, ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv']);
                                             @endphp
                                             @if ($isVideo)

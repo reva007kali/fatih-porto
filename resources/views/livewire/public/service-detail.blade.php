@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-[#070708] text-[#e5e5e5] antialiased selection:bg-white selection:text-black overflow-x-hidden">
 
     {{-- 1. Floating Back Button (Editorial Style) --}}
-    <div class="fixed top-10 left-6 md:left-12 z-[100]">
+    <div class="fixed bottom-8 left-6 md:left-12 z-[100]">
         <button type="button" x-on:click="window.history.back()"
             class="group flex items-center gap-4 bg-transparent focus:outline-none"
             title="Go Back">

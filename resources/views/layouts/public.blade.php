@@ -60,8 +60,6 @@
 
         html {
             scroll-behavior: smooth;
-            /* Hide system cursor everywhere — we have a custom one */
-            cursor: none;
         }
 
         body {

@@ -26,6 +26,8 @@ class Edit extends Component
     public $is_featured = false;
     public $is_archived = false;
     public $projectId;
+    public $cover_image; // Current cover image path
+    public $coverImage;  // New cover image file
 
     // For Quill editor file uploads
     public $quillFile;
@@ -52,6 +54,7 @@ class Edit extends Component
         $this->sort_order = $project->sort_order;
         $this->is_featured = $project->is_featured;
         $this->is_archived = $project->is_archived;
+        $this->cover_image = $project->cover_image;
         $this->existingMedia = $project->media;
     }
 
@@ -86,13 +89,26 @@ class Edit extends Component
             'sort_order' => 'integer',
             'is_featured' => 'boolean',
             'is_archived' => 'boolean',
+            'coverImage' => 'nullable|image|max:10240',
             'mediaFiles.*' => 'nullable|file|max:51200',
         ]);
 
         $project = Project::findOrFail($this->projectId);
+
+        $coverPath = $project->cover_image;
+        if ($this->coverImage) {
+            // Delete old cover if it exists
+            if ($coverPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($coverPath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($coverPath);
+            }
+            $coverPath = $this->handleFileUpload($this->coverImage, 'projects/covers');
+        }
+
         $project->update([
             'title' => $this->title,
             'description' => $this->description,
+            'cover_image' => $coverPath,
+            'image' => $coverPath, // Keep for backward compatibility or as fallback
             'content' => $this->content,
             'category' => $this->category,
             'role' => $this->role,
@@ -115,15 +131,22 @@ class Edit extends Component
                 'caption' => $this->captions[$index] ?? null,
             ]);
 
-            // If project has no main image, set this new file (video or image) as main
-            if (!$project->image && $index === 0) {
-                 $project->update(['image' => $path]);
+            // If project has no main image/cover, set this new file as main
+            if (!$project->cover_image && $index === 0) {
+                 $project->update([
+                     'image' => $path,
+                     'cover_image' => $path
+                 ]);
             }
         }
 
         // Update main thumbnail if needed and not set (fallback)
-        if (!$project->image && $project->media()->where('file_type', 'image')->exists()) {
-            $project->update(['image' => $project->media()->where('file_type', 'image')->first()->file_path]);
+        if (!$project->cover_image && $project->media()->where('file_type', 'image')->exists()) {
+            $path = $project->media()->where('file_type', 'image')->first()->file_path;
+            $project->update([
+                'image' => $path,
+                'cover_image' => $path
+            ]);
         }
 
         session()->flash('message', 'Project updated successfully.');
@@ -141,13 +164,19 @@ class Edit extends Component
 
         // Check if this was the main image for the project
         $project = Project::findOrFail($this->projectId);
-        if ($project->image === $media->file_path) {
-             $project->update(['image' => null]);
+        if ($project->cover_image === $media->file_path) {
+             $project->update([
+                 'image' => null,
+                 'cover_image' => null
+             ]);
              
              // Try to set another media as main if available
-             $nextMedia = $project->media()->where('id', '!=', $mediaId)->first();
+             $nextMedia = $project->media()->where('id', '!=', $mediaId)->where('file_type', 'image')->first();
              if ($nextMedia) {
-                 $project->update(['image' => $nextMedia->file_path]);
+                 $project->update([
+                     'image' => $nextMedia->file_path,
+                     'cover_image' => $nextMedia->file_path
+                 ]);
              }
         }
 

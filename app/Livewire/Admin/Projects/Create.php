@@ -26,6 +26,9 @@ class Create extends Component
     public $is_featured = false;
     public $is_archived = false;
 
+    // Cover Image
+    public $coverImage;
+
     // For Quill editor file uploads
     public $quillFile;
     public $quillFileUrl;
@@ -60,12 +63,20 @@ class Create extends Component
             'sort_order' => 'integer',
             'is_featured' => 'boolean',
             'is_archived' => 'boolean',
+            'coverImage' => 'nullable|image|max:10240', // 10MB Max
             'mediaFiles.*' => 'nullable|file|max:51200', // Max 50MB per file
         ]);
+
+        $coverPath = null;
+        if ($this->coverImage) {
+            $coverPath = $this->handleFileUpload($this->coverImage, 'projects/covers');
+        }
 
         $project = Project::create([
             'title' => $this->title,
             'description' => $this->description,
+            'cover_image' => $coverPath,
+            'image' => $coverPath, // Keep for backward compatibility or as fallback
             'content' => $this->content,
             'category' => $this->category,
             'role' => $this->role,
@@ -81,10 +92,12 @@ class Create extends Component
             $path = $this->handleFileUpload($file, 'projects');
             $type = $this->isVideo($file) ? 'video' : 'image';
 
-            // If it's the first file, set it as the main thumbnail regardless of type (image or video)
-            // The frontend is now updated to handle video thumbnails
-            if ($index === 0) {
-                $project->update(['image' => $path]);
+            // If it's the first file and no cover image was uploaded, set it as the main thumbnail
+            if (!$coverPath && $index === 0) {
+                $project->update([
+                    'image' => $path,
+                    'cover_image' => $path
+                ]);
             }
 
             $project->media()->create([

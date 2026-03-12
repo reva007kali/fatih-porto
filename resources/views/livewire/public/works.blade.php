@@ -94,8 +94,11 @@
                         <a href="{{ route('works.show', $project->slug) }}" class="block">
                             {{-- Image Component: B&W to Color Cinematic --}}
                             <div class="relative aspect-[3/4] overflow-hidden bg-zinc-900 border border-white/5">
-                                @if ($project->image)
-                                    <img src="{{ Str::startsWith($project->image, 'http') ? $project->image : asset('storage/' . $project->image) }}"
+                                @php
+                                    $displayImage = $project->cover_image ?? $project->image;
+                                @endphp
+                                @if ($displayImage)
+                                    <img src="{{ Str::startsWith($displayImage, 'http') ? $displayImage : asset('storage/' . $displayImage) }}"
                                         class="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-110 group-hover:scale-100 transition-all duration-[1.5s] ease-out">
                                 @endif
                                 
