@@ -12,7 +12,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Montserrat', ...defaultTheme.fontFamily.sans],
+                sans: ['DM Sans', ...defaultTheme.fontFamily.sans],
+                bebas: ['Bebas Neue', ...defaultTheme.fontFamily.sans],
             },
              animation: {
                 'blob-bounce': 'blob-bounce 12s cubic-bezier(0.77, 0, 0.175, 1) infinite',

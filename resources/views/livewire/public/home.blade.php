@@ -1,360 +1,525 @@
-<div class="w-full bg-[#0b0b0d] text-white overflow-x-hidden relative" x-data="{ loading: true }" x-init="setTimeout(() => loading = false, 1000)">
+<div class="w-full bg-[#0a0a0a] text-white overflow-x-hidden relative" x-data="{ loading: true }" x-init="setTimeout(() => { loading = false }, 1600)">
 
 
-    {{-- Loading Screen --}}
-    <div x-show="loading" x-transition:leave="transition ease-in-out duration-1000"
-        x-transition:leave-start="opacity-100 transform translate-y-0"
-        x-transition:leave-end="opacity-0 transform -translate-y-full"
-        class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0b0b0d] text-white">
+    {{-- ══════════════════════════════════════
+        MINIMALIST EDITORIAL LOADING
+     ══════════════════════════════════════ --}}
+    <div x-show="loading" x-transition:leave="transition duration-1000 cubic-bezier(0.4, 0, 0.2, 1)"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-[9999] bg-[#070708] flex flex-col items-center justify-center overflow-hidden"
+        style="display:flex;">
 
+        {{-- Subtle Center Content --}}
+        <div class="relative flex flex-col items-center">
 
-        <h1 class="text-6xl md:text-9xl font-black tracking-tighter mb-8 animate-pulse">
-            REVALDY<span class="text-orange-500">.</span>
-        </h1>
+            {{-- Top Label --}}
+            <div class="mb-12 overflow-hidden">
+                <p class="text-[10px] font-bold uppercase tracking-[0.8em] text-white/20"
+                    style="animation: fadeInOut 2s ease-in-out infinite;">
+                    Initializing Portfolio
+                </p>
+            </div>
 
+            {{-- Main Name: Relaxed Tracking --}}
+            <div class="relative">
+                <h1 class="text-xs md:text-sm font-light tracking-[1.5em] md:tracking-[2.5em] text-white uppercase leading-none pr-[-2.5em]"
+                    style="animation: revealText 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                    Reva Adhitya
+                </h1>
 
-        <div class="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
-            <div class="h-full bg-orange-500 animate-loading-bar"></div>
+                {{-- Ultra-thin Progress Line --}}
+                <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-24 h-[1px] bg-white/5 overflow-hidden">
+                    <div class="h-full bg-white/40"
+                        style="animation: slowLoad 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;">
+                    </div>
+                </div>
+            </div>
+
+            {{-- Year Indicator --}}
+            <div class="absolute bottom-[-100px] md:bottom-[-150px]">
+                <span class="font-mono text-[9px] text-white/10 tracking-widest">© 2026</span>
+            </div>
         </div>
-
-        <p class="mt-4 text-white/40 text-sm font-bold tracking-[0.2em] uppercase animate-pulse">
-            Loading Experience...
-        </p>
     </div>
 
-    {{-- Global Ambient Glow - Orange --}}
-    <div
-        class="fixed inset-0 bg-gradient-to-br from-orange-500/[0.03] via-transparent to-transparent pointer-events-none">
-    </div>
+    <style>
+        @keyframes revealText {
+            0% {
+                opacity: 0;
+                letter-spacing: 3em;
+                filter: blur(8px);
+            }
 
-    {{-- 3D Background Canvas --}}
+            100% {
+                opacity: 1;
+                letter-spacing: 1.5em;
+                filter: blur(0);
+            }
+        }
 
-    <!-- ================= HERO ================= -->
-    <section id="home" class="relative min-h-screen flex items-end md:items-end overflow-hidden">
+        @keyframes slowLoad {
+            0% {
+                width: 0%;
+                transform: translateX(-100%);
+            }
 
-        <div class="absolute right-10 top-1/2 z-[30] flex flex-col -translate-y-[50%] items-center gap-5">
-            @foreach ($social_links as $link)
-                <a href="{{ $link->url }}" target="_blank"
-                    class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:border-orange-500 group transition-all duration-500">
-                    @if ($link->icon)
-                        <img src="{{ asset('storage/' . $link->icon) }}"
-                            class="w-5 h-5 object-contain filter grayscale transition-all">
-                    @else
-                        <span
-                            class="text-[10px] font-black text-white/50 group-hover:text-black transition-colors">{{ substr($link->platform, 0, 1) }}</span>
-                    @endif
-                </a>
+            100% {
+                width: 100%;
+                transform: translateX(0%);
+            }
+        }
+
+        @keyframes fadeInOut {
+
+            0%,
+            100% {
+                opacity: 0.1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        /* Khusus desktop tracking lebih lebar */
+        @media (min-width: 768px) {
+            @keyframes revealText {
+                0% {
+                    opacity: 0;
+                    letter-spacing: 4em;
+                    filter: blur(8px);
+                }
+
+                100% {
+                    opacity: 1;
+                    letter-spacing: 2.5em;
+                    filter: blur(0);
+                }
+            }
+        }
+    </style>
+
+
+    {{-- ══════════════════════════════════════
+         HERO
+    ══════════════════════════════════════ --}}
+    <section id="home" class="relative min-h-[100svh] flex flex-col overflow-hidden bg-[#0a0a0a]">
+
+        {{-- Vertical grid lines --}}
+        <div class="absolute inset-0 pointer-events-none z-0 hidden md:flex justify-between px-[calc(50%-560px)]">
+            @foreach ([0, 1, 2, 3, 4, 5] as $i)
+                <div class="w-px h-full bg-white/[0.04]"></div>
             @endforeach
         </div>
 
-        {{-- Hero Background Image logic preserved --}}
-        <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <img src="{{ asset('storage/' . ($hero->image ?? 'default.jpg')) }}" alt="Profile"
-                class="hero-img w-full h-full object-cover object-center md:object-center transition-transform duration-700">
-
-            {{-- Layered Overlays for Depth --}}
-            <div class="absolute inset-0 bg-gradient-to-t from-[#050505]/20 via-[#0b0b0d]/40 to-transparent"></div>
-            <div
-                class="absolute inset-0 bg-gradient-to-r from-[#050505]/10 via-transparent to-transparent hidden md:block">
-            </div>
-
-            {{-- Subtle Orange Ambient Glow --}}
-            <div
-                class="absolute hidden md:block top-1/4 -right-20 w-96 h-96 bg-orange-600/20 blur-[120px] rounded-full">
+        {{-- Hero image — right side cinematic --}}
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute right-0 top-0 w-full md:w-[58%] h-full">
+                <img src="{{ asset('storage/' . ($hero->image ?? 'default.jpg')) }}" alt="Profile"
+                    class="w-full h-full object-cover object-top"
+                    style="filter: grayscale(100%) contrast(1.1); animation: heroReveal 1.4s 1.5s cubic-bezier(0.16,1,0.3,1) both;">
+                {{-- Gradient masks --}}
+                <div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/50 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/40"></div>
             </div>
         </div>
 
-        <div class="relative z-10 w-full max-w-9xl mx-auto px-6 md:px-12 pb-10 md:pb-12 md:pt-20">
-
-            {{-- Glass Content Box --}}
-            <div class="max-w-3xl p-2 md:p-0">
-
-                {{-- Status Badge --}}
-                <div
-                    class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-4 animate-fade-in-up">
-                    <span class="relative flex h-2 w-2">
+        {{-- Social links --}}
+        <div class="absolute left-6 md:left-10 bottom-32 z-20 hidden lg:flex flex-col items-center gap-4">
+            <div class="w-px h-12 bg-white/10"></div>
+            @foreach ($social_links as $link)
+                <a href="{{ $link->url }}" target="_blank" data-magnetic
+                    class="group w-8 h-8 border border-white/10 flex items-center justify-center
+                           hover:border-white/60 hover:bg-white hover:scale-110
+                           transition-all duration-300">
+                    @if ($link->icon)
+                        <img src="{{ asset('storage/' . $link->icon) }}"
+                            class="w-3.5 h-3.5 object-contain opacity-30 group-hover:opacity-100 group-hover:brightness-0 transition-all">
+                    @else
                         <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                            class="text-[8px] font-bold text-white/30 group-hover:text-black uppercase leading-none transition-colors">
+                            {{ substr($link->platform, 0, 2) }}
+                        </span>
+                    @endif
+                </a>
+            @endforeach
+            <div class="w-px h-12 bg-white/10"></div>
+        </div>
+
+        {{-- Scroll indicator --}}
+        <div class="absolute right-8 bottom-12 z-20 hidden lg:flex flex-col items-center gap-3"
+            style="animation: fadeIn 0.8s 2.2s ease-out both;">
+            <span class="text-[8px] font-medium tracking-[0.4em] uppercase text-white/20 vertical-text"
+                style="writing-mode:vertical-rl;">Scroll to explore</span>
+            <div class="w-px h-10 bg-white/10 overflow-hidden">
+                <div class="w-full h-1/2 bg-white/50" style="animation: scrollLine 2s ease-in-out infinite;"></div>
+            </div>
+        </div>
+
+        {{-- Hero content --}}
+        <div
+            class="relative z-10 flex-1 flex flex-col justify-center md:justify-end
+                    max-w-[1200px] mx-auto w-full px-6 md:px-12 pb-0 md:pb-28 pt-28 md:pt-0">
+
+            {{-- Eyebrow --}}
+            <div class="flex items-center gap-4 mb-8" style="animation: fadeIn 0.6s 1.6s ease-out both; opacity:0;">
+                <div class="flex items-center gap-2">
+                    <span class="relative flex h-1.5 w-1.5">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-50"></span>
+                        <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span>
                     </span>
-                    <span class="text-[8px] uppercase tracking-[0.2em] text-white/80">Available for new
+                    <span class="text-[10px] font-medium tracking-[0.35em] uppercase text-white/40">Available for
                         projects</span>
                 </div>
+                <div class="h-px flex-1 max-w-[80px] bg-white/10"></div>
+                <span class="text-[10px] font-medium tracking-[0.25em] uppercase text-white/20">Jakarta · 2026</span>
+            </div>
 
-                {{-- Main Heading: Poster Style --}}
-                <h1 class="text-6xl md:text-7xl lg:text-8xl font-extrabold leading-[0.85] text-white mb-4 md:mb-8">
-                    @php
-                        $titleParts = explode(' ', $hero->title ?? 'Reva Adhitya');
-                        $lastWord = array_pop($titleParts);
-                        $firstPart = implode(' ', $titleParts);
-                    @endphp
+            {{-- Main headline — split lines editorial --}}
+            @php
+                $titleParts = explode(' ', $hero->title ?? 'Reva Adhitya');
+                $last = array_pop($titleParts);
+                $first = implode(' ', $titleParts);
+            @endphp
 
-                    {{ $firstPart }} <br />
+            <div class="mb-8">
+                <div class="overflow-hidden">
+                    <h1 class="text-[clamp(3.5rem,9vw,8.5rem)] font-black leading-[0.9] tracking-[-0.04em] text-white"
+                        style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;
+                               animation: slideUp 1s 1.7s cubic-bezier(0.16,1,0.3,1) both;">
+                        {{ strtoupper($first) }}
+                    </h1>
+                </div>
+                <div class="overflow-hidden flex items-end gap-4 md:gap-8">
+                    <h1 class="text-[clamp(3.5rem,9vw,8.5rem)] font-black leading-[0.9] tracking-[-0.04em]"
+                        style="font-family: 'Bebas Neue', 'Arial Black', sans-serif; color:transparent;
+                               -webkit-text-stroke: 1.5px rgba(255,255,255,0.35);
+                               animation: slideUp 1s 1.85s cubic-bezier(0.16,1,0.3,1) both;">
+                        {{ strtoupper($last) }}
+                    </h1>
                     <span
-                        class="text-transparent font-black bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
-                        {{ $lastWord }}<span class="text-white">.</span>
+                        class="text-[clamp(1rem,2vw,1.5rem)] font-light tracking-[-0.01em] text-white/30 mb-3 hidden md:block"
+                        style="animation: fadeIn 0.8s 2s ease-out both;">
+                        — Creative Developer
                     </span>
-                </h1>
+                </div>
+            </div>
 
-                {{-- Subtitle --}}
-                <p class="text-sm md:text-xl text-white/70 max-w-lg leading-relaxed mb-2 md:mb-12 font-medium">
+            {{-- Subtitle + CTAs --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-end max-w-4xl"
+                style="animation: fadeIn 0.8s 2.1s ease-out both; opacity:0;">
+                <p class="text-base md:text-lg text-white/40 leading-relaxed font-light max-w-xs">
                     {{ $hero->subtitle ?? 'I craft precise digital experiences with clarity & emotional impact.' }}
                 </p>
 
-                {{-- Action Group --}}
-                <div class="flex flex-col sm:flex-row items-center gap-4 md:gap-6 mb-4">
-                    {{-- Main CTA --}}
-                    <div class="flex flex-row items-center gap-4 w-full sm:w-auto justify-center">
+                <div class="flex flex-col sm:flex-row items-start gap-3">
+                    <a href="{{ $hero->cta_link ?? '#' }}" data-magnetic
+                        class="group relative overflow-hidden inline-flex items-center gap-3 px-7 py-4 bg-white text-[#0a0a0a]
+                               text-[11px] font-bold uppercase tracking-[0.2em]
+                               hover:bg-white/90 active:scale-95 transition-all duration-200">
+                        {{ $hero->cta_text ?? 'Start a Project' }}
+                        <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300"
+                            fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                    </a>
 
-                        {{-- Primary Button --}}
-                        <a href="{{ $hero->cta_link ?? '#' }}"
-                            class="group relative flex-1 sm:flex-none inline-flex items-center justify-center px-6 py-3.5 md:px-10 md:py-5 rounded-full overflow-hidden transition-all duration-300 active:scale-95 shadow-[0_20px_40px_-10px_rgba(255,107,0,0.3)] hover:shadow-[0_25px_50px_-10px_rgba(255,107,0,0.5)]">
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-400 group-hover:scale-110 transition-transform duration-500">
-                            </div>
-                            <span
-                                class="relative z-10 text-black font-bold uppercase tracking-widest text-[10px] md:text-xs group-hover:tracking-[0.2em] transition-all duration-500 whitespace-nowrap">
-                                {{ $hero->cta_text ?? 'Start a Project' }}
-                            </span>
-                        </a>
-
-                        {{-- Download CV Button --}}
-                        <a href="/cv.pdf" download
-                            class="inline-flex flex-1 sm:flex-none items-center justify-center uppercase text-[10px] md:text-xs font-bold tracking-widest px-6 py-3.5 md:px-10 md:py-5 bg-white/5 border border-orange-700/50 text-white rounded-full hover:bg-orange-700/20 transition-all duration-300 backdrop-blur-sm whitespace-nowrap">
-                            Download CV
-                        </a>
-                    </div>
-
-
+                    <a href="/cv.pdf" download
+                        class="group inline-flex items-center gap-3 px-7 py-4 border border-white/15 text-white/60
+                               text-[11px] font-bold uppercase tracking-[0.2em]
+                               hover:border-white/50 hover:text-white active:scale-95 transition-all duration-300">
+                        <svg class="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                        </svg>
+                        CV
+                    </a>
                 </div>
             </div>
         </div>
 
+        {{-- Bottom stat bar --}}
+        <div class="relative z-10 border-t border-white/[0.06] bg-[#0a0a0a]/80 backdrop-blur-md"
+            style="animation: fadeIn 0.6s 2.3s ease-out both; opacity:0;">
+            <div class="max-w-[1200px] mx-auto px-6 md:px-12">
+                <div class="grid grid-cols-3 divide-x divide-white/[0.06]">
+                    @foreach ([['40+', 'Projects delivered'], ['5+', 'Years experience'], ['100%', 'Client satisfaction']] as $stat)
+                        <div
+                            class="py-5 {{ $loop->first ? 'pr-8' : ($loop->last ? 'pl-8' : 'px-8') }} group cursor-default">
+                            <p class="text-xl md:text-2xl font-black tracking-[-0.03em] text-white group-hover:text-white/60 transition-colors"
+                                style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">{{ $stat[0] }}</p>
+                            <p class="text-[9px] font-medium tracking-[0.2em] uppercase text-white/20 mt-0.5">
+                                {{ $stat[1] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </section>
 
 
+    {{-- ══════════════════════════════════════
+         MARQUEE STRIP
+    ══════════════════════════════════════ --}}
+    <div class="border-y border-white/[0.06] bg-[#0f0f0f] overflow-hidden py-4">
+        <div class="flex gap-0 whitespace-nowrap" style="animation: marqueeScroll 24s linear infinite;">
+            @foreach (range(1, 8) as $i)
+                <span
+                    class="inline-flex items-center gap-6 px-6 text-[11px] font-black tracking-[0.35em] uppercase text-white/10">
+                    Web Design <span class="text-white/5">✦</span> 3D & Motion <span class="text-white/5">✦</span>
+                    UI/UX <span class="text-white/5">✦</span> Development <span class="text-white/5">✦</span> Branding
+                </span>
+            @endforeach
+        </div>
+    </div>
 
-    <!-- ================= FEATURED WORK ================= -->
+
+    {{-- ══════════════════════════════════════
+         FEATURED WORKS
+    ══════════════════════════════════════ --}}
     @if ($projects->count() > 0)
-        <section id="works" class="py-24 bg-[#050505]">
-            <div class="max-w-9xl mx-auto px-6 md:px-12">
+        <section id="works" class="py-28 md:py-40 bg-[#0a0a0a]">
+            <div class="max-w-[1200px] mx-auto px-6 md:px-12">
 
-                {{-- Refined Header --}}
-                <div class=" lg:flex lg:justify-between lg:items-center mx-auto mb-24 reveal-text">
-
-                    <h3
-                        class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
-                        Creative <br><span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Highlights.</span>
-                    </h3>
-                    <div class="">
-                        <a href="{{ route('works') }}" wire:navigate
-                            class="inline-block text-sm font-semibold border-b border-orange-500/40 hover:border-orange-500 hover:text-orange-500 transition pb-1 text-white/60">
-                            View All Projects →
-                        </a>
+                {{-- Header --}}
+                <div class="flex items-end justify-between mb-16 md:mb-20 aw-reveal">
+                    <div>
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="w-6 h-px bg-white/20"></div>
+                            <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">Selected
+                                Works</span>
+                        </div>
+                        <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.04em] leading-[0.9] text-white"
+                            style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                            CREATIVE<br>
+                            <span
+                                style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color: transparent;">HIGHLIGHTS.</span>
+                        </h2>
                     </div>
-
+                    <a href="{{ route('works') }}" wire:navigate
+                        class="group hidden md:inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.25em] uppercase text-white/30
+                           hover:text-white transition-colors duration-300 border-b border-white/10 hover:border-white/50 pb-1">
+                        All Projects
+                        <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                    </a>
                 </div>
 
-                <div class="relative">
-                    <div class="swiper mySwiper !pb-14 relative z-6" id="works-swiper">
-                        <div class="swiper-wrapper">
-                            @foreach ($projects as $project)
-                                <div class="swiper-slide !h-auto">
-                                    <a href="{{ route('works.show', $project->slug) }}"
-                                        class="relative aspect-[5/3] rounded-[20px] overflow-hidden group hover:border-orange-500/40 bg-[#111113] block transition-all">
+                {{-- Swiper --}}
+                <div class="swiper worksSwiper overflow-visible aw-reveal">
+                    <div class="swiper-wrapper items-stretch">
+                        @foreach ($projects as $project)
+                            <div class="swiper-slide !h-auto">
+                                <a href="{{ route('works.show', $project->slug) }}"
+                                    class="group flex flex-col h-full">
+
+                                    {{-- Image --}}
+                                    <div class="relative overflow-hidden aspect-[4/3] mb-5 bg-[#111]">
                                         @if ($project->image)
                                             @php
                                                 $fileUrl = Str::startsWith($project->image, 'http')
                                                     ? $project->image
                                                     : asset('storage/' . $project->image);
-                                                // Check extension more robustly
-                                                $extension = strtolower(pathinfo($project->image, PATHINFO_EXTENSION));
-                                                $videoExtensions = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv'];
-                                                $isVideo = in_array($extension, $videoExtensions);
+                                                $ext = strtolower(pathinfo($project->image, PATHINFO_EXTENSION));
+                                                $isVideo = in_array($ext, ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv']);
                                             @endphp
-
                                             @if ($isVideo)
                                                 <video src="{{ $fileUrl }}" muted loop playsinline autoplay
-                                                    class="w-full h-full object-cover transition duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100"></video>
+                                                    class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"></video>
                                             @else
                                                 <img src="{{ $fileUrl }}"
-                                                    class="w-full h-full object-cover transition duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                                                    class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105">
                                             @endif
                                         @endif
-                                    </a>
-                                    <div class="flex flex-col mt-5">
-                                        <h4
-                                            class="text-lg lg:text-2xl leading-[1] font-semibold mb-2 group-hover:text-orange-500 transition-colors">
-                                            {{ $project->title }}</h4>
-                                        <div class="lg:max-w-[50%]">
-                                            <p class="text-sm text-white/60 line-clamp-2">
+
+                                        {{-- Scrim --}}
+                                        <div
+                                            class="absolute inset-0 bg-[#0a0a0a]/0 group-hover:bg-[#0a0a0a]/20 transition-colors duration-500">
+                                        </div>
+
+                                        {{-- View icon popup --}}
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <div
+                                                class="w-14 h-14 border border-white/80 flex items-center justify-center
+                                                    opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100
+                                                    transition-all duration-400 bg-white/5 backdrop-blur-sm">
+                                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                                    stroke-width="1.5" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                                                </svg>
+                                            </div>
+                                        </div>
+
+                                        {{-- Project number --}}
+                                        <div
+                                            class="absolute top-4 left-4 text-[9px] font-bold tracking-[0.3em] text-white/30">
+                                            {{ str_pad($loop->index + 1, 2, '0', STR_PAD_LEFT) }}
+                                        </div>
+                                    </div>
+
+                                    {{-- Meta --}}
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div>
+                                            <h3
+                                                class="text-base md:text-lg font-bold tracking-[-0.02em] text-white/80
+                                                   group-hover:text-white transition-colors duration-200 mb-1">
+                                                {{ $project->title }}
+                                            </h3>
+                                            <p class="text-xs text-white/25 line-clamp-1 font-light tracking-wide">
                                                 {{ $project->description }}
                                             </p>
                                         </div>
-
+                                        <div
+                                            class="w-7 h-7 border border-white/10 flex items-center justify-center flex-shrink-0
+                                                group-hover:border-white/60 group-hover:bg-white transition-all duration-300 mt-0.5">
+                                            <svg class="w-3 h-3 text-white/30 group-hover:text-black transition-colors group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200"
+                                                fill="none" stroke="currentColor" stroke-width="2"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                                            </svg>
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        {{-- pagination swiper --}}
-                        <div class="max-w-4xl mx-auto mt-14">
-                            <div class="swiper-pagination swiper-pagination-works"></div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </section>
-    @endif
-
-
-    <!-- ================= FEATURED WEBSITES ================= -->
-    @if ($websites->count() > 0)
-        <section id="websites" class="py-24 bg-[#050505]">
-            <div class="max-w-9xl mx-auto px-6 md:px-12">
-
-                {{-- Refined Header --}}
-                <div class="flex lg:justify-between lg:items-center max-w-9xl mx-auto mb-24 reveal-text">
-
-                    <h3
-                        class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
-                        Websites <br><span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Collection.</span>
-                    </h3>
-                    <div class="">
-                        <a href="{{ route('websites') }}" wire:navigate
-                            class="inline-block text-sm font-semibold border-b border-orange-500/40 hover:border-orange-500 hover:text-orange-500 transition pb-1 text-white/60">
-                            View All Websites →
-                        </a>
-                    </div>
-
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10" id="websites-grid">
-                    @foreach ($websites as $website)
-                        <div
-                            class="group relative aspect-[4/3] overflow-hidden rounded-[16px] bg-[#161618] border border-white/5 transition-all duration-500">
-
-                            {{-- Image Layer --}}
-                            <div class="absolute inset-0 w-full h-full">
-                                @if ($website->image)
-                                    <img src="{{ asset('storage/' . $website->image) }}"
-                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:blur-[2px]">
-                                @else
-                                    <div
-                                        class="w-full h-full flex items-center justify-center bg-zinc-800 text-white/20 font-black text-4xl">
-                                        {{ substr($website->title, 0, 1) }}
-                                    </div>
-                                @endif
-                            </div>
-
-                            {{-- Overlay Content (Visible on Hover) --}}
-                            <div
-                                class="absolute inset-0 z-10 flex flex-col justify-end p-6 bg-gradient-to-t from-black via-black/80 to-transparent 
-                    opacity-0 translate-y-4 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-y-0">
-
-                                {{-- Tags --}}
-                                @if ($website->tags)
-                                    <div class="flex flex-wrap gap-2 mb-3">
-                                        @foreach (array_slice($website->tags, 0, 2) as $tag)
-                                            <span
-                                                class="px-2 py-0.5 rounded-full bg-orange-500/20 border border-orange-500/30 text-[9px] font-bold uppercase tracking-wider text-orange-400">
-                                                {{ $tag }}
-                                            </span>
-                                        @endforeach
-                                    </div>
-                                @endif
-
-                                <h3 class="text-xl font-black text-white mb-2 tracking-tight">
-                                    {{ $website->title }}
-                                </h3>
-
-                                <p class="text-xs text-white/70 line-clamp-2 leading-relaxed mb-4">
-                                    {{ $website->description }}
-                                </p>
-
-                                {{-- Action Button --}}
-                                <a href="{{ route('websites.show', $website->slug) }}" target="_blank"
-                                    class="w-full py-3 rounded-xl bg-orange-500 text-white font-black uppercase tracking-widest text-[10px] hover:bg-white hover:text-black transition-colors text-center">
-                                    View Website
                                 </a>
                             </div>
+                        @endforeach
+                    </div>
+                </div>
 
-                            {{-- Optional: Clickable link for the whole card --}}
-                            <a href="{{ route('websites.show', $website->slug) }}" class="absolute inset-0 z-20"
-                                aria-label="View {{ $website->title }}"></a>
-                        </div>
-                    @endforeach
+                {{-- Controls --}}
+                <div class="flex items-center gap-4 mt-10 aw-reveal">
+                    <button
+                        class="works-prev group w-10 h-10 border border-white/10 flex items-center justify-center
+                               hover:border-white/60 hover:bg-white active:scale-90 transition-all duration-200">
+                        <svg class="w-4 h-4 text-white/40 group-hover:text-black transition-colors" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                    </button>
+                    <div class="swiper-pagination-works flex items-center gap-2"></div>
+                    <button
+                        class="works-next group w-10 h-10 border border-white/10 flex items-center justify-center
+                               hover:border-white/60 hover:bg-white active:scale-90 transition-all duration-200">
+                        <svg class="w-4 h-4 text-white/40 group-hover:text-black transition-colors" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </button>
+                    <a href="{{ route('works') }}" wire:navigate
+                        class="md:hidden ml-auto text-[9px] font-bold tracking-[0.25em] uppercase text-white/30 hover:text-white border-b border-white/10 pb-0.5 transition-colors">
+                        All →
+                    </a>
                 </div>
             </div>
         </section>
     @endif
 
 
-    <!-- ================= SERVICES ================= -->
-    @if ($services->count() > 0)
-        <section id="services" class="py-12 md:py-24 bg-[#020202] relative">
-            <div id="servicesHeader" class="max-w-9xl mx-auto px-6 md:px-12">
+    {{-- ══════════════════════════════════════
+         FEATURED WEBSITES
+    ══════════════════════════════════════ --}}
+    @if ($websites->count() > 0)
+        <section id="websites" class="py-28 md:py-40 bg-[#0f0f0f]">
+            <div class="max-w-[1200px] mx-auto px-6 md:px-12">
 
-                {{-- Refined Header --}}
-                <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                    <h3
-                        class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
-                        Specialized <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Solutions.</span>
-                    </h3>
-
-                    <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
-                        I build digital solutions that simplify, streamline, and strengthen brands with precision and
-                        purpose.
-                    </p>
+                <div class="flex items-end justify-between mb-16 md:mb-20 aw-reveal">
+                    <div>
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="w-6 h-px bg-white/20"></div>
+                            <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">Web
+                                Collection</span>
+                        </div>
+                        <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.04em] leading-[0.9] text-white"
+                            style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                            WEBSITES<br>
+                            <span
+                                style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color: transparent;">COLLECTION.</span>
+                        </h2>
+                    </div>
+                    <a href="{{ route('websites') }}" wire:navigate
+                        class="group hidden md:inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.25em] uppercase text-white/30
+                           hover:text-white transition-colors border-b border-white/10 hover:border-white/50 pb-1">
+                        All Sites
+                        <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                    </a>
                 </div>
 
-                {{-- Services Scroll List (Parallax Stack) --}}
-                <div class="relative z-10 space-y-22" id="services-container">
-                    @foreach ($services as $index => $service)
-                        <div class="service-card sticky top-32 transition-all duration-700 ease-out">
-                            <a href="{{ route('services.show', $service->slug) }}"
-                                class="group relative block w-full max-w-9xl mx-auto z-[1]">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach ($websites as $i => $website)
+                        <div class="aw-reveal" style="--delay:{{ $i * 80 }}ms">
+                            <a href="{{ route('websites.show', $website->slug) }}"
+                                class="group relative flex flex-col overflow-hidden bg-[#111] border border-white/[0.06]
+                                   hover:border-white/25 transition-all duration-500
+                                   hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
 
-                                {{-- The Card --}}
-                                <div
-                                    class="relative h-full flex flex-col justify-end sm:h-300px md:h-[400px] lg:h-[500px] p-10 rounded-[20px] md:rounded-[30px] lg:rounded-[60px] bg-[#161618] border border-white/5 overflow-hidden transition-all duration-700 group-hover:border-orange-500/30 shadow-2xl">
-
-                                    {{-- 1. Background Image Layer (Service Icon) --}}
-                                    @if ($service->icon)
-                                        <div class="absolute inset-0 w-full h-full overflow-hidden">
-                                            <img src="{{ asset('storage/' . $service->icon) }}"
-                                                class="w-full h-full object-cover opacity-[0.75] group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000 ease-out pointer-events-none">
-
-                                            {{-- 2. Dark Gradient Overlay (Ensures Text Legibility) --}}
-                                            <div
-                                                class="absolute inset-0 bg-gradient-to-tr from-[#000000] via-[#000000]/80 to-transparent">
-                                            </div>
+                                {{-- Image --}}
+                                <div class="relative overflow-hidden aspect-[4/3]">
+                                    @if ($website->image)
+                                        <img src="{{ asset('storage/' . $website->image) }}"
+                                            class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                                            style="filter: grayscale(70%); transition: filter 0.7s ease, transform 0.7s ease;"
+                                            onmouseenter="this.style.filter='grayscale(0%)'"
+                                            onmouseleave="this.style.filter='grayscale(70%)'">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center bg-[#1a1a1a]">
+                                            <span class="text-5xl font-black text-white/5"
+                                                style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                                                {{ substr($website->title, 0, 1) }}
+                                            </span>
                                         </div>
                                     @endif
 
-                                    {{-- 3. Subtle Accent Glow --}}
-                                    <div
-                                        class="absolute -bottom-20 -right-20 w-64 h-64 bg-orange-600/10 blur-[100px] group-hover:bg-orange-600/30 transition-all duration-700">
-                                    </div>
+                                    {{-- Tags on hover --}}
+                                    @if ($website->tags)
+                                        <div
+                                            class="absolute top-3 left-3 flex flex-wrap gap-1.5 opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 transition-all duration-300">
+                                            @foreach (array_slice($website->tags, 0, 2) as $tag)
+                                                <span
+                                                    class="px-2.5 py-1 bg-[#0a0a0a]/90 backdrop-blur-sm border border-white/20
+                                                         text-[8px] font-bold uppercase tracking-[0.15em] text-white/60">
+                                                    {{ $tag }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
 
-                                    {{-- 5. Text Content --}}
-                                    <div class="relative z-10">
-                                        <h4
-                                            class="text-3xl lg:text-5xl font-bold text-white mb-4 tracking-tighter group-hover:text-orange-400 transition-colors">
-                                            {{ $service->title }}
-                                        </h4>
-                                        <p
-                                            class="text-white/50 leading-relaxed text-sm lg:text-xl max-w-lg group-hover:text-white/80 transition-colors line-clamp-4">
-                                            {{ $service->description }}
-                                        </p>
+                                {{-- Card body --}}
+                                <div class="p-5 flex items-start justify-between gap-3">
+                                    <div class="flex-1 min-w-0">
+                                        <h3
+                                            class="text-sm font-bold tracking-[-0.01em] text-white/70 group-hover:text-white transition-colors duration-200 mb-1 truncate">
+                                            {{ $website->title }}
+                                        </h3>
+                                        <p class="text-xs text-white/20 line-clamp-1 font-light">
+                                            {{ $website->description }}</p>
                                     </div>
+                                    <div
+                                        class="w-7 h-7 border border-white/10 flex items-center justify-center flex-shrink-0
+                                            group-hover:bg-white group-hover:border-white transition-all duration-300">
+                                        <svg class="w-3 h-3 text-white/30 group-hover:text-black transition-colors"
+                                            fill="none" stroke="currentColor" stroke-width="2"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                {{-- Bottom line sweep --}}
+                                <div
+                                    class="absolute bottom-0 left-0 h-px w-0 bg-white group-hover:w-full transition-all duration-700">
                                 </div>
                             </a>
                         </div>
@@ -365,733 +530,569 @@
     @endif
 
 
-    <!-- ================= WHY CHOOSE ME ================= -->
-    @if ($features->count() > 0)
-        <section id="features" class="py-24 relative bg-black">
-            {{-- Section Background Ambient Glow --}}
-            <div
-                class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-orange-600/10 blur-[120px] rounded-full pointer-events-none">
-            </div>
+    {{-- ══════════════════════════════════════
+         SERVICES
+    ══════════════════════════════════════ --}}
+    @if ($services->count() > 0)
+        <section id="services" class="py-28 md:py-40 bg-[#0a0a0a]">
+            <div class="max-w-[1200px] mx-auto px-6 md:px-12">
 
-            <div class="max-w-9xl mx-auto px-6 md:px-12 relative z-10">
-                {{-- Refined Header --}}
-                <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                    <h3
-                        class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
-                        Driven by <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Purpose.</span>
-                    </h3>
-
-                    <p class="text-white/40 text-xl md:text-xl leading-relaxed max-w-2xl mx-auto">
-                        Every decision is intentional. From strategy to execution, I design systems that perform, adapt,
-                        and create measurable impact.
+                <div class="mb-5 aw-reveal">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-6 h-px bg-white/20"></div>
+                        <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">What I Offer</span>
+                    </div>
+                    <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.04em] leading-[0.9] text-white mb-6"
+                        style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                        SPECIALIZED<br>
+                        <span
+                            style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color: transparent;">SOLUTIONS.</span>
+                    </h2>
+                    <p class="text-base text-white/30 max-w-md leading-relaxed font-light">
+                        I build digital solutions that simplify, streamline, and strengthen brands with precision and
+                        purpose.
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-6 gap-6 relative z-10 max-w-7xl mx-auto" id="features-grid">
-                    {{-- Feature Cards Bento Grid --}}
-                    @foreach ($features as $index => $feature)
-                        @php
-                            // Bento Grid Logic: Alternating widths
-                            // Pattern: Big (4 cols) - Small (2 cols) | Small (2 cols) - Big (4 cols)
-                            $isBig = $index % 4 == 0 || $index % 4 == 3;
-                            $colSpan = $isBig ? 'md:col-span-4' : 'md:col-span-2';
-                        @endphp
+                {{-- Service rows — editorial list --}}
+                <div class="mt-16 border-t border-white/[0.06]" id="services-container">
+                    @foreach ($services as $index => $service)
+                        <div class="aw-reveal" style="--delay:{{ $index * 80 }}ms">
+                            <a href="{{ route('services.show', $service->slug) }}"
+                                class="group relative flex items-center justify-between gap-6 py-7 md:py-9 border-b border-white/[0.06]
+                                   hover:bg-white/[0.02] transition-all duration-400 overflow-hidden px-0 hover:px-5">
 
-                        <div
-                            class="{{ $colSpan }} feature-card group relative p-10 rounded-[40px] border border-white/10 bg-[#1c1c1e]/50 backdrop-blur-sm overflow-hidden transition-all duration-700 ease-out hover:border-orange-500/40 hover:-translate-y-2 opacity-0 {{ $index % 2 == 0 ? 'translate-x-[-100px] translate-y-[100px]' : 'translate-x-[100px] translate-y-[100px]' }}">
+                                {{-- BG image hint --}}
+                                @if ($service->icon)
+                                    <div class="absolute inset-0 pointer-events-none">
+                                        <img src="{{ asset('storage/' . $service->icon) }}"
+                                            class="absolute right-0 top-0 w-1/2 h-full object-cover opacity-0 group-hover:opacity-[0.5] scale-110 group-hover:scale-100 transition-all duration-700">
+                                    </div>
+                                @endif
 
-                            {{-- Animated Blobs --}}
-                            {{-- Blob 1 --}}
-                            <div
-                                class="absolute -top-10 -right-10 w-40 h-40 bg-orange-600/20 rounded-full blur-[60px] group-hover:bg-orange-500/40 transition-colors duration-700 animate-blob">
-                            </div>
-                            {{-- Blob 2 --}}
-                            <div
-                                class="absolute -bottom-10 -left-10 w-40 h-40 bg-orange-900/10 rounded-full blur-[60px] group-hover:bg-orange-600/30 transition-colors duration-700 animate-blob animation-delay-2000">
-                            </div>
+                                <div class="flex items-center gap-8 flex-1 relative z-10 min-w-0">
+                                    <span
+                                        class="text-[10px] font-bold tracking-[0.3em] text-white/15 flex-shrink-0 w-6">
+                                        {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
+                                    </span>
+                                    <div class="min-w-0 flex-1">
+                                        <h3 class="text-xl md:text-2xl lg:text-3xl font-black tracking-[-0.03em] text-white/70
+                                               group-hover:text-white transition-colors duration-300 truncate"
+                                            style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                                            {{ strtoupper($service->title) }}
+                                        </h3>
+                                        <p
+                                            class="text-xs text-white/20 leading-relaxed mt-1 max-w-sm font-light 
+          max-h-0 opacity-0 overflow-hidden 
+          group-hover:max-h-12 group-hover:opacity-100 group-hover:line-clamp-2 
+          transition-all duration-500">
+                                            {{ $service->description }}
+                                        </p>
+                                    </div>
+                                </div>
 
-                            {{-- Card Content --}}
-                            <div
-                                class="relative z-10 h-full flex flex-col {{ $isBig ? 'justify-end' : 'justify-between' }}">
                                 <div
-                                    class="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 group-hover:bg-orange-500 transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(255,107,0,0.4)] group-hover:scale-110">
-                                    @if ($feature->icon)
-                                        <img src="{{ asset('storage/' . $feature->icon) }}"
-                                            class="w-7 h-7 opacity-70 transition-all">
-                                    @else
-                                        <span class="text-2xl group-hover:scale-110 transition-transform">✦</span>
-                                    @endif
+                                    class="relative z-10 w-9 h-9 border border-white/10 flex items-center justify-center flex-shrink-0
+                                        group-hover:bg-white group-hover:border-white transition-all duration-300">
+                                    <svg class="w-3.5 h-3.5 text-white/30 group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200"
+                                        fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                                    </svg>
                                 </div>
 
-                                <div>
-                                    <h4
-                                        class="text-2xl font-bold mb-4 text-white group-hover:text-orange-400 transition-colors">
-                                        {{ $feature->title }}
-                                    </h4>
-
-                                    <p
-                                        class="text-white/50 leading-relaxed group-hover:text-white/80 transition-colors {{ $isBig ? 'max-w-lg' : '' }}">
-                                        {{ $feature->description }}
-                                    </p>
+                                {{-- Left accent bar --}}
+                                <div
+                                    class="absolute left-0 top-0 w-0 group-hover:w-px h-full bg-white transition-all duration-700">
                                 </div>
-                            </div>
-
-                            {{-- Subtle Bottom Glow Line --}}
-                            <div
-                                class="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-transparent via-orange-500 to-transparent group-hover:w-full transition-all duration-700">
-                            </div>
+                            </a>
                         </div>
                     @endforeach
                 </div>
-
             </div>
         </section>
     @endif
 
 
-    <!-- ================= ABOUT ================= -->
-    <section id="about" class="relative py-32 overflow-hidden bg-[#000000]">
+    {{-- ══════════════════════════════════════
+         FEATURES / WHY ME
+    ══════════════════════════════════════ --}}
+    @if ($features->count() > 0)
+        <section id="features" class="py-28 md:py-40 bg-[#0f0f0f]">
+            <div class="max-w-[1200px] mx-auto px-6 md:px-12">
 
-        {{-- Large Decorative Background Text --}}
-        <div
-            class="absolute top-1/2 left-0 -translate-y-1/2 text-[20vw] font-black text-white/[0.02] select-none pointer-events-none leading-none">
-            STORY
-        </div>
-
-        <div class="max-w-9xl mx-auto px-6 md:px-12 relative z-10">
-            {{-- Refined Header --}}
-            <div class="text-center max-w-9xl mx-auto mb-24 reveal-text">
-
-                <h3
-                    class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
-                    Designing <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Precision.</span>
-                </h3>
-
-                <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
-                    Form follows function, but emotion leads the way. <br>I create digital experiences that resonate.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10" id="about-grid">
-
-                {{-- 1. Image Side (Occupies 5 columns on desktop) --}}
-                <div class="lg:col-span-5 relative order-2 lg:order-1">
-
-                    {{-- Decorative Floating Elements --}}
-                    <div
-                        class="absolute -top-10 -left-10 w-32 h-32 bg-orange-600/20 blur-[60px] rounded-full animate-pulse">
+                <div class="text-center max-w-2xl mx-auto mb-20 aw-reveal">
+                    <div class="flex items-center justify-center gap-3 mb-5">
+                        <div class="w-6 h-px bg-white/20"></div>
+                        <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">Why Work With
+                            Me</span>
+                        <div class="w-6 h-px bg-white/20"></div>
                     </div>
-                    <div
-                        class="absolute -bottom-10 -right-10 w-40 h-40 bg-orange-600/10 blur-[80px] rounded-full animate-blob">
-                    </div>
-
-                    {{-- The Image Frame --}}
-                    <div class="relative">
-                        {{-- Offset Border Frame --}}
-                        <div
-                            class="absolute inset-0 border-2 border-orange-500/20 translate-x-4 translate-y-4 rounded-[40px] hidden md:block">
-                        </div>
-
-                        {{-- Main Image Container --}}
-                        <div
-                            class="relative aspect-[4/5] rounded-[40px] overflow-hidden border border-white/10 bg-zinc-900 group shadow-2xl">
-                            @if ($about->image)
-                                <img src="{{ asset('storage/' . $about->image) }}"
-                                    class="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-110">
-                            @endif
-
-                            {{-- Image Overlay Gradient --}}
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
-                            </div>
-                        </div>
-                    </div>
+                    <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.04em] leading-[0.9] text-white"
+                        style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                        DRIVEN BY<br>
+                        <span
+                            style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color: transparent;">PURPOSE.</span>
+                    </h2>
                 </div>
 
-                {{-- 2. Text Side (Occupies 7 columns on desktop) --}}
-                <div class="lg:col-span-7 order-1 lg:order-2 lg:pl-10">
-                    <div class="max-w-xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="features-grid">
+                    @foreach ($features as $index => $feature)
+                        <div class="feature-card group relative p-8 md:p-10 border border-white/[0.07] bg-[#0a0a0a]
+                                hover:border-white/20 hover:bg-[#111] hover:-translate-y-1
+                                transition-all duration-400 overflow-hidden cursor-default
+                                opacity-0 translate-y-8"
+                            style="transition-delay: {{ $index * 70 }}ms;">
 
-                        {{-- Heading (Hidden now as moved to top) --}}
-                        <div class="hidden">
-                            <h2
-                                class="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] text-white mb-10">
-                                {{ $about->title ?? 'Designing Digital Precision.' }}
-                            </h2>
-                        </div>
-
-                        {{-- Description with emphasis --}}
-                        <div class="space-y-6">
-                            <p class="text-xl md:text-2xl text-white/80 leading-relaxed font-medium">
-                                {{-- This assumes your first sentence is the hook --}}
-                                {{ Str::before($about->description, '.') }}.
-                            </p>
-                            <p class="text-lg text-white/40 leading-relaxed">
-                                {{ Str::after($about->description, '.') }}
-                            </p>
-                        </div>
-
-                        {{-- Values/Features Mini-Grid --}}
-                        <div class="grid grid-cols-2 gap-8 mt-12 py-8 border-y border-white/5">
-                            <div>
-                                <h4 class="text-orange-500 font-black text-xs uppercase tracking-widest mb-2">
-                                    Philosophy</h4>
-                                <p class="text-white/60 text-sm">Form follows function, but emotion leads the way.</p>
+                            {{-- Number watermark --}}
+                            <div class="absolute top-4 right-5 text-[2.5rem] font-black text-white/[0.03] leading-none select-none"
+                                style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                                {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
                             </div>
-                            <div>
-                                <h4 class="text-orange-500 font-black text-xs uppercase tracking-widest mb-2">Location
-                                </h4>
-                                <p class="text-white/60 text-sm">Working globally, based in Indonesia.</p>
-                            </div>
-                        </div>
 
-                        {{-- CTA --}}
-                        @if (isset($about->button_text) && $about->button_text)
-                            <div class="mt-12">
-                                <a href="{{ $about->button_link ?? '#' }}" class="group flex items-center gap-6">
-                                    <div
-                                        class="w-16 h-16 rounded-full border border-orange-500/30 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-500">
-                                        <span class="text-orange-500 group-hover:text-black transition-colors">→</span>
-                                    </div>
-                                    <div class="flex flex-col">
-                                        <span
-                                            class="text-white/40 text-[10px] font-black uppercase tracking-widest group-hover:text-orange-500 transition-colors">Next
-                                            Step</span>
-                                        <span
-                                            class="text-white font-black text-lg group-hover:translate-x-2 transition-transform duration-500">{{ $about->button_text }}</span>
-                                    </div>
-                                </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-
-    <!-- ================= PRICING / INVESTMENT ================= -->
-    <section id="pricing" class="py-32 relative z-[25] overflow-hidden bg-black">
-
-        {{-- Background Decorative Glows --}}
-        <div
-            class="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-600/5 blur-[120px] rounded-full pointer-events-none">
-        </div>
-        <div
-            class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-900/5 blur-[120px] rounded-full pointer-events-none">
-        </div>
-
-        <div class="max-w-9xl mx-auto px-6 md:px-12 relative z-10">
-
-            {{-- Header with Strategic Copy --}}
-            <div class="text-center max-w-9xl mx-auto mb-24 reveal-text">
-
-                <h2 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white mb-8 leading-[0.9]">
-                    Ready to <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Level
-                        Up?</span>
-                </h2>
-
-                <p class="text-white/40 text-xl md:text-xl leading-relaxed max-w-2xl mx-auto">
-                    Choose a plan that fits your stage of growth. No hidden fees, just high-impact digital solutions
-                    designed to convert.
-                </p>
-            </div>
-
-            {{-- Pricing Bento Grid --}}
-            <div class="max-w-9xl mx-auto px-4 py-12 relative z-10" id="pricing-grid">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
-                    @foreach ($pricing_plans as $index => $plan)
-                        @php
-                            // Logic to make the middle/popular card stand out in the Bento Grid
-                            $isMain = $index === 1; // Assuming the 2nd plan is the "Pro" one
-                            $gridClass = $isMain ? 'lg:col-span-4' : ($index === 0 ? 'lg:col-span-4' : 'lg:col-span-4');
-                        @endphp
-
-                        <div
-                            class="{{ $gridClass }} group relative flex flex-col bg-[#111113] rounded-[32px] border border-white/5 overflow-hidden transition-all duration-500 hover:border-orange-500/40 hover:shadow-[0_0_40px_-15px_rgba(249,115,22,0.2)]">
-
-                            {{-- Background Glow Decoration --}}
+                            {{-- Icon --}}
                             <div
-                                class="absolute -top-24 -right-24 w-48 h-48 bg-orange-500/10 blur-[80px] rounded-full group-hover:bg-orange-500/20 transition-all duration-700">
+                                class="w-11 h-11 border border-white/[0.07] bg-[#111] flex items-center justify-center mb-8
+                                    group-hover:bg-white group-hover:border-white transition-all duration-400">
+                                @if ($feature->icon)
+                                    <img src="{{ asset('storage/' . $feature->icon) }}"
+                                        class="w-5 h-5 object-contain opacity-30 group-hover:opacity-100 group-hover:brightness-0 transition-all duration-300">
+                                @else
+                                    <span
+                                        class="text-white/30 group-hover:text-black text-sm transition-colors">✦</span>
+                                @endif
                             </div>
 
-                            {{-- Card Content --}}
-                            <div class="relative z-10 flex flex-col justify-between h-full p-8 md:p-10">
+                            <h3
+                                class="text-lg font-bold tracking-[-0.02em] text-white/70 mb-3
+                                   group-hover:text-white transition-colors duration-200">
+                                {{ $feature->title }}
+                            </h3>
+                            <p class="text-sm text-white/25 leading-relaxed font-light">
+                                {{ $feature->description }}
+                            </p>
 
-                                {{-- Header --}}
-                                <div class="mb-8">
-                                    <div class="flex items-baseline gap-1 mb-8">
-                                        <span class="text-4xl md:text-4xl font-bold text-white tracking-tighter">
-                                            {{ $plan->name }}
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center justify-between mb-4">
-                                        <h3 class="text-orange-500 font-extrabold text-2xl uppercase tracking-[0.2em]">
-                                            {{ $plan->price }}
-                                        </h3>
-                                    </div>
-
-                                    <p class="mt-4 text-white/50 text-sm leading-relaxed max-w-[280px]">
-                                        {{ $plan->description }}
-                                    </p>
-                                </div>
-
-                                {{-- Bento Feature List (Visible by default in Bento style) --}}
-
-
-                                {{-- CTA Button --}}
-                                <div class="mt-auto">
-                                    <a href="{{ $plan->cta_link ?? '#' }}"
-                                        class="relative group/btn overflow-hidden block w-full text-center py-4 rounded-2xl font-bold uppercase tracking-widest text-[11px] transition-all duration-300 {{ $isMain ? 'bg-orange-500 text-black' : 'bg-white/5 text-white hover:bg-white/10' }} border border-white/5">
-
-                                        <span class="relative z-10">{{ $plan->cta_text ?? 'Get Started' }}</span>
-
-                                        {{-- Shine effect on hover --}}
-                                        <div
-                                            class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-shine">
-                                        </div>
-                                    </a>
-                                </div>
+                            {{-- Hover sweep --}}
+                            <div
+                                class="absolute bottom-0 left-0 h-px w-0 bg-white group-hover:w-full transition-all duration-700">
                             </div>
                         </div>
                     @endforeach
                 </div>
             </div>
+        </section>
+    @endif
 
-            <style>
-                @keyframes shine {
-                    100% {
-                        transform: translateX(100%);
-                    }
-                }
 
-                .animate-shine {
-                    animation: shine 0.8s forwards;
-                }
-            </style>
+    {{-- ══════════════════════════════════════
+         ABOUT
+    ══════════════════════════════════════ --}}
+    <section id="about" class="py-28 md:py-40 bg-[#0a0a0a] overflow-hidden">
+        <div class="max-w-[1200px] mx-auto px-6 md:px-12">
 
-            {{-- Bottom Value Proposition --}}
-            <div
-                class="mt-20 p-10 rounded-[40px] border border-white/5 bg-white/[0.01] flex flex-col md:flex-row items-center justify-between gap-8">
-                <div class="flex items-center gap-6">
-                    <div>
-                        <h4 class="text-xl font-bold text-white">Need a custom solution?</h4>
-                        <p class="text-white/40">If your project doesn't fit these plans, let's talk and build a custom
-                            quote.</p>
+            {{-- Big label background --}}
+            <div class="absolute pointer-events-none select-none overflow-hidden" style="left:0; right:0;">
+                <p class="text-[18vw] font-black text-white/[0.018] leading-none tracking-[-0.05em] text-center"
+                    style="font-family:'Bebas Neue','Arial Black',sans-serif;">ABOUT</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
+
+                {{-- Image --}}
+                <div class="aw-reveal order-2 lg:order-1">
+                    <div class="group relative">
+                        {{-- Decorative corner frames --}}
+                        <div
+                            class="absolute -top-3 -left-3 w-10 h-10 border-t border-l border-white/20 pointer-events-none">
+                        </div>
+                        <div
+                            class="absolute -bottom-3 -right-3 w-10 h-10 border-b border-r border-white/20 pointer-events-none">
+                        </div>
+
+                        <div class="relative aspect-[3/4] overflow-hidden bg-[#111]">
+                            @if ($about->image)
+                                <img src="{{ asset('storage/' . $about->image) }}"
+                                    class="w-full h-full object-cover object-top transition-all duration-1000 group-hover:scale-[1.04]"
+                                    style="filter: grayscale(85%); transition: filter 1s ease, transform 1s ease;"
+                                    onmouseenter="this.style.filter='grayscale(20%)'"
+                                    onmouseleave="this.style.filter='grayscale(85%)'">
+                            @else
+                                <div class="w-full h-full bg-[#111]"></div>
+                            @endif
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/50 via-transparent to-transparent">
+                            </div>
+                        </div>
+
+                        {{-- Floating stat --}}
+                        <div class="absolute -bottom-5 -right-5 px-6 py-4 bg-white shadow-2xl">
+                            <p class="text-3xl font-black tracking-[-0.04em] text-[#0a0a0a]"
+                                style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">40+</p>
+                            <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40">Projects</p>
+                        </div>
+                    </div>
+
+                    {{-- Facts row --}}
+                    <div class="mt-12 grid grid-cols-2 gap-0 border border-white/[0.07]">
+                        @foreach ([['Based in', 'Indonesia'], ['Status', 'Open to work']] as $f)
+                            <div
+                                class="p-4 {{ $loop->last ? '' : 'border-r border-white/[0.07]' }} hover:bg-white/[0.02] transition-colors">
+                                <p class="text-[8px] font-bold uppercase tracking-[0.3em] text-white/20 mb-1">
+                                    {{ $f[0] }}</p>
+                                <p
+                                    class="text-sm font-medium text-white/60 {{ $loop->last ? 'text-green-400' : '' }}">
+                                    {{ $f[1] }}</p>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
+
+                {{-- Content --}}
+                <div class="order-1 lg:order-2 aw-reveal" style="--delay:150ms">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-6 h-px bg-white/20"></div>
+                        <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">About Me</span>
+                    </div>
+
+                    <h2 class="text-[clamp(2.5rem,5vw,4rem)] font-black tracking-[-0.04em] leading-[0.9] text-white mb-8"
+                        style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                        DESIGNING<br>
+                        <span
+                            style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color:transparent;">PRECISION.</span>
+                    </h2>
+
+                    <p class="text-lg md:text-xl text-white/60 leading-relaxed font-light mb-5">
+                        {{ Str::before($about->description, '.') }}.
+                    </p>
+                    <p class="text-base text-white/25 leading-relaxed font-light mb-12">
+                        {{ Str::after($about->description, '.') }}
+                    </p>
+
+                    {{-- Values --}}
+                    <div class="grid grid-cols-2 gap-0 border border-white/[0.07] mb-10">
+                        @foreach ([['Philosophy', 'Form follows function, but emotion leads the way.'], ['Location', 'Working globally, based in Indonesia.']] as $v)
+                            <div
+                                class="p-5 {{ $loop->last ? '' : 'border-r border-white/[0.07]' }} group hover:bg-white/[0.03] transition-colors duration-300">
+                                <p class="text-[8px] font-bold uppercase tracking-[0.3em] text-white/20 mb-2">
+                                    {{ $v[0] }}</p>
+                                <p class="text-xs text-white/40 leading-relaxed">{{ $v[1] }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    @if (isset($about->button_text) && $about->button_text)
+                        <a href="{{ $about->button_link ?? '#' }}" class="group inline-flex items-center gap-5">
+                            <div
+                                class="w-12 h-12 border border-white/15 flex items-center justify-center
+                                        group-hover:bg-white group-hover:border-white transition-all duration-400">
+                                <svg class="w-4 h-4 text-white/40 group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
+                                    fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p
+                                    class="text-[9px] font-bold uppercase tracking-[0.3em] text-white/20 group-hover:text-white/60 transition-colors mb-0.5">
+                                    Next Step</p>
+                                <p
+                                    class="text-lg font-bold tracking-[-0.02em] text-white/70 group-hover:text-white transition-colors">
+                                    {{ $about->button_text }}
+                                </p>
+                            </div>
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    {{-- ══════════════════════════════════════
+         PRICING
+    ══════════════════════════════════════ --}}
+    <section id="pricing" class="py-28 md:py-40 bg-[#0f0f0f] overflow-hidden">
+        <div class="max-w-[1200px] mx-auto px-6 md:px-12">
+
+            <div class="text-center max-w-xl mx-auto mb-20 aw-reveal">
+                <div class="flex items-center justify-center gap-3 mb-5">
+                    <div class="w-6 h-px bg-white/20"></div>
+                    <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">Investment</span>
+                    <div class="w-6 h-px bg-white/20"></div>
+                </div>
+                <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.04em] leading-[0.9] text-white"
+                    style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                    READY TO<br>
+                    <span style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color:transparent;">LEVEL UP?</span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                @foreach ($pricing_plans as $index => $plan)
+                    @php $isMain = $index === 1; @endphp
+                    <div class="aw-reveal" style="--delay:{{ $index * 100 }}ms">
+                        <div
+                            class="group relative flex flex-col h-full border overflow-hidden transition-all duration-400 hover:-translate-y-1
+                                    {{ $isMain
+                                        ? 'bg-white border-white shadow-[0_20px_60px_rgba(255,255,255,0.08)] hover:shadow-[0_30px_80px_rgba(255,255,255,0.12)]'
+                                        : 'bg-[#0a0a0a] border-white/[0.07] hover:border-white/25 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)]' }}">
+
+                            @if ($isMain)
+                                <div class="px-8 pt-5 pb-0">
+                                    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-black/40">Most
+                                        Popular</span>
+                                </div>
+                            @endif
+
+                            <div class="flex-1 flex flex-col p-8 {{ $isMain ? 'pt-4' : '' }}">
+                                <div
+                                    class="mb-8 pb-8 border-b {{ $isMain ? 'border-black/10' : 'border-white/[0.07]' }}">
+                                    <h3 class="text-2xl font-black tracking-[-0.03em] mb-1
+                                               {{ $isMain ? 'text-[#0a0a0a]' : 'text-white/70' }}"
+                                        style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                                        {{ strtoupper($plan->name) }}
+                                    </h3>
+                                    <p class="text-3xl font-black tracking-[-0.04em] mb-3 {{ $isMain ? 'text-[#0a0a0a]' : 'text-white' }}"
+                                        style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                                        {{ $plan->price }}
+                                    </p>
+                                    <p
+                                        class="text-sm leading-relaxed font-light {{ $isMain ? 'text-black/50' : 'text-white/25' }}">
+                                        {{ $plan->description }}
+                                    </p>
+                                </div>
+
+                                <div class="mt-auto">
+                                    <a href="{{ $plan->cta_link ?? '#' }}"
+                                        class="block w-full text-center py-4 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-200 active:scale-[0.98]
+                                               {{ $isMain ? 'bg-[#0a0a0a] text-white hover:bg-[#1a1a1a]' : 'bg-white text-[#0a0a0a] hover:bg-white/90' }}">
+                                        {{ $plan->cta_text ?? 'Get Started' }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            {{-- Custom --}}
+            <div
+                class="aw-reveal flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 p-7 border border-white/[0.07] bg-[#0a0a0a]">
+                <div>
+                    <p class="text-base font-bold tracking-[-0.01em] text-white/60 mb-0.5">Need a custom solution?</p>
+                    <p class="text-xs text-white/20 font-light">If your project doesn't fit, let's build something
+                        tailored.</p>
+                </div>
                 <a href="#contact"
-                    class="text-orange-500 font-black uppercase tracking-widest text-sm border-b-2 border-orange-500/20 hover:border-orange-500 transition-all pb-1">
-                    Contact for Custom Work →
+                    class="group flex-shrink-0 inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.25em] uppercase text-white/40
+                           hover:text-white border-b border-white/10 hover:border-white/50 pb-0.5 transition-all whitespace-nowrap">
+                    Contact for Custom Work
+                    <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none"
+                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
                 </a>
             </div>
         </div>
     </section>
 
 
+    {{-- ══════════════════════════════════════
+         TESTIMONIALS
+    ══════════════════════════════════════ --}}
+    <section id="testimonials" class="py-28 md:py-40 bg-[#0a0a0a]">
+        <div class="max-w-[1200px] mx-auto px-6 md:px-12">
 
-    <!-- ================= TESTIMONIALS ================= -->
-    <section id="testimonials"
-        class="py-24 bg-gradient-to-b mt-10 relative from-black to-black/90 text-white rounded-[40px] md:rounded-[60px] mx-4 lg:mx-10 shadow-2xl shadow-orange-500/5">
-        <div class="max-w-6xl mx-auto">
-
-            {{-- Refined Header --}}
-            <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-
-                <h3
-                    class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-8 leading-[0.9]">
-                    Client <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Feedback.</span>
-                </h3>
-
-                <p class="text-white/40 text-xl md:text-xl leading-relaxed max-w-2xl mx-auto">
-                    Trust is earned. Here's what my partners have to say about our collaboration.
-                </p>
+            <div class="flex items-end justify-between mb-16 md:mb-20 aw-reveal">
+                <div>
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-6 h-px bg-white/20"></div>
+                        <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">Social Proof</span>
+                    </div>
+                    <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.04em] leading-[0.9] text-white"
+                        style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                        CLIENT<br>
+                        <span
+                            style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color:transparent;">FEEDBACK.</span>
+                    </h2>
+                </div>
             </div>
 
-            <div class="swiper testimonialSwiper !pb-12 relative z-10" id="testimonials-swiper">
-                <div class="swiper-wrapper">
+            <div class="swiper testimonialSwiper overflow-visible aw-reveal">
+                <div class="swiper-wrapper items-stretch">
                     @foreach ($testimonials as $testimonial)
-                        <div class="swiper-slide !h-auto py-10"> {{-- Added padding for hover lift --}}
-                            <div class="group relative h-full transition-all duration-500">
+                        <div class="swiper-slide !h-auto py-2">
+                            <div
+                                class="group h-full flex flex-col p-8 border border-white/[0.07] bg-[#0a0a0a]
+                                        hover:border-white/20 hover:bg-[#111] hover:-translate-y-1
+                                        transition-all duration-400 relative overflow-hidden">
 
-                                {{-- 1. Hover Glow Effect (Behind the card) --}}
-                                <div
-                                    class="absolute -inset-2 bg-gradient-to-r from-orange-600 to-orange-400 rounded-[45px] opacity-0 group-hover:opacity-20 blur-2xl transition-opacity duration-500">
+                                {{-- Large quote --}}
+                                <div class="absolute top-4 right-6 text-7xl font-black text-white/[0.04] leading-none select-none"
+                                    style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">"</div>
+
+                                {{-- Stars --}}
+                                <div class="flex gap-1 mb-6">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <svg class="w-3.5 h-3.5 text-white/40 group-hover:text-white/70 transition-colors"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                    @endfor
                                 </div>
 
-                                {{-- 2. Main Glass Card --}}
-                                <div
-                                    class="relative h-full flex flex-col p-8 md:p-10 rounded-[40px] bg-white/[0.03] backdrop-blur-xl border border-white/10 group-hover:border-orange-500/50 group-hover:-translate-y-2 transition-all duration-500 shadow-2xl">
+                                <p
+                                    class="text-sm md:text-base text-white/40 leading-relaxed font-light italic mb-8 flex-1 relative z-10
+                                          group-hover:text-white/60 transition-colors duration-300">
+                                    "{{ $testimonial->content }}"
+                                </p>
 
-                                    {{-- Decorative Quote Icon --}}
+                                <div class="flex items-center gap-4 pt-5 border-t border-white/[0.07]">
                                     <div
-                                        class="absolute top-8 right-10 text-orange-500/10 group-hover:text-orange-500/20 transition-colors">
-                                        <svg class="w-16 h-16 fill-currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V12C14.017 12.5523 13.5693 13 13.017 13H11.017C10.4647 13 10.017 12.5523 10.017 12V9C10.017 7.34315 11.3601 6 13.017 6H19.017C20.6738 6 22.017 7.34315 22.017 9V15C22.017 17.7614 19.7784 20 17.017 20H14.017V21ZM5.017 21L5.017 18C5.017 16.8954 5.91243 16 7.017 16H10.017C10.5693 16 11.017 15.5523 11.017 15V9C11.017 8.44772 10.5693 8 10.017 8H6.017C5.46472 8 5.017 8.44772 5.017 9V12C5.017 12.5523 4.56929 13 4.017 13H2.017C1.46472 13 1.017 12.5523 1.017 12V9C1.017 7.34315 2.36015 6 4.017 6H10.017C11.6738 6 13.017 7.34315 13.017 9V15C13.017 17.7614 10.7786 20 8.017 20H5.017V21Z" />
-                                        </svg>
-                                    </div>
-
-                                    {{-- Star Rating --}}
-                                    <div class="flex gap-1 mb-8">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <svg class="w-5 h-5 text-orange-500 group-hover:scale-110 transition-transform duration-300"
-                                                fill="currentColor" viewBox="0 0 20 20">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                            </svg>
-                                        @endfor
-                                    </div>
-
-                                    {{-- Testimonial Content --}}
-                                    <p
-                                        class="text-xl md:text-2xl leading-relaxed text-white/90 mb-10 font-medium italic">
-                                        "{{ $testimonial->content }}"
-                                    </p>
-
-                                    {{-- Author Info --}}
-                                    <div class="flex items-center gap-5 mt-auto">
-                                        <div class="relative">
-                                            {{-- Avatar Ring --}}
+                                        class="w-10 h-10 overflow-hidden bg-[#1a1a1a] border border-white/10 flex-shrink-0">
+                                        @if ($testimonial->avatar)
+                                            <img src="{{ asset('storage/' . $testimonial->avatar) }}"
+                                                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                                        @else
                                             <div
-                                                class="absolute -inset-1 bg-gradient-to-tr from-orange-600 to-orange-400 rounded-full opacity-50">
+                                                class="w-full h-full flex items-center justify-center text-white/20 text-sm font-bold">
+                                                {{ substr($testimonial->name, 0, 1) }}
                                             </div>
-                                            <div
-                                                class="relative w-16 h-16 rounded-full overflow-hidden border-2 border-[#0b0b0d] bg-zinc-800">
-                                                @if ($testimonial->avatar)
-                                                    <img src="{{ asset('storage/' . $testimonial->avatar) }}"
-                                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-                                                @else
-                                                    <div
-                                                        class="w-full h-full flex items-center justify-center text-white/20 font-black">
-                                                        {{ substr($testimonial->name, 0, 1) }}
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <h4
-                                                class="text-lg font-black text-white group-hover:text-orange-500 transition-colors">
-                                                {{ $testimonial->name }}
-                                            </h4>
-                                            <p
-                                                class="text-[10px] text-orange-500/60 font-black uppercase tracking-[0.2em]">
-                                                {{ $testimonial->position ?? 'CEO & Founder' }}
-                                            </p>
-                                        </div>
+                                        @endif
                                     </div>
+                                    <div>
+                                        <p
+                                            class="text-sm font-bold tracking-[-0.01em] text-white/60 group-hover:text-white transition-colors">
+                                            {{ $testimonial->name }}
+                                        </p>
+                                        <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-white/20">
+                                            {{ $testimonial->position ?? 'Client' }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="absolute bottom-0 left-0 h-px w-0 bg-white group-hover:w-full transition-all duration-700">
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
-                <div class="swiper-pagination swiper-pagination-testimonials"></div>
             </div>
 
-            <div class="max-w-2xl mx-auto mt-12">
+            <div class="flex items-center gap-4 mt-10 aw-reveal">
+                <button
+                    class="testi-prev group w-10 h-10 border border-white/10 flex items-center justify-center
+                               hover:border-white/60 hover:bg-white active:scale-90 transition-all duration-200">
+                    <svg class="w-4 h-4 text-white/30 group-hover:text-black transition-colors" fill="none"
+                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                </button>
+                <div class="swiper-pagination-testimonials flex items-center gap-2"></div>
+                <button
+                    class="testi-next group w-10 h-10 border border-white/10 flex items-center justify-center
+                               hover:border-white/60 hover:bg-white active:scale-90 transition-all duration-200">
+                    <svg class="w-4 h-4 text-white/30 group-hover:text-black transition-colors" fill="none"
+                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="mt-20 pt-16 border-t border-white/[0.06]">
                 <livewire:public.components.testimonial-form />
             </div>
         </div>
     </section>
 
-    <!-- ================= CONTACT ================= -->
-    <section id="contact" class="py-24">
-        <div class="max-w-9xl mx-auto px-6 md:px-12">
 
-            {{-- Refined Header --}}
-            <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-                <div
-                    class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                    <span class="relative flex h-2 w-2">
-                        <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                    </span>
-                    <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">Contact</p>
+    {{-- ══════════════════════════════════════
+         CONTACT
+    ══════════════════════════════════════ --}}
+    <section id="contact" class="py-28 md:py-40 bg-white">
+        <div class="max-w-[1200px] mx-auto px-6 md:px-12">
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+
+                {{-- Left --}}
+                <div class="aw-reveal">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-6 h-px bg-[#1a1a1a]/20"></div>
+                        <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-black/30">Get In Touch</span>
+                    </div>
+                    <h2 class="text-[clamp(3rem,7vw,6rem)] font-black tracking-[-0.05em] leading-[0.88] text-[#0a0a0a] mb-8"
+                        style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                        LET'S<br>
+                        <span style="-webkit-text-stroke: 1.5px rgba(0,0,0,0.25); color:transparent;">CONNECT.</span>
+                    </h2>
+                    <p class="text-base text-black/40 leading-relaxed font-light max-w-xs mb-12">
+                        Ready to start your next project? I am currently available for new opportunities.
+                    </p>
+
+                    <div class="inline-flex items-center gap-3 px-5 py-3.5 border border-black/10 bg-[#f5f5f5]">
+                        <div class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-black/40">Available for new
+                            projects</span>
+                    </div>
                 </div>
 
-                <h3 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
-                    Let's<span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Connect.</span>
-                </h3>
-
-                <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
-                    Ready to start your next project? I am currently available for new opportunities.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
-                <div class="hidden">
-                    <p class="text-orange-500 font-bold tracking-[0.3em] uppercase text-xs mb-4">Contact</p>
-                    <h2 class="text-5xl md:text-7xl font-bold leading-tight mb-8">Let's build your <span
-                            class="text-orange-500">vision.</span></h2>
-                    <p class="text-xl text-white/50 leading-relaxed mb-12">I am currently available for new projects
-                        and collaborations. Send me a message and let's talk.</p>
-                </div>
-
-                <div
-                    class="lg:col-span-2 max-w-3xl mx-auto w-full relative z-10
-                bg-gradient-to-br from-orange-500/5 to-orange-600/5 p-8 md:p-12 rounded-[40px] border border-orange-500/20 backdrop-blur-xl">
+                {{-- Form --}}
+                <div class="aw-reveal" style="--delay:150ms">
                     @if (session()->has('message'))
-                        <div
-                            class="mb-8 p-4 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm shadow-lg">
+                        <div class="mb-5 px-5 py-4 bg-[#f5f5f5] border border-black/10 text-sm text-black/60">
                             {{ session('message') }}
                         </div>
                     @endif
 
-                    <form wire:submit.prevent="sendMessage" class="space-y-6">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <input type="text" wire:model="name" placeholder="Name"
-                                class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-orange-500/20 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
-                                required>
-                            <input type="email" wire:model="email" placeholder="Email"
-                                class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-orange-500/20 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
-                                required>
+                    <form wire:submit.prevent="sendMessage" class="space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" wire:model="name" placeholder="Your name" required
+                                class="w-full px-5 py-4 bg-[#f5f5f5] border border-transparent text-[#0a0a0a] placeholder-black/25
+                                       text-sm font-light tracking-[-0.01em]
+                                       focus:outline-none focus:bg-white focus:border-black/20 transition-all duration-300">
+                            <input type="email" wire:model="email" placeholder="Email address" required
+                                class="w-full px-5 py-4 bg-[#f5f5f5] border border-transparent text-[#0a0a0a] placeholder-black/25
+                                       text-sm font-light tracking-[-0.01em]
+                                       focus:outline-none focus:bg-white focus:border-black/20 transition-all duration-300">
                         </div>
                         <input type="text" wire:model="subject" placeholder="Subject"
-                            class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-orange-500/20 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all">
-                        <textarea wire:model="message" rows="5" placeholder="Your Message"
-                            class="w-full px-6 py-4 rounded-2xl bg-white/5 border border-orange-500/20 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all resize-none"
-                            required></textarea>
+                            class="w-full px-5 py-4 bg-[#f5f5f5] border border-transparent text-[#0a0a0a] placeholder-black/25
+                                   text-sm font-light tracking-[-0.01em]
+                                   focus:outline-none focus:bg-white focus:border-black/20 transition-all duration-300">
+                        <textarea wire:model="message" rows="5" placeholder="Tell me about your project..." required
+                            class="w-full px-5 py-4 bg-[#f5f5f5] border border-transparent text-[#0a0a0a] placeholder-black/25
+                                   text-sm font-light tracking-[-0.01em] resize-none
+                                   focus:outline-none focus:bg-white focus:border-black/20 transition-all duration-300"></textarea>
                         <button type="submit"
-                            class="w-full py-5 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold uppercase tracking-widest text-sm hover:from-orange-600 hover:to-orange-700 hover:shadow-lg hover:shadow-orange-500/30 transition-all active:scale-95">Send
-                            Message</button>
+                            class="w-full py-4 bg-[#0a0a0a] text-white text-[11px] font-bold uppercase tracking-[0.25em]
+                                   hover:bg-[#1a1a1a] active:scale-[0.99] transition-all duration-200">
+                            Send Message
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ================= SCRIPTS ================= -->
-    <script>
-        document.addEventListener('livewire:navigated', () => {
-            initAllSwipers();
-            initParallaxStack();
-            initRevealText();
-            initFeaturesScroll();
-        });
-        document.addEventListener('DOMContentLoaded', () => {
-            initAllSwipers();
-            initParallaxStack();
-            initRevealText();
-            initFeaturesScroll();
-        });
 
-        function initFeaturesScroll() {
-            const grid = document.getElementById('features-grid');
-            if (!grid) return;
-
-            const cards = grid.querySelectorAll('.feature-card');
-
-            // Helper to check if element is odd/even in grid context for direction
-            // In grid-cols-2: 
-            // Index 0 (Left) -> Slide in from Bottom-Left
-            // Index 1 (Right) -> Slide in from Bottom-Right
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const el = entry.target;
-                    const isLeft = Array.from(cards).indexOf(el) % 2 === 0;
-
-                    if (entry.isIntersecting) {
-                        // ENTRY: Reset transforms to 0
-                        el.classList.remove('opacity-0', 'translate-y-[100px]', 'translate-x-[-100px]',
-                            'translate-x-[100px]');
-                        el.classList.add('opacity-100', 'translate-y-0', 'translate-x-0');
-                    } else {
-                        // EXIT: Apply transforms based on position
-                        // We check if we scrolled PAST it (it went up) or BEFORE it (it went down)
-                        const rect = el.getBoundingClientRect();
-
-                        // Only animate out if we are significantly away to avoid flickering
-                        // Logic: Reset to initial state so it can animate in again
-                        el.classList.remove('opacity-100', 'translate-y-0', 'translate-x-0');
-                        el.classList.add('opacity-0', 'translate-y-[100px]');
-
-                        // Add directional offset back
-                        if (isLeft) {
-                            el.classList.add('translate-x-[-100px]');
-                        } else {
-                            el.classList.add('translate-x-[100px]');
-                        }
-                    }
-                });
-            }, {
-                threshold: 0.15, // 15% visibility triggers entry
-                rootMargin: '0px 0px -10% 0px' // Offset bottom slightly so it triggers "inside" view
-            });
-
-            cards.forEach(card => {
-                observer.observe(card);
-            });
-        }
-
-        function initRevealText() {
-            const revealElements = document.querySelectorAll('.reveal-text');
-
-            // BREAKPOINT CHECK: 
-            // If screen width is less than 1024px (Tablets/Mobile), 
-            // show text immediately and stop the function.
-            if (window.innerWidth < 1024) {
-                revealElements.forEach(el => {
-                    el.classList.add('is-visible');
-                });
-                return;
-            }
-
-            // EXISTING LOGIC (Only runs on large screens now)
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        // Optional: Stop observing once revealed to save performance
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.2,
-                rootMargin: '0px 0px -50px 0px'
-            });
-
-            revealElements.forEach(el => {
-                observer.observe(el);
-            });
-        }
-
-        function initParallaxStack() {
-            const container = document.getElementById('services-container');
-            if (!container) return;
-
-            const cards = container.querySelectorAll('.service-card');
-
-            const handleScroll = () => {
-                const windowHeight = window.innerHeight;
-                const windowCenter = windowHeight / 1.7;
-
-                cards.forEach((card, index) => {
-                    const rect = card.getBoundingClientRect();
-                    const cardCenter = rect.top + (rect.height / 2);
-
-                    // Distance from center of viewport (signed)
-                    const dist = cardCenter - windowCenter;
-                    const absDist = Math.abs(dist);
-
-                    // Progress: 0 at center, 1 at distance of 60% viewport height
-                    let progress = absDist / (windowHeight * 0.6);
-                    progress = Math.max(0, Math.min(progress, 1));
-
-                    // Styles
-                    const scale = 1 - (progress * 0.2); // 1 -> 0.8
-                    const opacity = 1 - (progress * 0.5); // 1 -> 0.3
-                    const blur = progress * 0; // 0px -> 5px
-                    const rotateX = (dist / windowHeight) * 20; // Rotate based on scroll direction
-
-                    // Apply
-                    card.style.transform = `scale(${scale}) perspective(1000px) rotateX(${rotateX}deg)`;
-                    card.style.opacity = opacity;
-                    card.style.filter = `blur(${blur}px)`;
-
-                    // Z-Index logic: Card closest to center gets highest Z
-                    // We inverse the progress for Z-index
-                    card.style.zIndex = Math.round((1 - progress) * 100);
-                });
-            };
-
-            window.addEventListener('scroll', handleScroll);
-            handleScroll(); // Init
-        }
-
-        function initAllSwipers() {
-            // Projects Swiper
-            new Swiper('.mySwiper', {
-                slidesPerView: 1.2,
-                spaceBetween: 30,
-                grabCursor: true,
-                speed: 500,
-                easing: 'ease-in-out',
-                pagination: {
-                    el: '.swiper-pagination-works',
-                    clickable: true,
-                },
-                breakpoints: {
-                    640: {
-                        slidesPerView: 1.4,
-                        spaceBetween: 30
-                    },
-                    1024: {
-                        slidesPerView: 1.4,
-                        spaceBetween: 40
-                    }
-                }
-            });
-
-            // Testimonials Swiper
-            new Swiper(".testimonialSwiper", {
-                slidesPerView: 1,
-                spaceBetween: 30,
-                grabCursor: true,
-                autoplay: {
-                    delay: 5000
-                },
-                pagination: {
-                    el: ".swiper-pagination-testimonials",
-                    clickable: true
-                },
-                breakpoints: {
-                    768: {
-                        slidesPerView: 2
-                    },
-                    1024: {
-                        slidesPerView: 2
-                    }
-                }
-            });
-        }
-    </script>
-
+    {{-- ══════════════════════════════════════
+         STYLES
+    ══════════════════════════════════════ --}}
     <style>
-        .reveal-text {
-            opacity: 0.1;
-            filter: blur(8px);
-            transform: translateY(30px);
-            transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
-        .reveal-text.is-visible {
-            opacity: 1;
-            filter: blur(0);
-            transform: translateY(0);
-        }
 
-        [x-cloak] {
-            display: none !important;
-        }
-
-        @keyframes loading-bar {
-            0% {
-                width: 0%;
-            }
-
-            100% {
-                width: 100%;
-            }
-        }
-
-        .animate-loading-bar {
-            animation: loading-bar 0.5s ease-in-out forwards;
-        }
-
-        @keyframes fade-in-up {
+        @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(100%);
             }
 
             to {
@@ -1100,113 +1101,288 @@
             }
         }
 
-        .animate-fade-in-up {
-            animation: fade-in-up 1s ease-out forwards;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
-        @keyframes bounce-slow {
+        @keyframes loadbar {
+            from {
+                width: 0;
+            }
 
-            0%,
-            100% {
-                transform: translateY(0);
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes heroReveal {
+            from {
+                opacity: 0;
+                transform: scale(1.06);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes marqueeScroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        @keyframes scrollLine {
+            0% {
+                transform: translateY(-100%);
             }
 
             50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .animate-bounce-slow {
-            animation: bounce-slow 4s ease-in-out infinite;
-        }
-
-        @keyframes blob {
-            0% {
-                transform: translate(0px, 0px) scale(1);
-            }
-
-            33% {
-                transform: translate(30px, -50px) scale(1.1);
-            }
-
-            66% {
-                transform: translate(-20px, 20px) scale(0.9);
+                transform: translateY(200%);
             }
 
             100% {
-                transform: translate(0px, 0px) scale(1);
+                transform: translateY(200%);
             }
         }
 
-        .animate-blob {
-            animation: blob 7s infinite;
+        /* Reveal */
+        .aw-reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            transition-delay: var(--delay, 0ms);
         }
 
-        .animation-delay-2000 {
-            animation-delay: 2s;
+        .aw-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* Swiper Pagination Style Fix */
-        .swiper-pagination-bullet {
-            background: rgba(255, 255, 255, 0.2) !important;
+        /* Feature cards */
+        .feature-card {
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.4s ease !important;
+        }
+
+        .feature-card.visible {
             opacity: 1 !important;
-            width: 12px;
-            height: 12px;
-            transition: all 0.3s ease;
+            transform: translateY(0) !important;
+        }
+
+        /* Swiper pagination */
+        .swiper-pagination-bullet {
+            width: 5px !important;
+            height: 5px !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            opacity: 1 !important;
+            border-radius: 9999px !important;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
         }
 
         .swiper-pagination-bullet-active {
-            background: #f97316 !important;
-            /* Orange-500 */
-            width: 40px !important;
-            border-radius: 20px !important;
+            background: rgba(255, 255, 255, 0.9) !important;
+            width: 20px !important;
+            border-radius: 9999px !important;
         }
 
         .swiper-pagination {
-            bottom: 0 !important;
+            position: static !important;
         }
 
-        #robot-tooltip {
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            /* Supaya tidak menghalangi klik ke robot */
-            background: rgba(22, 22, 24, 0.9);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            z-index: 9999;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            white-space: nowrap;
+        /* Cursor expand on hover */
+        body.cursor-hover #cursor-ring {
+            width: 52px !important;
+            height: 52px !important;
+            opacity: 0.6 !important;
         }
 
-        .robot-tooltip-hidden {
-            opacity: 0;
-            transform: translate(-50%, -100%) scale(0.8);
+        body.cursor-hover #cursor-dot {
+            opacity: 0 !important;
         }
 
-        .robot-tooltip-visible {
-            opacity: 1;
-            transform: translate(-50%, -120%) scale(1);
+        html {
+            scroll-behavior: smooth;
         }
 
-        .tooltip-arrow {
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 5px solid rgba(22, 22, 24, 0.9);
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        ::selection {
+            background: white;
+            color: #0a0a0a;
         }
     </style>
+
+
+    {{-- ══════════════════════════════════════
+         SCRIPTS
+    ══════════════════════════════════════ --}}
+    <script>
+        /* ── Custom cursor ───────────────── */
+        (function() {
+            const dot = document.getElementById('cursor-dot');
+            const ring = document.getElementById('cursor-ring');
+            if (!dot || !ring) return;
+
+            let mx = 0,
+                my = 0;
+            document.addEventListener('mousemove', e => {
+                mx = e.clientX;
+                my = e.clientY;
+                dot.style.left = mx + 'px';
+                dot.style.top = my + 'px';
+                ring.style.left = mx + 'px';
+                ring.style.top = my + 'px';
+            });
+
+            document.querySelectorAll('a, button, [data-magnetic]').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            });
+        })();
+
+        /* ── Page init ──────────────────── */
+        function initPage() {
+            initSwipers();
+            initReveal();
+        }
+
+        document.addEventListener('DOMContentLoaded', initPage);
+        document.addEventListener('livewire:navigated', initPage);
+
+        /* ── Swipers ────────────────────── */
+        function initSwipers() {
+            if (document.querySelector('.worksSwiper')) {
+                new Swiper('.worksSwiper', {
+                    slidesPerView: 1.15,
+                    spaceBetween: 14,
+                    grabCursor: true,
+                    speed: 700,
+                    navigation: {
+                        nextEl: '.works-next',
+                        prevEl: '.works-prev'
+                    },
+                    pagination: {
+                        el: '.swiper-pagination-works',
+                        clickable: true
+                    },
+                    breakpoints: {
+                        640: {
+                            slidesPerView: 1.5,
+                            spaceBetween: 16
+                        },
+                        1024: {
+                            slidesPerView: 2.3,
+                            spaceBetween: 20
+                        },
+                        1280: {
+                            slidesPerView: 2.6,
+                            spaceBetween: 24
+                        },
+                    }
+                });
+            }
+
+            if (document.querySelector('.testimonialSwiper')) {
+                new Swiper('.testimonialSwiper', {
+                    slidesPerView: 1.05,
+                    spaceBetween: 12,
+                    grabCursor: true,
+                    speed: 700,
+                    autoplay: {
+                        delay: 5500,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: true
+                    },
+                    navigation: {
+                        nextEl: '.testi-next',
+                        prevEl: '.testi-prev'
+                    },
+                    pagination: {
+                        el: '.swiper-pagination-testimonials',
+                        clickable: true
+                    },
+                    breakpoints: {
+                        640: {
+                            slidesPerView: 1.5,
+                            spaceBetween: 14
+                        },
+                        1024: {
+                            slidesPerView: 2.2,
+                            spaceBetween: 16
+                        },
+                        1280: {
+                            slidesPerView: 2.6,
+                            spaceBetween: 20
+                        },
+                    }
+                });
+            }
+        }
+
+        /* ── Scroll reveal ──────────────── */
+        function initReveal() {
+            const reveals = document.querySelectorAll('.aw-reveal');
+            const features = document.querySelectorAll('.feature-card');
+
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        io.unobserve(e.target);
+                    }
+                });
+            }, {
+                threshold: 0.07,
+                rootMargin: '0px 0px -30px 0px'
+            });
+
+            reveals.forEach(el => io.observe(el));
+
+            const fio = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        const idx = Array.from(features).indexOf(e.target);
+                        e.target.style.transitionDelay = `${idx * 65}ms`;
+                        e.target.classList.add('visible');
+                        fio.unobserve(e.target);
+                    }
+                });
+            }, {
+                threshold: 0.08
+            });
+
+            features.forEach(el => fio.observe(el));
+        }
+    </script>
 </div>

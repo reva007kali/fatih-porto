@@ -1,61 +1,89 @@
-<div class="bg-[#0b0b0d] min-h-screen text-white pt-32 pb-24">
-    @section('meta_title', '3D Gallery | Reva Adhitya')
-    @section('meta_description', 'Interactive 3D models and experiments.')
-    @section('meta_keywords', '3D, Three.js, WebGL, Models, Interactive')
+<div class="bg-[#070708] min-h-screen text-[#e5e5e5] pt-40 pb-32">
+    @section('meta_title', '3D Archive — Reva Adhitya')
 
-    <div class="max-w-7xl mx-auto px-6 md:px-12">
-        {{-- Header --}}
-        <div class="text-center max-w-4xl mx-auto mb-24 reveal-text">
-            <div class="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-500 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-                <p class="text-orange-500 font-black tracking-[0.4em] uppercase text-[10px]">WebGL Experiments</p>
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+        {{-- 1. Arsitektural Header --}}
+        <header class="mb-32">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-12">
+                <div class="max-w-4xl">
+                    <div class="flex items-center gap-4 mb-10">
+                        <span class="font-mono text-[10px] text-orange-600 tracking-tighter">// SPATIAL_EXPLORATION</span>
+                        <div class="h-[1px] w-12 bg-white/10"></div>
+                    </div>
+                    <h1 class="text-[12vw] md:text-[9vw] font-black tracking-[calc(-0.06em)] leading-[0.8] text-white uppercase italic">
+                        Dimension<span class="text-orange-600">.</span>
+                    </h1>
+                </div>
+                <div class="max-w-xs md:text-right">
+                    <p class="text-[11px] font-medium text-white/30 leading-relaxed uppercase tracking-[0.4em]">
+                        Interactive WebGL environments and procedural 3D artifacts.
+                    </p>
+                </div>
             </div>
-            
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
-                3D <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Dimension.</span>
-            </h1>
-            
-            <p class="text-white/40 text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto">
-                Interactive objects and spatial explorations.
-            </p>
-        </div>
+        </header>
 
-        {{-- Grid --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @foreach($models as $model)
-                <a href="{{ route('three-d.show', $model->slug) }}" class="group relative block bg-[#161618] rounded-2xl overflow-hidden border border-white/5 hover:border-blue-500/50 transition-all duration-500 hover:-translate-y-2">
-                    <div class="aspect-square w-full bg-gradient-to-br from-gray-800 to-black flex items-center justify-center relative overflow-hidden">
+        {{-- 2. Technical Grid --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-24">
+            @foreach($models as $index => $model)
+                <a href="{{ route('three-d.show', $model->slug) }}" 
+                   class="group relative block transition-all duration-700">
+                    
+                    {{-- Thumbnail Wrapper --}}
+                    <div class="relative aspect-square w-full bg-[#0a0a0b] overflow-hidden">
+                        {{-- Grayscale Thumbnail --}}
                         @if($model->thumbnail_path)
-                            <img src="{{ Storage::url($model->thumbnail_path) }}" alt="{{ $model->title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <img src="{{ Storage::url($model->thumbnail_path) }}" 
+                                 alt="{{ $model->title }}" 
+                                 class="w-full h-full object-cover transition-all duration-[1.5s] grayscale-[50%] group-hover:grayscale-0 group-hover:scale-110 group-hover:rotate-1">
                         @else
-                            <div class="text-6xl grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
-                                🧊
+                            <div class="w-full h-full flex items-center justify-center grayscale-[50%] group-hover:grayscale-0 transition-all duration-700">
+                                <span class="text-6xl filter blur-[2px] group-hover:blur-0 transition-all">🧊</span>
                             </div>
                         @endif
+
+                        {{-- Technical Corner Labels --}}
+                        <div class="absolute top-0 left-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <span class="font-mono text-[9px] text-orange-600 uppercase tracking-tighter">Rendered_Eevee</span>
+                        </div>
                         
-                        {{-- Overlay --}}
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <span class="px-6 py-2 bg-white/10 backdrop-blur-md rounded-full text-white text-sm font-bold border border-white/20">
-                                View 3D Model
-                            </span>
+                        {{-- Center Action --}}
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                            <div class="px-8 py-3 bg-white text-black text-[10px] font-black uppercase tracking-[0.3em]">
+                                Enter Space
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">{{ $model->title }}</h3>
-                        <p class="text-white/40 text-sm line-clamp-2">{{ $model->description }}</p>
+
+                    {{-- Info Section (Editorial Style) --}}
+                    <div class="mt-8 border-t border-white/5 pt-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xs font-black uppercase tracking-[0.4em] text-white group-hover:text-orange-600 transition-colors">
+                                {{ $model->title }}
+                            </h3>
+                            <span class="font-mono text-[10px] text-white/20 italic">
+                                #{{ sprintf('%03d', $index + 1) }}
+                            </span>
+                        </div>
+                        <p class="text-[11px] font-light text-white/40 leading-relaxed tracking-wide line-clamp-2 max-w-[90%] uppercase">
+                            {{ $model->description }}
+                        </p>
                     </div>
                 </a>
             @endforeach
         </div>
 
+        {{-- 3. Empty State --}}
         @if($models->isEmpty())
-            <div class="text-center py-20 border border-dashed border-white/10 rounded-3xl">
-                <p class="text-white/30 text-xl">No 3D models found.</p>
+            <div class="text-center py-40 border-t border-white/5 mt-20">
+                <p class="text-white/10 text-[10px] font-bold uppercase tracking-[1.5em]">No_Entities_Found</p>
             </div>
         @endif
     </div>
+    <style>
+        /* Halus-kan pergerakan hover pada elemen berat seperti 3D Thumbnails */
+        .group:hover img {
+            will-change: transform, filter;
+        }
+    </style>
 </div>
+

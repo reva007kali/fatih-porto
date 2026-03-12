@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-[#0b0b0d] text-white antialiased selection:bg-orange-500 selection:text-white">
+<div class="min-h-screen bg-[#070708] text-[#e5e5e5] antialiased selection:bg-white selection:text-black font-sans overflow-x-hidden">
 
     @section('meta_title', 'About Me | Reva Adhitya')
     @section('meta_description', Str::limit(strip_tags($about->description), 160))
@@ -7,117 +7,98 @@
         @section('meta_image', asset('storage/' . $about->image))
     @endif
 
-    {{-- 1. Floating Navigation --}}
-    <div class="fixed bottom-8 left-6 md:left-12 z-[100]">
+    {{-- 1. Custom Cursor Element (Placeholder for CSS/JS) --}}
+    <div class="fixed top-0 left-0 w-8 h-8 border border-white/30 rounded-full pointer-events-none z-[999] mix-blend-difference transition-transform duration-300 ease-out hidden md:block" id="custom-cursor"></div>
+
+    {{-- 2. Floating Navigation (Magnetic Style) --}}
+    <div class="fixed bottom-10 left-10 z-[100]">
         <a href="{{ route('home') }}"
-            class="group flex items-center justify-center w-14 h-14 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 hover:border-orange-500/50 transition-all duration-500 hover:scale-110 shadow-2xl">
-            <svg class="w-6 h-6 text-orange-500 group-hover:-translate-x-1 transition-transform" fill="none"
-                stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            class="group relative flex items-center justify-center w-16 h-16 rounded-full border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white hover:border-white transition-all duration-700 hover:scale-110">
+            <svg class="w-5 h-5 text-white group-hover:text-black transition-colors duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
         </a>
     </div>
 
-    {{-- 2. Massive Background Text --}}
-    <div
-        class="absolute top-20 left-1/2 -translate-x-1/2 text-[30vw] font-black text-white/[0.01] select-none pointer-events-none leading-none z-0">
-        WHO
+    {{-- 3. Cinematic Hero Background --}}
+    <div class="absolute top-0 left-0 w-full h-[100vh] pointer-events-none overflow-hidden z-0">
+        <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[45vw] font-black text-white/[0.02] leading-none whitespace-nowrap tracking-tighter">
+            ABOUT
+        </span>
     </div>
 
-    <main class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-32 pb-32">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
+    <main class="relative z-10 max-w-[1440px] mx-auto px-6 md:px-20 pt-48 pb-40">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20">
 
-            {{-- 3. Left Side: Visuals --}}
-            {{-- Changed 'sticky top-32' to 'lg:sticky lg:top-32' --}}
-            <div class="lg:col-span-5 lg:sticky lg:top-32">
-                <div class="relative group">
-                    {{-- Animated background glows --}}
-                    <div
-                        class="absolute -inset-10 bg-orange-600/20 rounded-full blur-[100px] opacity-50 group-hover:opacity-100 transition-opacity duration-1000">
-                    </div>
-
-                    {{-- Image Frame --}}
-                    <div
-                        class="relative aspect-[3/4] rounded-[40px] md:rounded-[60px] overflow-hidden border border-white/10 bg-zinc-900 shadow-2xl">
+            {{-- Left Side: The Visual Minimalist --}}
+            <div class="lg:col-span-5 lg:sticky lg:top-40 h-fit">
+                <div class="relative overflow-hidden group">
+                    {{-- Reveal Overlay Effect --}}
+                    <div class="absolute inset-0 bg-black/50 z-20 transition-transform duration-1000 ease-in-out group-hover:translate-y-full"></div>
+                    
+                    <div class="aspect-[4/5] overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 ease-in-out">
                         @if ($about->image)
                             <img src="{{ asset('storage/' . $about->image) }}"
-                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                                class="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-[2s]">
                         @endif
-
-                        {{-- Subtle gradient wash --}}
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
-                        </div>
-                    </div>
-
-                    {{-- Floating Status Badge --}}
-                    <div
-                        class="absolute -bottom-6 -right-6 bg-orange-600 p-8 rounded-[40px] shadow-2xl shadow-orange-900/40 hidden md:block">
-                        <div class="text-black font-black">
-                            <p class="text-4xl leading-none">ID</p>
-                            <p class="text-[10px] uppercase tracking-widest mt-1 opacity-60">Verified</p>
-                        </div>
                     </div>
                 </div>
 
-                {{-- Social Quick Links --}}
-                <div class="mt-16 flex items-center gap-8 justify-center lg:justify-start">
-                    @foreach (['LinkedIn', 'Twitter', 'GitHub'] as $social)
-                        <a href="#"
-                            class="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 hover:text-orange-500 transition-colors">{{ $social }}</a>
-                    @endforeach
-                </div>
-                
-                {{-- Location Display (New) --}}
-                @if($about->location)
-                    <div class="mt-8 flex items-center gap-3 justify-center lg:justify-start text-white/50">
-                        <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        <span class="text-sm font-medium tracking-widest uppercase">{{ $about->location }}</span>
+                <div class="mt-12 space-y-4">
+                    <div class="h-[1px] w-full bg-white/10 scale-x-0 origin-left transition-transform duration-1000 group-hover:scale-x-100"></div>
+                    <div class="flex flex-wrap gap-x-8 gap-y-4 pt-4">
+                        @foreach (['LinkedIn', 'Twitter', 'GitHub'] as $social)
+                            <a href="#" class="text-[10px] font-bold uppercase tracking-widest text-white/40 hover:text-white transition-all relative group overflow-hidden">
+                                <span class="block group-hover:-translate-y-full transition-transform duration-500">{{ $social }}</span>
+                                <span class="absolute top-full left-0 block group-hover:-translate-y-full transition-transform duration-500 text-white">{{ $social }}</span>
+                            </a>
+                        @endforeach
                     </div>
-                @endif
+                </div>
             </div>
 
-            {{-- 4. Right Side: The Story --}}
+            {{-- Right Side: The Editorial Narrative --}}
             <div class="lg:col-span-7">
-                {{-- Header Area --}}
-                <div class="mb-16">
-                    <div class="flex items-center gap-3 mb-6">
-                        <span class="w-12 h-[2px] bg-orange-500"></span>
-                        <span class="text-orange-500 text-xs font-black uppercase tracking-[0.4em]">The Identity</span>
+                {{-- Split-Typo Header --}}
+                <div class="mb-24">
+                    <div class="flex items-center gap-4 mb-8 overflow-hidden">
+                        <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-white/30">The Creative Identity</span>
+                        <div class="flex-grow h-[1px] bg-white/10"></div>
                     </div>
 
-                    <h1
-                        class="text-6xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-[0.85] text-white mb-10">
-                        {{ $about->title ?? 'About' }}<span class="text-orange-500">.</span>
+                    <h1 class="text-7xl md:text-8xl font-bebas lg:text-[120px] font-black tracking-tighter leading-[0.8] mb-12">
+                        {{ $about->title ?? 'About' }}<span class="text-white/20">.</span>
                     </h1>
 
-                    <p
-                        class="text-2xl md:text-3xl text-white/80 font-medium leading-relaxed italic border-l-4 border-orange-500 pl-8 mb-12">
-                        {{-- First paragraph highlight --}}
-                        "{{ $about->description ?? "Design is not just what it looks like; it's how it works and feels." }}"
-                    </p>
+                    <div class="max-w-xl">
+                        <p class="text-2xl md:text-3xl text-white/90 font-light leading-snug tracking-tight italic opacity-80 border-l border-white/20 pl-10 mb-16">
+                            "{{ $about->description ?? "Design is logic made visible." }}"
+                        </p>
+                    </div>
                 </div>
 
-                {{-- Main Biography Content --}}
-                <div
-                    class="prose prose-invert prose-lg max-w-none text-white/50 leading-relaxed
-                            prose-headings:text-white prose-headings:font-black prose-headings:tracking-tighter
-                            prose-strong:text-white prose-strong:font-black
-                            prose-a:text-orange-500 prose-p:mb-8">
+                {{-- Prose Content with Clean Typography --}}
+                <div class="prose prose-invert max-w-none 
+                            prose-p:text-xl prose-p:text-white/50 prose-p:leading-relaxed prose-p:mb-10
+                            prose-strong:text-white prose-strong:font-bold
+                            prose-headings:text-white prose-headings:font-black prose-headings:tracking-tighter prose-headings:uppercase
+                            prose-a:text-white prose-a:underline prose-a:underline-offset-8 hover:prose-a:text-white/60">
                     {!! $about->content !!}
                 </div>
 
-                {{-- Skills Section --}}
+                {{-- Skills Grid: Minimalist Rows --}}
                 @if($skills->count() > 0)
-                    <div class="mt-20 pt-12 border-t border-white/5">
-                        <h3 class="text-2xl font-bold text-white mb-8">Skills & Expertise</h3>
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-y-8 gap-x-4">
+                    <div class="mt-40">
+                        <h3 class="text-xs font-bold text-white/30 uppercase tracking-[0.5em] mb-12">Expertise Stack</h3>
+                        <div class="border-t border-white/10">
                             @foreach ($skills as $skill)
-                                <div>
-                                    <h4 class="text-orange-500 font-black text-[10px] uppercase tracking-[0.3em] mb-2">
-                                        {{ $skill->category }}</h4>
-                                    <p class="text-white/80 text-lg font-bold">{{ $skill->name }}</p>
-                                    <div class="w-full bg-white/10 h-1 mt-2 rounded-full overflow-hidden">
-                                        <div class="bg-orange-500 h-full" style="width: {{ $skill->proficiency }}%"></div>
+                                <div class="group flex items-center justify-between py-8 border-b border-white/10 hover:bg-white/5 transition-colors px-4">
+                                    <div class="flex flex-col">
+                                        <span class="text-[10px] text-white/30 uppercase tracking-widest mb-1">{{ $skill->category }}</span>
+                                        <span class="text-2xl font-bold tracking-tighter group-hover:pl-4 transition-all duration-500">{{ $skill->name }}</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-sm font-mono opacity-20 group-hover:opacity-100 transition-opacity">{{ $skill->proficiency }}%</span>
                                     </div>
                                 </div>
                             @endforeach
@@ -125,107 +106,68 @@
                     </div>
                 @endif
 
-                {{-- Experience Section --}}
-                @if($work_experiences->count() > 0)
-                    <div class="mt-20 pt-12 border-t border-white/5">
-                        <h3 class="text-2xl font-bold text-white mb-8">Experience</h3>
-                        <div class="space-y-12">
-                            @foreach($work_experiences as $work)
-                                <div class="relative pl-8 border-l border-white/10">
-                                    <span class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-orange-500"></span>
-                                    <h4 class="text-xl font-bold text-white">{{ $work->role }}</h4>
-                                    <p class="text-orange-500 text-sm font-bold uppercase tracking-widest mb-2">{{ $work->company }}</p>
-                                    <p class="text-white/40 text-xs mb-4">{{ $work->period }}</p>
-                                    <p class="text-white/60 leading-relaxed">{{ $work->description }}</p>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-
-                {{-- Education Section --}}
-                @if($educations->count() > 0)
-                    <div class="mt-20 pt-12 border-t border-white/5">
-                        <h3 class="text-2xl font-bold text-white mb-8">Education</h3>
-                        <div class="space-y-12">
-                             @foreach($educations as $edu)
-                                <div class="relative pl-8 border-l border-white/10">
-                                    <span class="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-zinc-800 border border-white/20"></span>
-                                    <h4 class="text-xl font-bold text-white">{{ $edu->institution }}</h4>
-                                    <p class="text-orange-500 text-sm font-bold uppercase tracking-widest mb-2">{{ $edu->degree }}</p>
-                                    <p class="text-white/40 text-xs mb-4">{{ $edu->period }}</p>
-                                    <p class="text-white/60 leading-relaxed">{{ $edu->description }}</p>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-
-                {{-- Certifications & Achievements --}}
-                @if($certifications->count() > 0 || $achievements->count() > 0)
-                    <div class="mt-20 pt-12 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-12">
-                        @if($certifications->count() > 0)
-                            <div>
-                                <h3 class="text-2xl font-bold text-white mb-8">Certifications</h3>
-                                <ul class="space-y-6">
-                                    @foreach($certifications as $cert)
-                                        <li class="flex items-start gap-4">
-                                            <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-500 flex-shrink-0"></div>
-                                            <div>
-                                                <h5 class="text-white font-bold leading-tight">{{ $cert->name }}</h5>
-                                                <p class="text-white/40 text-sm mt-1">{{ $cert->issuer }} • {{ $cert->date }}</p>
-                                                @if($cert->link)
-                                                    <a href="{{ $cert->link }}" target="_blank" class="text-orange-500 text-xs font-bold uppercase tracking-widest mt-2 inline-block hover:underline">View Credential</a>
-                                                @endif
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
+                {{-- Timeline Sections (Work & Education) --}}
+                @foreach([['Experiences', $work_experiences], ['Academic', $educations]] as [$label, $data])
+                    @if($data->count() > 0)
+                        <div class="mt-40">
+                            <h3 class="text-xs font-bold text-white/30 uppercase tracking-[0.5em] mb-12">{{ $label }}</h3>
+                            <div class="space-y-20">
+                                @foreach($data as $item)
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative group">
+                                        <div class="text-[10px] font-mono text-white/20 pt-2">{{ $item->period }}</div>
+                                        <div class="md:col-span-3">
+                                            <h4 class="text-3xl font-bold tracking-tighter mb-2 group-hover:text-white transition-colors">
+                                                {{ $item->role ?? $item->institution }}
+                                            </h4>
+                                            <p class="text-white/40 uppercase tracking-widest text-[10px] font-black mb-6">
+                                                {{ $item->company ?? $item->degree }}
+                                            </p>
+                                            <p class="text-white/50 leading-relaxed max-w-xl text-lg font-light">
+                                                {{ $item->description }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
-                        @endif
-
-                        @if($achievements->count() > 0)
-                            <div>
-                                <h3 class="text-2xl font-bold text-white mb-8">Achievements</h3>
-                                <ul class="space-y-6">
-                                    @foreach($achievements as $ach)
-                                        <li class="flex items-start gap-4">
-                                             <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-500 flex-shrink-0"></div>
-                                            <div>
-                                                <h5 class="text-white font-bold leading-tight">{{ $ach->title }}</h5>
-                                                <p class="text-white/40 text-sm mt-1">{{ $ach->date }}</p>
-                                                <p class="text-white/60 text-sm mt-2 leading-relaxed">{{ $ach->description }}</p>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                    </div>
-                @endif
+                        </div>
+                    @endif
+                @endforeach
             </div>
-
         </div>
     </main>
 
-    {{-- 5. Footer Transition --}}
-    <footer class="py-32 bg-white text-black rounded-t-[60px] md:rounded-t-[100px] overflow-hidden relative">
-        <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
-            <span class="text-[20vw] font-black">COLLABORATE</span>
+    {{-- Cinematic Footer --}}
+    <footer class="relative min-h-[80vh] flex flex-col items-center justify-center bg-white text-black rounded-t-[50px] md:rounded-t-[120px] px-6 text-center overflow-hidden">
+        {{-- Background Kinetic Text --}}
+        <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] select-none">
+            <span class="text-[30vw] font-black tracking-tighter leading-none uppercase">Contact</span>
         </div>
 
-        <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
-            <h2 class="text-5xl md:text-8xl font-black tracking-tighter mb-12">Let's work <br /> together.</h2>
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-8">
+        <div class="relative z-10">
+            <p class="text-[10px] font-black uppercase tracking-[0.8em] mb-10 opacity-40 italic">Ready to begin?</p>
+            <h2 class="text-6xl md:text-[10vw] font-black tracking-[calc(-0.05em)] leading-[0.9] mb-16">
+                Let's build <br/> the future.
+            </h2>
+            
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12">
                 <a href="{{ route('home') }}#contact"
-                    class="px-12 py-6 rounded-full bg-black text-white font-black uppercase tracking-widest text-sm hover:bg-orange-600 transition-all shadow-2xl">
-                    {{ $about->button_text ?? 'Get in Touch' }}
+                    class="group relative px-16 py-8 rounded-full bg-black text-white overflow-hidden transition-transform hover:scale-105 active:scale-95">
+                    <span class="relative z-10 text-xs font-black uppercase tracking-widest">
+                        {{ $about->button_text ?? 'Start Project' }}
+                    </span>
+                    <div class="absolute inset-0 bg-neutral-800 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                 </a>
+                
                 <a href="{{ $about->button_link ?? route('works') }}"
-                    class="text-sm font-black uppercase tracking-[0.2em] border-b-2 border-black/10 hover:border-black transition-all pb-1">
-                    See my works
+                    class="text-xs font-black uppercase tracking-[0.4em] relative group overflow-hidden py-2">
+                    <span class="block group-hover:-translate-y-full transition-transform duration-500">View Catalog</span>
+                    <span class="absolute top-full left-0 block group-hover:-translate-y-full transition-transform duration-500 underline underline-offset-4">View Catalog</span>
                 </a>
             </div>
+        </div>
+
+        <div class="absolute bottom-10 flex flex-col items-center opacity-20">
+            <span class="text-[10px] font-bold tracking-[0.5em] uppercase">Jakarta / Indonesia</span>
         </div>
     </footer>
 

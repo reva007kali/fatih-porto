@@ -1,189 +1,186 @@
-<div class="min-h-screen bg-[#0b0b0d] text-white antialiased selection:bg-orange-500 selection:text-white">
+<div class="min-h-screen bg-[#070708] text-[#e5e5e5] antialiased selection:bg-white selection:text-black overflow-x-hidden">
 
     @section('meta_title', 'Selected Works | Reva Adhitya')
     @section('meta_description', 'A collection of digital experiences built with precision, focusing on aesthetic impact and technical performance.')
     @section('meta_keywords', 'Works, Projects, Portfolio, Case Studies, Reva Adhitya')
 
-    {{-- 1. Premium Ambient Background --}}
-    <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        {{-- Large Background Text --}}
-        <div
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[25vw] font-black text-white/[0.01] select-none uppercase leading-none">
-            Gallery
+    {{-- 1. Premium Ambient Background (Editorial Style) --}}
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[40vw] font-black text-white/[0.02] select-none uppercase leading-none tracking-tighter">
+            Works
         </div>
     </div>
 
-    {{-- 2. Refined Header --}}
-    <header class="relative pt-32 pb-20 px-6 flex flex-col items-center">
-        <div
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/5 backdrop-blur-md mb-8">
-            <span class="relative flex h-2 w-2">
-                <span
-                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                <span
-                    class="relative inline-flex rounded-full h-2 w-2 bg-orange-500 shadow-[0_0_10px_rgba(255,107,0,1)]"></span>
-            </span>
-            <span class="text-[10px] uppercase tracking-[0.3em] font-black text-white/60">Live Portfolio</span>
-        </div>
-
-        <h1 class="text-5xl md:text-8xl font-black tracking-tighter text-white mb-6 text-center leading-none">
-            Selected <span
-                class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Works.</span>
-        </h1>
-
-        <p class="text-lg md:text-xl text-white/40 text-center max-w-xl leading-relaxed mb-12">
-            A collection of digital experiences built with precision, focusing on aesthetic impact and technical
-            performance.
-        </p>
-
-        {{-- Archive Link --}}
-        <div class="mb-12">
-            <a href="{{ route('archive') }}" wire:navigate
-                class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 hover:text-white transition-colors border-b border-orange-500/30 hover:border-white pb-1">
-                View Archived Projects →
-            </a>
-        </div>
-
-        {{-- Filters Section --}}
-        <div class="w-full max-w-4xl mx-auto flex flex-col md:flex-row gap-4">
-            {{-- Search --}}
-            <div class="relative flex-grow group">
-                <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search projects..."
-                    class="w-full pl-12 pr-4 py-4 bg-[#161618] border border-white/10 rounded-full text-white placeholder-white/30 focus:outline-none focus:border-orange-500/50 transition-all duration-300">
-                <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30 group-focus-within:text-orange-500 transition-colors"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
+    {{-- 2. Massive Editorial Header --}}
+    <header class="relative pt-48 pb-32 px-6 md:px-20 z-10">
+        <div class="max-w-[1440px] mx-auto">
+            <div class="flex items-center gap-4 mb-12">
+                <div class="w-12 h-[1px] bg-white/20"></div>
+                <span class="text-[10px] uppercase tracking-[0.5em] font-bold text-white/40">Curated Gallery / 2026</span>
             </div>
 
-            {{-- Category Filter --}}
-            <div class="relative min-w-[200px]">
-                <select wire:model.live="category"
-                    class="w-full appearance-none px-6 py-4 bg-[#161618] border border-white/10 rounded-full text-white focus:outline-none focus:border-orange-500/50 cursor-pointer transition-all duration-300">
-                    <option value="">All Categories</option>
-                    @foreach ($categories as $cat)
-                        <option value="{{ $cat }}">{{ $cat }}</option>
-                    @endforeach
-                </select>
-                <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <svg class="w-4 h-4 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 9l-7 7-7-7"></path>
-                    </svg>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
+                <div class="lg:col-span-8">
+                    <h1 class="text-[12vw] md:text-[10vw] font-black tracking-[calc(-0.05em)] leading-[0.8] text-white uppercase">
+                        Selected<br/>
+                        <span class="text-white/20 hover:text-white transition-colors duration-1000">Works.</span>
+                    </h1>
+                </div>
+                <div class="lg:col-span-4 pb-4">
+                    <p class="text-xl text-white/40 leading-relaxed font-light max-w-sm">
+                        Digital experiences built with technical precision and editorial aesthetic impact.
+                    </p>
                 </div>
             </div>
 
-            {{-- Year Filter --}}
-            <div class="relative min-w-[150px]">
-                <select wire:model.live="year"
-                    class="w-full appearance-none px-6 py-4 bg-[#161618] border border-white/10 rounded-full text-white focus:outline-none focus:border-orange-500/50 cursor-pointer transition-all duration-300">
-                    <option value="">All Years</option>
-                    @foreach ($years as $y)
-                        <option value="{{ $y }}">{{ $y }}</option>
-                    @endforeach
-                </select>
-                <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <svg class="w-4 h-4 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </div>
+            {{-- Archive Link (Minimalist) --}}
+            <div class="mt-20">
+                <a href="{{ route('archive') }}" wire:navigate
+                    class="group inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/60 hover:text-white transition-all">
+                    <span>Archived Projects</span>
+                    <span class="w-8 h-[1px] bg-white/20 group-hover:w-12 group-hover:bg-white transition-all"></span>
+                    <span class="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all">→</span>
+                </a>
             </div>
         </div>
     </header>
 
-    {{-- 3. Projects Grid --}}
-    <main class="relative px-6 pb-32 max-w-7xl mx-auto">
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-            @foreach ($projects as $index => $project)
-                <div class="group h-full perspective-1000"> {{-- Perspective adds depth --}}
-                    <a href="{{ route('works.show', $project->slug) }}"
-                        class="relative flex flex-col h-full rounded-[28px] overflow-hidden bg-[#161618] border border-white/5 
-                       {{-- Hardware Acceleration & Smoothness --}}
-                       transform-gpu will-change-transform 
-                       transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
-                       hover:border-orange-500/10 hover:-translate-y-3 hover:shadow-[0_30px_60px_-15px_rgba(255,107,0,0.1)] block">
-
-                        {{-- Image Container --}}
-                        <div class="relative aspect-[4/3] md:aspect-[4/3] overflow-hidden">
-                            @if ($project->image)
-                                <img src="{{ Str::startsWith($project->image, 'http') ? $project->image : asset('storage/' . $project->image) }}"
-                                    class="w-full h-full object-cover 
-                                   {{-- Match duration with parent for sync --}}
-                                   transform-gpu transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]
-                                   group-hover:scale-105 opacity-80 group-hover:opacity-100">
-                            @endif
-                            {{-- Gradient Overlay --}}
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-[#161618] via-transparent to-transparent opacity-60">
-                            </div>
-                        </div>
-
-                        {{-- Card Content --}}
-                        <div class="p-5 md:p-6 flex flex-col flex-grow relative z-10 bg-[#161618]">
-                            <div class="mb-4 flex items-center gap-3">
-                                <span class="text-orange-500 font-black text-[10px] uppercase tracking-widest">
-                                    {{ sprintf('%02d', $index + 1) }}
-                                </span>
-                                <div class="h-[1px] w-0 group-hover:w-8 bg-orange-500/50 transition-all duration-500">
-                                </div>
-                            </div>
-
-                            <h4
-                                class="text-xl md:text-2xl font-bold text-white mb-4 tracking-tighter group-hover:text-orange-500 transition-colors duration-500">
-                                {{ $project->title }}
-                            </h4>
-
-                            {{-- Bottom Link Indicator --}}
-                            <div class="flex items-center gap-3 mt-auto">
-                                <span
-                                    class="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 group-hover:text-orange-500 transition-colors duration-500">Discover</span>
-                                <div
-                                    class="h-[1px] flex-grow bg-white/5 group-hover:bg-orange-500/20 transition-colors duration-500">
-                                </div>
-                                <div
-                                    class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/30 
-                                    group-hover:bg-orange-500 group-hover:text-black group-hover:border-orange-500 
-                                    transform-gpu transition-all duration-500">
-                                    →
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+    {{-- 3. High-Contrast Filters --}}
+    <section class="relative z-10 px-6 md:px-20 mb-24">
+        <div class="max-w-[1440px] mx-auto">
+            <div class="flex flex-col lg:flex-row gap-0 border-y border-white/10">
+                {{-- Search --}}
+                <div class="flex-grow relative border-b lg:border-b-0 lg:border-r border-white/10 group">
+                    <input wire:model.live.debounce.300ms="search" type="text" placeholder="Filter by project name..."
+                        class="w-full pl-16 pr-8 py-10 bg-transparent text-2xl font-light text-white placeholder-white/10 focus:outline-none transition-all">
+                    <span class="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </span>
                 </div>
-            @endforeach
-        </div>
 
-        <div class="mt-14">
-            {{ $projects->links() }}
-        </div>
-
-        {{-- 4. Bottom Call-to-Action --}}
-        <section
-            class="mt-32 p-12 md:p-20 rounded-[60px] bg-white/5 border border-white/10 overflow-hidden relative text-center">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-orange-600/10 blur-[80px] -mr-32 -mt-32"></div>
-
-            <h3 class="text-3xl md:text-5xl font-black tracking-tighter text-white mb-8">Have a project in mind?</h3>
-            <a href="#contact" class="inline-flex items-center gap-6 group">
-                <div
-                    class="w-16 h-16 rounded-full bg-orange-500 flex items-center justify-center text-black text-xl transition-transform group-hover:scale-110">
-                    →
+                {{-- Category Filter --}}
+                <div class="relative min-w-[280px] border-b lg:border-b-0 lg:border-r border-white/10 group">
+                    <label class="absolute top-4 left-6 text-[8px] uppercase tracking-widest text-white/30">Category</label>
+                    <select wire:model.live="category"
+                        class="w-full appearance-none px-6 pt-10 pb-6 bg-transparent text-white focus:outline-none cursor-pointer uppercase text-xs font-bold tracking-widest">
+                        <option value="" class="bg-black">All Sectors</option>
+                        @foreach ($categories as $cat)
+                            <option value="{{ $cat }}" class="bg-black">{{ $cat }}</option>
+                        @endforeach
+                    </select>
                 </div>
-                <span
-                    class="text-xl md:text-2xl font-black text-white border-b-2 border-white/10 group-hover:border-orange-500 transition-all pb-1">Let's
-                    build it together</span>
-            </a>
-        </section>
+
+                {{-- Year Filter --}}
+                <div class="relative min-w-[180px] group">
+                    <label class="absolute top-4 left-6 text-[8px] uppercase tracking-widest text-white/30">Release</label>
+                    <select wire:model.live="year"
+                        class="w-full appearance-none px-6 pt-10 pb-6 bg-transparent text-white focus:outline-none cursor-pointer font-mono text-xs">
+                        <option value="" class="bg-black">All Years</option>
+                        @foreach ($years as $y)
+                            <option value="{{ $y }}" class="bg-black">{{ $y }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- 4. Projects Editorial Grid --}}
+    <main class="relative z-10 px-6 md:px-20 pb-40">
+        <div class="max-w-[1440px] mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+                @foreach ($projects as $index => $project)
+                    <div class="group">
+                        <a href="{{ route('works.show', $project->slug) }}" class="block">
+                            {{-- Image Component: B&W to Color Cinematic --}}
+                            <div class="relative aspect-[3/4] overflow-hidden bg-zinc-900 border border-white/5">
+                                @if ($project->image)
+                                    <img src="{{ Str::startsWith($project->image, 'http') ? $project->image : asset('storage/' . $project->image) }}"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-110 group-hover:scale-100 transition-all duration-[1.5s] ease-out">
+                                @endif
+                                
+                                {{-- Subtle Numbering Overlay --}}
+                                <div class="absolute top-8 left-8 mix-blend-difference">
+                                    <span class="text-xs font-mono text-white/40 group-hover:text-white transition-colors">
+                                        [{{ sprintf('%02d', $index + 1) }}]
+                                    </span>
+                                </div>
+
+                                {{-- View Project Prompt --}}
+                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-black/40 backdrop-blur-[2px]">
+                                    <span class="px-8 py-3 rounded-full border border-white text-[10px] font-black uppercase tracking-widest bg-white text-black">
+                                        View Case
+                                    </span>
+                                </div>
+                            </div>
+
+                            {{-- Project Meta --}}
+                            <div class="mt-8 flex justify-between items-start gap-4">
+                                <div>
+                                    <h4 class="text-3xl font-bold tracking-tighter text-white group-hover:text-white/60 transition-colors duration-500 mb-2">
+                                        {{ $project->title }}
+                                    </h4>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-white/30">{{ $project->category ?? 'Web Development' }}</span>
+                                        <span class="w-4 h-[1px] bg-white/10"></span>
+                                        <span class="text-[10px] font-mono text-white/20">{{ $project->year ?? '2026' }}</span>
+                                    </div>
+                                </div>
+                                <div class="pt-2">
+                                    <svg class="w-5 h-5 text-white/20 -rotate-45 group-hover:rotate-0 group-hover:text-white transition-all duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+
+            {{-- Custom Pagination Styling --}}
+            <div class="mt-32 pt-12 border-t border-white/5">
+                {{ $projects->links() }}
+            </div>
+        </div>
     </main>
 
+    {{-- 5. Footer CTA: Kinetic Typography --}}
+    <footer class="relative min-h-[70vh] flex flex-col items-center justify-center bg-white text-black rounded-t-[50px] md:rounded-t-[120px] px-6 text-center overflow-hidden">
+        <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] select-none pointer-events-none">
+            <span class="text-[35vw] font-black tracking-tighter uppercase">Next</span>
+        </div>
+
+        <div class="relative z-10">
+            <h3 class="text-xs font-black uppercase tracking-[0.6em] mb-12 opacity-40 italic underline underline-offset-8">Collaboration</h3>
+            <h2 class="text-6xl md:text-[8vw] font-black tracking-[calc(-0.05em)] leading-[0.9] mb-16">
+                Let's make it<br/>happen together.
+            </h2>
+            
+            <a href="#contact" class="group relative inline-flex items-center gap-8 px-12 py-6">
+                <span class="text-2xl md:text-4xl font-black uppercase tracking-tighter group-hover:pr-10 transition-all duration-700">
+                    Tell me about your project
+                </span>
+                <div class="w-16 h-16 rounded-full border border-black flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all duration-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+            </a>
+        </div>
+    </footer>
+
     <style>
-        /* Prevent image stretching in staggered grids if needed */
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
+        /* Editorial Typography Tweaks */
+        h1, h2, h3, h4 { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+        
+        /* Hide default scrollbar for a cleaner editorial look */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #070708; }
+        ::-webkit-scrollbar-thumb { background: #1a1a1c; }
+        ::-webkit-scrollbar-thumb:hover { background: #e5e5e5; }
+
+        /* Smooth reveal for pagination */
+        .pagination { @apply flex gap-2 font-mono text-[10px]; }
+        .page-item.active .page-link { @apply bg-white text-black border-white; }
+        .page-link { @apply border border-white/10 px-4 py-2 hover:bg-white hover:text-black transition-colors; }
     </style>
 
 </div>
