@@ -63,7 +63,7 @@ class Create extends Component
             'sort_order' => 'integer',
             'is_featured' => 'boolean',
             'is_archived' => 'boolean',
-            'coverImage' => 'nullable|image|max:10240', // 10MB Max
+            'coverImage' => 'nullable|file|mimes:jpeg,png,jpg,gif,mp4,webm,ogg,mov,avi,mkv|max:51200', // 50MB Max, allow video
             'mediaFiles.*' => 'nullable|file|max:51200', // Max 50MB per file
         ]);
 
@@ -110,7 +110,7 @@ class Create extends Component
         session()->flash('message', 'Project created successfully.');
         return redirect()->route('admin.projects');
     }
-    
+
     public function cancel()
     {
         return redirect()->route('admin.projects');

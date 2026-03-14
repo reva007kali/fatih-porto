@@ -114,13 +114,37 @@
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-4">
                                         <div
-                                            class="w-10 h-10 rounded-lg bg-[#0b0b0d] border border-white/10 overflow-hidden flex-shrink-0">
+                                            class="w-10 h-10 rounded-lg bg-[#0b0b0d] border border-white/10 overflow-hidden flex-shrink-0 group/img relative">
                                             @php
                                                 $displayImage = $project->cover_image ?? $project->image;
+                                                $ext = pathinfo($displayImage, PATHINFO_EXTENSION);
+                                                $isVideo = in_array(strtolower($ext), [
+                                                    'mp4',
+                                                    'webm',
+                                                    'ogg',
+                                                    'mov',
+                                                    'avi',
+                                                    'mkv',
+                                                ]);
                                             @endphp
                                             @if ($displayImage)
-                                                <img src="{{ asset('storage/' . $displayImage) }}"
-                                                    class="w-full h-full object-cover">
+                                                @if ($isVideo)
+                                                    <video src="{{ asset('storage/' . $displayImage) }}"
+                                                        class="w-full h-full object-cover" muted loop playsinline
+                                                        onmouseover="this.play(); setTimeout(() => this.pause(), 8000);"
+                                                        onmouseout="this.pause(); this.currentTime = 0;"></video>
+                                                    <div
+                                                        class="absolute inset-0 flex items-center justify-center pointer-events-none group-hover/img:hidden">
+                                                        <svg class="w-4 h-4 text-white/50" fill="currentColor"
+                                                            viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                                                        </svg>
+                                                    </div>
+                                                @else
+                                                    <img src="{{ asset('storage/' . $displayImage) }}"
+                                                        class="w-full h-full object-cover">
+                                                @endif
                                             @else
                                                 <div
                                                     class="w-full h-full flex items-center justify-center text-[8px] text-gray-600">
@@ -213,11 +237,11 @@
                     onEnd: function() {
                         let items = Array.from(el.querySelectorAll('.draggable-row')).map((row,
                             index) => {
-                                return {
-                                    id: row.getAttribute('data-id'),
-                                    order: index + 1
-                                };
-                            });
+                            return {
+                                id: row.getAttribute('data-id'),
+                                order: index + 1
+                            };
+                        });
                         @this.updateOrder(items);
                     },
                 });

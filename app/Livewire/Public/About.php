@@ -8,6 +8,7 @@ use App\Models\Education;
 use App\Models\Skill;
 use App\Models\Certification;
 use App\Models\Achievement;
+use App\Models\SocialLink;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
@@ -23,6 +24,7 @@ class About extends Component
             'skills' => Skill::orderBy('sort_order', 'asc')->orderBy('proficiency', 'desc')->get(),
             'certifications' => Certification::orderBy('sort_order', 'asc')->orderBy('created_at', 'desc')->get(),
             'achievements' => Achievement::orderBy('sort_order', 'asc')->orderBy('created_at', 'desc')->get(),
+            'social_links' => SocialLink::where('is_active', true)->orderBy('sort_order', 'asc')->get(),
         ]);
     }
 }

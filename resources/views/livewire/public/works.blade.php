@@ -2,7 +2,8 @@
     class="min-h-screen bg-[#070708] text-[#e5e5e5] antialiased selection:bg-orange-500 selection:text-white overflow-x-hidden">
 
     @section('meta_title', 'Selected Works | Reva Adhitya')
-    @section('meta_description', 'A collection of digital experiences built with precision, focusing on aesthetic impact
+    @section('meta_description',
+        'A collection of digital experiences built with precision, focusing on aesthetic impact
         and technical performance.')
     @section('meta_keywords', 'Works, Projects, Portfolio, Case Studies, Reva Adhitya')
 
@@ -191,12 +192,33 @@
                         <a href="{{ route('works.show', $project->slug) }}" class="block">
 
                             {{-- Image --}}
-                            <div
-                                class="relative aspect-[5/3] overflow-hidden bg-[#111] border border-white/[0.06] group-hover:border-orange-500/30 transition-colors duration-500">
+                            <div class="relative aspect-[5/3] overflow-hidden bg-[#111] border border-white/[0.06] group-hover:border-orange-500/30 transition-colors duration-500"
+                                onmouseenter="const v = this.querySelector('video'); if(v) { v.play(); this.timer = setTimeout(() => v.pause(), 8000); }"
+                                onmouseleave="const v = this.querySelector('video'); if(v) { clearTimeout(this.timer); v.pause(); v.currentTime = 0; }">
                                 @php $displayImage = $project->cover_image ?? $project->image; @endphp
                                 @if ($displayImage)
-                                    <img src="{{ Str::startsWith($displayImage, 'http') ? $displayImage : asset('storage/' . $displayImage) }}"
-                                        class="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-[1.5s] ease-out">
+                                    @php
+                                        $fileUrl = Str::startsWith($displayImage, 'http')
+                                            ? $displayImage
+                                            : asset('storage/' . $displayImage);
+                                        $ext = strtolower(pathinfo($displayImage, PATHINFO_EXTENSION));
+                                        $isVideo = in_array($ext, ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv']);
+                                    @endphp
+
+                                    @if ($isVideo)
+                                        <div
+                                            class="absolute top-3 right-3 z-20 w-6 h-6 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-full border border-white/10">
+                                            <svg class="w-3 h-3 text-white/80" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z" />
+                                            </svg>
+                                        </div>
+                                        <video src="{{ $fileUrl }}" muted loop playsinline
+                                            class="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-[1.5s] ease-out"></video>
+                                    @else
+                                        <img src="{{ $fileUrl }}"
+                                            class="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-[1.5s] ease-out">
+                                    @endif
                                 @endif
 
                                 {{-- Index --}}

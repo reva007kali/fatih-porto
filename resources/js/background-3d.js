@@ -1,6 +1,5 @@
 import * as THREE from "three";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import gsap from "gsap";
 
@@ -52,73 +51,80 @@ export function init3DBackground() {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.8;
+    renderer.toneMappingExposure = 0.8;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     container.appendChild(renderer.domElement);
 
     // --- ENVIRONMENT MAP ---
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
-    scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
-    scene.environmentIntensity = 2.0;
+    scene.environment = pmremGenerator.fromScene(
+        new RoomEnvironment(),
+        0.04,
+    ).texture;
+    scene.environmentIntensity = 0.5;
 
     // --- LIGHTS ---
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
-    const mainLight = new THREE.DirectionalLight(0xffffff, 4);
+    const mainLight = new THREE.DirectionalLight(0xffffff, 2);
     mainLight.position.set(5, 10, 7);
     mainLight.castShadow = true;
     scene.add(mainLight);
 
-    const pointLight = new THREE.PointLight(0xffffff, 50);
+    const pointLight = new THREE.PointLight(0xffffff, 10);
     pointLight.position.set(-5, 5, 5);
     scene.add(pointLight);
 
     // --- LOAD MODEL ---
-    const mtlLoader = new MTLLoader();
-    mtlLoader.load("", (materials) => {
-        materials.preload();
-        const loader = new OBJLoader();
-        loader.setMaterials(materials);
-        loader.load("/model.obj", (object) => {
-            activeModel = object;
-            activeModel.traverse((child) => {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                    if (child.material) child.material.envMapIntensity = 1.5;
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.load("/robot.glb", (gltf) => {
+        activeModel = gltf.scene;
+        activeModel.traverse((child) => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = false; // Disable receiveShadow to prevent self-shadowing artifacts
+                if (child.material) {
+                    child.material.envMapIntensity = 0.2; // Increase reflection intensity
+                    child.material.roughness = 0.3; // Decrease roughness for smoother surface
+                    child.material.metalness = 0; // Increase metalness for metallic look
                 }
-            });
-
-            activeModel.scale.set(1.6, 1.6, 1.6);
-            const box = new THREE.Box3().setFromObject(activeModel);
-            const center = box.getCenter(new THREE.Vector3());
-            activeModel.position.sub(center);
-
-            activeModel.position.set(0, 0, 8);
-            activeModel.rotation.set(0, 0, 0);
-
-            targetState.position.copy(activeModel.position);
-            targetState.rotation.copy(activeModel.rotation);
-
-            scene.add(activeModel);
+            }
         });
+
+        activeModel.scale.set(5, 5, 5);
+        const box = new THREE.Box3().setFromObject(activeModel);
+        const center = box.getCenter(new THREE.Vector3());
+        activeModel.position.sub(center);
+
+        activeModel.position.set(0, 0, 8);
+        activeModel.rotation.set(0, 0, 0);
+
+        targetState.position.copy(activeModel.position);
+        targetState.rotation.copy(activeModel.rotation);
+
+        scene.add(activeModel);
     });
 
     // --- CLICK TO TRIGGER LIVEWIRE ---
     const handleRobotClick = (event) => {
         raycaster.setFromCamera(mouse, camera);
         if (activeModel) {
-            const intersects = raycaster.intersectObjects(activeModel.children, true);
+            const intersects = raycaster.intersectObjects(
+                activeModel.children,
+                true,
+            );
             if (intersects.length > 0) {
-                const triggerBtn = document.querySelector('[wire\\:click="toggleChat"]');
+                const triggerBtn = document.querySelector(
+                    '[wire\\:click="toggleChat"]',
+                );
                 if (triggerBtn) {
                     triggerBtn.click();
                     gsap.to(activeModel.position, {
                         y: activeModel.position.y + 0.4,
                         duration: 0.1,
                         yoyo: true,
-                        repeat: 1
+                        repeat: 1,
                     });
                 }
             }
@@ -128,17 +134,51 @@ export function init3DBackground() {
 
     // --- SCROLL INTERACTION ---
     const sections = [
-        { id: "home", pos: { x: 0, y: 0, z: 8 }, rot: { x: 0, y: 0, z: 0 }},
-        { id: "works-swiper", pos: { x: 30, y: 1, z: -1 }, rot: { x: 0, y: -7.3, z: 0 }, text: "Here are some highlighted projects." },
-        { id: "websites-grid", pos: { x: -30, y: 2, z: 4 }, rot: { x: 0, y: 0.8, z: 0 }, text: "Explore these website designs." },
-        { id: "servicesHeader", pos: { x: 30, y: 2.5, z: 4 }, rot: { x: 0, y: -0.9, z: -0.2 }, text: "We offer specialized solutions." },
-        { id: "servicesScroll", pos: { x: 30, y: 2.5, z: 4 }, rot: { x: 0, y: -0.9, z: -0.2 }, text: "We offer specialized solutions." },
-        { id: "features", pos: { x: 0, y: 0, z: -8 }, rot: { x: 0, y: 0, z: 0 } },
-        { id: "about", pos: { x: -35, y: 0, z: -1 }, rot: { x: 0, y: 0.7, z: 0 }, text: "A little story about the journey." },
-        { id: "pricing", pos: { x: 0, y: 0, z: 20 }, rot: { x: 0, y: 0, z: 0 } },
-        { id: "testimonials", pos: { x: 30, y: 1, z: 0 }, rot: { x: 0, y: -0.8, z: 0 }},
-        { id: "contact", pos: { x: -15, y: -4, z: 30 }, rot: { x: 0, y: 7.3, z: 0 } },
-        { id: "footer", pos: { x: 35, y: -4, z: 0 }, rot: { x: 0, y: -0.8, z: 0 }, text: "Thanks for visiting!" },
+        { id: "home", pos: { x: 0, y: 0, z: 8 }, rot: { x: 0, y: 0, z: 0 } },
+        {
+            id: "works",
+            pos: { x: 30, y: 1, z: -1 },
+            rot: { x: 0, y: -7.3, z: 0 },
+            text: "Here are some highlighted projects.",
+        },
+        {
+            id: "websites",
+            pos: { x: -30, y: 2, z: 4 },
+            rot: { x: 0, y: 0.8, z: 0 },
+            text: "Explore these website designs.",
+        },
+        {
+            id: "services",
+            pos: { x: 30, y: 2.5, z: 4 },
+            rot: { x: 0, y: -0.9, z: -0.2 },
+            text: "We offer specialized solutions.",
+        },
+        {
+            id: "features",
+            pos: { x: 0, y: 0, z: -8 },
+            rot: { x: 0, y: 0, z: 0 },
+        },
+        {
+            id: "about",
+            pos: { x: -35, y: 0, z: -1 },
+            rot: { x: 0, y: 0.7, z: 0 },
+            text: "A little story about the journey.",
+        },
+        {
+            id: "pricing",
+            pos: { x: 0, y: 0, z: 20 },
+            rot: { x: 0, y: 0, z: 0 },
+        },
+        {
+            id: "testimonials",
+            pos: { x: 30, y: 1, z: 0 },
+            rot: { x: 0, y: -0.8, z: 0 },
+        },
+        {
+            id: "contact",
+            pos: { x: -15, y: -4, z: 30 },
+            rot: { x: 0, y: 7.3, z: 0 },
+        },
     ];
 
     const bubbleEl = document.getElementById("robot-bubble");
@@ -147,17 +187,17 @@ export function init3DBackground() {
     // Fungsi Update Posisi UI (Bubble & Tooltip)
     const updateUIElementsPosition = () => {
         if (!activeModel || !camera) return;
-        
+
         const vector = new THREE.Vector3();
         activeModel.getWorldPosition(vector);
-        
+
         // Simpan posisi world untuk tooltip (lebih tinggi sedikit dari bubble)
         const tooltipVector = vector.clone();
-        tooltipVector.y += 2.2; 
-        
+        tooltipVector.y += 2.2;
+
         // Posisi untuk bubble chat
         vector.y += 1.8;
-        
+
         vector.project(camera);
         tooltipVector.project(camera);
 
@@ -178,36 +218,50 @@ export function init3DBackground() {
         }
     };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting && activeModel) {
-                const config = sections.find((s) => s.id === entry.target.id);
-                if (config) {
-                    gsap.to(targetState.position, { ...config.pos, duration: 2, ease: "power2.inOut" });
-                    gsap.to(targetState.rotation, { ...config.rot, duration: 2, ease: "power2.inOut" });
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting && activeModel) {
+                    const config = sections.find(
+                        (s) => s.id === entry.target.id,
+                    );
+                    if (config) {
+                        gsap.to(targetState.position, {
+                            ...config.pos,
+                            duration: 2,
+                            ease: "power2.inOut",
+                        });
+                        gsap.to(targetState.rotation, {
+                            ...config.rot,
+                            duration: 2,
+                            ease: "power2.inOut",
+                        });
 
-                    if (bubbleEl && bubbleText && config.text) {
-                        if (bubbleText.innerText !== config.text) {
+                        if (bubbleEl && bubbleText && config.text) {
+                            if (bubbleText.innerText !== config.text) {
+                                bubbleEl.style.opacity = "0";
+                                setTimeout(() => {
+                                    bubbleText.innerText = config.text;
+                                    bubbleEl.style.opacity = "1";
+                                }, 300);
+                            }
+                        } else if (bubbleEl) {
                             bubbleEl.style.opacity = "0";
-                            setTimeout(() => {
-                                bubbleText.innerText = config.text;
-                                bubbleEl.style.opacity = "1";
-                            }, 300);
                         }
-                    } else if (bubbleEl) {
-                        bubbleEl.style.opacity = "0";
                     }
                 }
-            }
-        });
-    }, { threshold: 0.2 });
+            });
+        },
+        { threshold: 0.2 },
+    );
 
     sections.forEach((s) => {
         const el = document.getElementById(s.id);
         if (el) observer.observe(el);
     });
 
-    let rawMouseX = 0, rawMouseY = 0;
+    let rawMouseX = 0,
+        rawMouseY = 0;
     window.addEventListener("mousemove", (e) => {
         rawMouseX = (e.clientX - window.innerWidth / 2) * 0.008;
         rawMouseY = (e.clientY - window.innerHeight / 2) * 0.008;
@@ -220,8 +274,11 @@ export function init3DBackground() {
         if (activeModel) {
             // Hover Logic for Cursor & Tooltip
             raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(activeModel.children, true);
-            
+            const intersects = raycaster.intersectObjects(
+                activeModel.children,
+                true,
+            );
+
             if (intersects.length > 0) {
                 document.body.style.cursor = "pointer";
                 tooltipEl?.classList.add("robot-tooltip-visible");
@@ -234,14 +291,23 @@ export function init3DBackground() {
 
             const time = Date.now() * 0.001;
             const bobY = Math.sin(time * 1.5) * 0.15;
-            
-            activeModel.position.x = targetState.position.x + Math.sin(time * 0.8) * 0.1;
-            activeModel.position.y = targetState.position.y + bobY;
-            activeModel.position.z = targetState.position.z + Math.cos(time * 0.5) * 0.1;
 
-            activeModel.rotation.x = targetState.rotation.x + Math.sin(time * 1.2) * 0.05 + rawMouseY * 0.1;
-            activeModel.rotation.y = targetState.rotation.y + Math.cos(time * 0.9) * 0.05 + rawMouseX * 0.1;
-            activeModel.rotation.z = targetState.rotation.z + Math.sin(time * 0.7) * 0.02;
+            activeModel.position.x =
+                targetState.position.x + Math.sin(time * 0.8) * 0.1;
+            activeModel.position.y = targetState.position.y + bobY;
+            activeModel.position.z =
+                targetState.position.z + Math.cos(time * 0.5) * 0.1;
+
+            activeModel.rotation.x =
+                targetState.rotation.x +
+                Math.sin(time * 1.2) * 0.05 +
+                rawMouseY * 0.1;
+            activeModel.rotation.y =
+                targetState.rotation.y +
+                Math.cos(time * 0.9) * 0.05 +
+                rawMouseX * 0.1;
+            activeModel.rotation.z =
+                targetState.rotation.z + Math.sin(time * 0.7) * 0.02;
         }
         renderer.render(scene, camera);
         updateUIElementsPosition();

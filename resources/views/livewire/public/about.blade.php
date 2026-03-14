@@ -47,17 +47,29 @@
         ══════════════════════════ --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
 
-            {{-- [1] Portrait — tall left card --}}
-            <div
-                class="sm:col-span-1 lg:col-span-4 lg:row-span-2 border border-white/[0.06] bg-[#0d0d0e] overflow-hidden group relative">
+            {{-- [1] Bio prose --}}
+            <div class="lg:col-span-8 border border-white/[0.06] bg-[#0d0d0e] p-8 md:p-10">
+                <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 mb-6">Biography</p>
+                <div
+                    class="prose prose-invert prose-sm max-w-none
+                            prose-p:text-white/50 prose-p:leading-relaxed prose-p:text-base prose-p:mb-4
+                            prose-strong:text-orange-400 prose-strong:font-bold
+                            prose-headings:text-white prose-headings:font-black prose-headings:tracking-tighter
+                            prose-a:text-orange-400 prose-a:no-underline hover:prose-a:text-orange-300">
+                    {!! $about->content !!}
+                </div>
+            </div>
+
+            {{-- [2] Portrait --}}
+            <div class="lg:col-span-4 border border-white/[0.06] bg-[#0d0d0e] overflow-hidden group relative">
                 <div
                     class="absolute inset-0 bg-black/40 z-20 transition-transform duration-1000 group-hover:translate-y-full">
                 </div>
                 @if ($about->image)
                     <img src="{{ asset('storage/' . $about->image) }}"
-                        class="w-full object-cover object-top grayscale group-hover:grayscale-0 scale-110 group-hover:scale-100 transition-all duration-[2s] aspect-[3/4]">
+                        class="w-full object-cover object-top grayscale group-hover:grayscale-0 scale-110 group-hover:scale-100 transition-all duration-[2s] aspect-square md:aspect-[4/5]">
                 @else
-                    <div class="w-full aspect-[3/4] flex items-center justify-center bg-[#111]">
+                    <div class="w-full aspect-square md:aspect-[4/5] flex items-center justify-center bg-[#111]">
                         <span class="text-8xl font-black text-white/5"
                             style="font-family:'Bebas Neue',sans-serif;">RA</span>
                     </div>
@@ -70,13 +82,14 @@
                         style="font-family:'Bebas Neue',sans-serif;">Revaldy Adhitya</p>
                 </div>
             </div>
-            {{-- [2] Quote card --}}
+
+            {{-- [3] Quote card --}}
             <div
-                class="sm:col-span-1 lg:col-span-5 border border-white/[0.06] bg-[#0d0d0e] p-8 md:p-10 flex flex-col justify-between">
+                class="lg:col-span-6 border border-white/[0.06] bg-[#0d0d0e] p-8 md:p-10 flex flex-col justify-between">
                 <div class="text-orange-500/30 text-6xl font-black leading-none mb-4"
                     style="font-family:Georgia,serif;">"</div>
                 <p class="text-xl md:text-2xl text-white/80 font-light leading-snug tracking-tight italic flex-1">
-                    {{ $about->description ?? 'Design is logic made visible.' }}
+                    {{ $about->motto ?? ($about->description ?? 'Design is logic made visible.') }}
                 </p>
                 <div class="mt-8 pt-6 border-t border-white/[0.06] flex items-center gap-3">
                     <div class="w-6 h-px bg-orange-500"></div>
@@ -84,7 +97,7 @@
                 </div>
             </div>
 
-            {{-- [3] Status / availability chip --}}
+            {{-- [4] Status / availability chip --}}
             <div
                 class="lg:col-span-3 border border-orange-500/20 bg-orange-500/[0.04] p-8 flex flex-col justify-between">
                 <div class="relative flex h-2.5 w-2.5 mb-auto">
@@ -96,20 +109,7 @@
                     <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-orange-400/60 mb-2">Current Status
                     </p>
                     <p class="text-2xl font-black text-white leading-tight"
-                        style="font-family:'Bebas Neue',sans-serif;">Available<br>for Work</p>
-                </div>
-            </div>
-
-            {{-- [4] Bio prose --}}
-            <div class="lg:col-span-5 border border-white/[0.06] bg-[#0d0d0e] p-8 md:p-10">
-                <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 mb-6">Biography</p>
-                <div
-                    class="prose prose-invert prose-sm max-w-none
-                            prose-p:text-white/50 prose-p:leading-relaxed prose-p:text-base prose-p:mb-4
-                            prose-strong:text-orange-400 prose-strong:font-bold
-                            prose-headings:text-white prose-headings:font-black prose-headings:tracking-tighter
-                            prose-a:text-orange-400 prose-a:no-underline hover:prose-a:text-orange-300">
-                    {!! $about->content !!}
+                        style="font-family:'Bebas Neue',sans-serif;">{!! nl2br(e($about->availability_status ?? 'Available for Work')) !!}</p>
                 </div>
             </div>
 
@@ -117,16 +117,34 @@
             <div class="lg:col-span-3 border border-white/[0.06] bg-[#0d0d0e] p-8 flex flex-col justify-between">
                 <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 mb-8">Connect</p>
                 <div class="space-y-5">
-                    @foreach (['LinkedIn', 'Twitter', 'GitHub'] as $social)
-                        <a href="#"
-                            class="group/s flex items-center justify-between border-b border-white/[0.06] pb-5 last:border-0 last:pb-0">
+                    @if ($about->cv_file)
+                        <a href="{{ asset('storage/' . $about->cv_file) }}" target="_blank"
+                            class="group/s flex items-center justify-between border-b border-white/[0.06] pb-5">
                             <span
-                                class="text-sm font-bold text-white/50 group-hover/s:text-white transition-colors duration-300">{{ $social }}</span>
-                            <svg class="w-3.5 h-3.5 text-white/20 group-hover/s:text-orange-500 group-hover/s:translate-x-0.5 group-hover/s:-translate-y-0.5 transition-all duration-200"
+                                class="text-sm font-bold text-orange-500 group-hover/s:text-orange-400 transition-colors duration-300">Download
+                                CV</span>
+                            <svg class="w-4 h-4 text-orange-500 group-hover/s:translate-y-0.5 transition-all duration-200"
                                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M7.5 12l4.5 4.5m0 0l4.5-4.5m-4.5 4.5v-9" />
                             </svg>
+                        </a>
+                    @endif
+                    @foreach ($social_links as $link)
+                        <a href="{{ $link->url }}" target="_blank"
+                            class="group/s flex items-center justify-between border-b border-white/[0.06] pb-5 last:border-0 last:pb-0">
+                            <span
+                                class="text-sm font-bold text-white/50 group-hover/s:text-white transition-colors duration-300">{{ $link->platform }}</span>
+                            @if ($link->icon)
+                                <img src="{{ asset('storage/' . $link->icon) }}"
+                                    class="w-3.5 h-3.5 object-contain opacity-20 group-hover/s:opacity-100 group-hover/s:brightness-0 group-hover/s:invert transition-all duration-200">
+                            @else
+                                <svg class="w-3.5 h-3.5 text-white/20 group-hover/s:text-orange-500 group-hover/s:translate-x-0.5 group-hover/s:-translate-y-0.5 transition-all duration-200"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                                </svg>
+                            @endif
                         </a>
                     @endforeach
                 </div>
@@ -232,6 +250,58 @@
                                     <p class="text-sm text-white/40 leading-relaxed font-light">
                                         {{ $item->description }}</p>
                                 </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            {{-- [10] Certifications --}}
+            @if ($certifications->count() > 0)
+                <div class="sm:col-span-2 lg:col-span-6 border border-white/[0.06] bg-[#0d0d0e] p-8 md:p-10">
+                    <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 mb-8">Certifications</p>
+                    <div class="space-y-6">
+                        @foreach ($certifications as $item)
+                            <div
+                                class="group/c flex items-start justify-between border-b border-white/[0.06] pb-6 last:border-0 last:pb-0">
+                                <div>
+                                    <h4
+                                        class="text-base font-bold text-white/80 group-hover/c:text-white transition-colors">
+                                        {{ $item->name }}</h4>
+                                    <p class="text-xs text-white/40 mt-1">{{ $item->issuer }} <span
+                                            class="mx-1">•</span> {{ $item->date }}</p>
+                                </div>
+                                @if ($item->link)
+                                    <a href="{{ $item->link }}" target="_blank"
+                                        class="text-orange-500 hover:text-orange-400 transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            {{-- [11] Achievements --}}
+            @if ($achievements->count() > 0)
+                <div class="sm:col-span-2 lg:col-span-6 border border-white/[0.06] bg-[#0d0d0e] p-8 md:p-10">
+                    <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 mb-8">Achievements</p>
+                    <div class="space-y-6">
+                        @foreach ($achievements as $item)
+                            <div
+                                class="group/a border-l-2 border-white/10 pl-6 hover:border-orange-500 transition-colors duration-300">
+                                <h4
+                                    class="text-base font-bold text-white/80 group-hover/a:text-white transition-colors">
+                                    {{ $item->title }}</h4>
+                                <p class="text-xs text-white/40 mt-1 mb-2">{{ $item->date }}</p>
+                                <p class="text-sm text-white/50 font-light leading-relaxed">{{ $item->description }}
+                                </p>
                             </div>
                         @endforeach
                     </div>

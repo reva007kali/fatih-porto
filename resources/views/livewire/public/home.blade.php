@@ -1,114 +1,128 @@
 <div class="w-full bg-[#0a0a0a] text-white overflow-x-hidden relative" x-data="{ loading: true }" x-init="setTimeout(() => { loading = false }, 1600)">
 
     <div x-show="loading" x-transition:leave="transition duration-700 cubic-bezier(0.4, 0, 0.2, 1)"
-    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-    class="fixed inset-0 z-[9999] bg-[#070708] flex flex-col items-center justify-center overflow-hidden"
-    style="display:flex;">
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-[9999] bg-[#070708] flex flex-col items-center justify-center overflow-hidden"
+        style="display:flex;">
 
-    {{-- Center content --}}
-    <div class="relative w-full max-w-[1000px] mx-auto px-8 md:px-16 flex flex-col gap-10">
+        {{-- Center content --}}
+        <div class="relative w-full max-w-[1000px] mx-auto px-8 md:px-16 flex flex-col gap-10">
 
-        {{-- Eyebrow --}}
-        <p class="text-[10px] font-bold uppercase tracking-[0.7em] text-white/25"
-            style="animation: fadeUp 0.6s ease forwards; opacity:0; animation-delay:0.1s;">
-            Initializing Portfolio
-        </p>
+            {{-- Eyebrow --}}
+            <p class="text-[10px] font-bold uppercase tracking-[0.7em] text-white/25"
+                style="animation: fadeUp 0.6s ease forwards; opacity:0; animation-delay:0.1s;">
+                Initializing Portfolio
+            </p>
 
-        {{-- Big name --}}
-        <h1 class="font-black uppercase leading-none tracking-[-0.04em] text-[clamp(4rem,16vw,12rem)]"
-            style="font-family:'Bebas Neue','Arial Black',sans-serif;
+            {{-- Big name --}}
+            <h1 class="font-black uppercase leading-none tracking-[-0.04em] text-[clamp(4rem,16vw,12rem)]"
+                style="font-family:'Bebas Neue','Arial Black',sans-serif;
                    background: linear-gradient(135deg, #ffffff 0%, #f97316 55%, #fbbf24 100%);
                    -webkit-background-clip: text;
                    -webkit-text-fill-color: transparent;
                    background-clip: text;
                    animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
                    opacity:0; animation-delay:0.25s;">
-            Revaldy<br>Adhitya
-        </h1>
+                Revaldy<br>Adhitya
+            </h1>
 
-        {{-- Progress track --}}
-        <div style="animation: fadeUp 0.6s ease forwards; opacity:0; animation-delay:0.4s;">
+            {{-- Progress track --}}
+            <div style="animation: fadeUp 0.6s ease forwards; opacity:0; animation-delay:0.4s;">
 
-            {{-- Track --}}
-            <div class="relative w-full h-[3px] bg-white/[0.06]">
-                {{-- Fill --}}
-                <div id="loader-bar"
-                    class="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-600 via-orange-400 to-amber-400"
-                    style="width:0%; transition: width 0.1s linear;">
+                {{-- Track --}}
+                <div class="relative w-full h-[3px] bg-white/[0.06]">
+                    {{-- Fill --}}
+                    <div id="loader-bar"
+                        class="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-600 via-orange-400 to-amber-400"
+                        style="width:0%; transition: width 0.1s linear;">
+                    </div>
+                    {{-- Glowing tip --}}
+                    <div id="loader-tip"
+                        class="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-orange-400 -translate-x-1/2"
+                        style="left:0%; box-shadow: 0 0 12px 4px rgba(249,115,22,0.8); transition: left 0.1s linear;">
+                    </div>
                 </div>
-                {{-- Glowing tip --}}
-                <div id="loader-tip"
-                    class="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-orange-400 -translate-x-1/2"
-                    style="left:0%; box-shadow: 0 0 12px 4px rgba(249,115,22,0.8); transition: left 0.1s linear;">
+
+                {{-- Percent + label row --}}
+                <div class="flex items-center justify-between mt-4">
+                    <span class="text-[9px] font-mono text-white/20 tracking-[0.3em] uppercase">Loading assets</span>
+                    <span id="loader-pct"
+                        class="text-[11px] font-mono font-bold text-orange-400 tracking-[0.1em]">0%</span>
                 </div>
             </div>
 
-            {{-- Percent + label row --}}
-            <div class="flex items-center justify-between mt-4">
-                <span class="text-[9px] font-mono text-white/20 tracking-[0.3em] uppercase">Loading assets</span>
-                <span id="loader-pct" class="text-[11px] font-mono font-bold text-orange-400 tracking-[0.1em]">0%</span>
-            </div>
+            {{-- Year --}}
+            <span class="font-mono text-[9px] text-white/15 tracking-[0.4em]"
+                style="animation: fadeUp 0.6s ease forwards; opacity:0; animation-delay:0.55s;">
+                © 2026
+            </span>
+
         </div>
-
-        {{-- Year --}}
-        <span class="font-mono text-[9px] text-white/15 tracking-[0.4em]"
-            style="animation: fadeUp 0.6s ease forwards; opacity:0; animation-delay:0.55s;">
-            © 2026
-        </span>
 
     </div>
 
-</div>
+    <style>
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
 
-<style>
-    @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(12px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-</style>
-
-<script>
-(function () {
-    let pct    = 0;
-    let animId = null;
-
-    function ease(t) {
-        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-    }
-
-    function update() {
-        const bar  = document.getElementById('loader-bar');
-        const tip  = document.getElementById('loader-tip');
-        const label= document.getElementById('loader-pct');
-        if (!bar || !tip || !label) return;
-
-        const speed = pct < 70 ? 0.55 : pct < 90 ? 0.22 : 0.08;
-        pct = Math.min(pct + speed, 100);
-
-        bar.style.width   = pct + '%';
-        tip.style.left    = pct + '%';
-        label.textContent = Math.floor(pct) + '%';
-
-        if (pct < 100) {
-            animId = requestAnimationFrame(update);
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-    }
+    </style>
 
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => requestAnimationFrame(update), 500);
+    <script>
+        (function() {
+            let pct = 0;
+            let animId = null;
 
-        const loader = document.querySelector('[x-show="loading"]');
-        if (loader) {
-            new MutationObserver((_, obs) => {
-                if (loader.style.display === 'none') {
-                    cancelAnimationFrame(animId);
-                    obs.disconnect();
+            function ease(t) {
+                return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            }
+
+            function update() {
+                const bar = document.getElementById('loader-bar');
+                const tip = document.getElementById('loader-tip');
+                const label = document.getElementById('loader-pct');
+                if (!bar || !tip || !label) return;
+
+                const speed = pct < 70 ? 0.55 : pct < 90 ? 0.22 : 0.08;
+                pct = Math.min(pct + speed, 100);
+
+                bar.style.width = pct + '%';
+                tip.style.left = pct + '%';
+                label.textContent = Math.floor(pct) + '%';
+
+                if (pct < 100) {
+                    animId = requestAnimationFrame(update);
                 }
-            }).observe(loader, { attributes: true, attributeFilter: ['style'] });
-        }
-    });
-})();
-</script>
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => requestAnimationFrame(update), 500);
+
+                const loader = document.querySelector('[x-show="loading"]');
+                if (loader) {
+                    new MutationObserver((_, obs) => {
+                        if (loader.style.display === 'none') {
+                            cancelAnimationFrame(animId);
+                            obs.disconnect();
+                        }
+                    }).observe(loader, {
+                        attributes: true,
+                        attributeFilter: ['style']
+                    });
+                }
+            });
+        })();
+    </script>
+
+    <div id="canvas-container" class="fixed inset-0 z-[20] pointer-events-none md:block hidden"></div>
+
 
 
     {{-- ══════════════════════════════════════
@@ -231,7 +245,7 @@
                         </svg>
                     </a>
 
-                    <a href="/cv.pdf" download
+                    <a href="{{ $about->cv_file ? asset('storage/' . $about->cv_file) : '#' }}" download
                         class="group inline-flex items-center gap-3 px-7 py-4 border border-white/15 text-white/60
                                text-[11px] font-bold uppercase tracking-[0.2em]
                                hover:border-white/50 hover:text-white active:scale-95 transition-all duration-300">
@@ -327,7 +341,9 @@
                                     class="group flex flex-col h-full">
 
                                     {{-- Image --}}
-                                    <div class="relative overflow-hidden aspect-[5/3] mb-5 bg-[#111]">
+                                    <div class="relative overflow-hidden aspect-[5/3] mb-5 bg-[#111]"
+                                        onmouseenter="const v = this.querySelector('video'); if(v) { v.play(); this.timer = setTimeout(() => v.pause(), 8000); }"
+                                        onmouseleave="const v = this.querySelector('video'); if(v) { clearTimeout(this.timer); v.pause(); v.currentTime = 0; }">
                                         @php
                                             $displayImage = $project->cover_image ?? $project->image;
                                         @endphp
@@ -340,7 +356,14 @@
                                                 $isVideo = in_array($ext, ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv']);
                                             @endphp
                                             @if ($isVideo)
-                                                <video src="{{ $fileUrl }}" muted loop playsinline autoplay
+                                                <div
+                                                    class="absolute top-3 right-3 z-20 w-6 h-6 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-full border border-white/10">
+                                                    <svg class="w-3 h-3 text-white/80" fill="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z" />
+                                                    </svg>
+                                                </div>
+                                                <video src="{{ $fileUrl }}" muted loop playsinline
                                                     class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"></video>
                                             @else
                                                 <img src="{{ $fileUrl }}"
@@ -1181,6 +1204,16 @@
     ══════════════════════════════════════ --}}
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+        .robot-tooltip-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .robot-tooltip-visible {
+            opacity: 1;
+            visibility: visible;
+        }
 
 
         @keyframes slideUp {

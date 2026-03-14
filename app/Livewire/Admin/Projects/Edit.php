@@ -89,7 +89,7 @@ class Edit extends Component
             'sort_order' => 'integer',
             'is_featured' => 'boolean',
             'is_archived' => 'boolean',
-            'coverImage' => 'nullable|image|max:10240',
+            'coverImage' => 'nullable|file|mimes:jpeg,png,jpg,gif,mp4,webm,ogg,mov,avi,mkv|max:51200', // 50MB Max, allow video
             'mediaFiles.*' => 'nullable|file|max:51200',
         ]);
 
@@ -133,10 +133,10 @@ class Edit extends Component
 
             // If project has no main image/cover, set this new file as main
             if (!$project->cover_image && $index === 0) {
-                 $project->update([
-                     'image' => $path,
-                     'cover_image' => $path
-                 ]);
+                $project->update([
+                    'image' => $path,
+                    'cover_image' => $path
+                ]);
             }
         }
 
@@ -156,7 +156,7 @@ class Edit extends Component
     public function deleteMedia($mediaId)
     {
         $media = ProjectMedia::findOrFail($mediaId);
-        
+
         // Delete file from storage
         if ($media->file_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($media->file_path)) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($media->file_path);
@@ -165,19 +165,19 @@ class Edit extends Component
         // Check if this was the main image for the project
         $project = Project::findOrFail($this->projectId);
         if ($project->cover_image === $media->file_path) {
-             $project->update([
-                 'image' => null,
-                 'cover_image' => null
-             ]);
-             
-             // Try to set another media as main if available
-             $nextMedia = $project->media()->where('id', '!=', $mediaId)->where('file_type', 'image')->first();
-             if ($nextMedia) {
-                 $project->update([
-                     'image' => $nextMedia->file_path,
-                     'cover_image' => $nextMedia->file_path
-                 ]);
-             }
+            $project->update([
+                'image' => null,
+                'cover_image' => null
+            ]);
+
+            // Try to set another media as main if available
+            $nextMedia = $project->media()->where('id', '!=', $mediaId)->where('file_type', 'image')->first();
+            if ($nextMedia) {
+                $project->update([
+                    'image' => $nextMedia->file_path,
+                    'cover_image' => $nextMedia->file_path
+                ]);
+            }
         }
 
         $media->delete();
@@ -187,7 +187,7 @@ class Edit extends Component
             $this->existingMedia = Project::findOrFail($this->projectId)->media;
         }
     }
-    
+
     public function cancel()
     {
         return redirect()->route('admin.projects');

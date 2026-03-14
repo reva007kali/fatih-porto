@@ -21,10 +21,14 @@ class About extends Component
     // About Section
     public $title;
     public $description;
+    public $motto; // New
     public $content;
     public $location;
     public $image;
     public $currentImage;
+    public $cv_file; // New
+    public $currentCvFile; // New
+    public $availability_status = 'Available for Work'; // New
     public $button_text;
     public $button_link;
 
@@ -75,9 +79,12 @@ class About extends Component
         if ($about) {
             $this->title = $about->title;
             $this->description = $about->description;
+            $this->motto = $about->motto;
             $this->content = $about->content;
             $this->location = $about->location;
             $this->currentImage = $about->image;
+            $this->currentCvFile = $about->cv_file;
+            $this->availability_status = $about->availability_status;
             $this->button_text = $about->button_text;
             $this->button_link = $about->button_link;
         }
@@ -88,7 +95,7 @@ class About extends Component
         $this->validate(['quillFile' => 'file|max:51200']); // 50MB Max
         $path = $this->handleFileUpload($this->quillFile, 'quill-uploads');
         $url = \Illuminate\Support\Facades\Storage::disk('public')->url($path);
-        
+
         $mime = $this->quillFile->getMimeType();
         $type = str_starts_with($mime, 'image') ? 'image' : 'video';
 
@@ -100,26 +107,39 @@ class About extends Component
         $this->validate([
             'title' => 'nullable|string',
             'description' => 'nullable|string',
+            'motto' => 'nullable|string',
             'content' => 'nullable|string',
             'location' => 'nullable|string',
             'image' => 'nullable|image|max:10240',
+            'cv_file' => 'nullable|file|mimes:pdf|max:10240',
+            'availability_status' => 'nullable|string',
             'button_text' => 'nullable|string',
             'button_link' => 'nullable|string',
         ]);
 
         $about = AboutSection::first();
         $imagePath = $this->currentImage;
+        $cvPath = $this->currentCvFile;
 
         if ($this->image) {
             $imagePath = $this->handleFileUpload($this->image, 'about');
         }
 
+        if ($this->cv_file) {
+            $extension = $this->cv_file->getClientOriginalExtension();
+            $filename = 'CV-' . date('dmY') . '.' . $extension;
+            $cvPath = $this->cv_file->storeAs('about/cv', $filename, 'public');
+        }
+
         $data = [
             'title' => $this->title,
             'description' => $this->description,
+            'motto' => $this->motto,
             'content' => $this->content,
             'location' => $this->location,
             'image' => $imagePath,
+            'cv_file' => $cvPath,
+            'availability_status' => $this->availability_status,
             'button_text' => $this->button_text,
             'button_link' => $this->button_link,
         ];
@@ -132,7 +152,9 @@ class About extends Component
 
         // Reset the file input
         $this->image = null;
+        $this->cv_file = null;
         $this->currentImage = $imagePath;
+        $this->currentCvFile = $cvPath;
 
         session()->flash('message', 'About section updated successfully.');
     }
