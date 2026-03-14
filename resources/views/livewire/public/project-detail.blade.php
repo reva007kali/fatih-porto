@@ -1,197 +1,244 @@
-<div class="min-h-screen bg-[#070708] text-[#e5e5e5] antialiased selection:bg-white selection:text-black">
+<div class="min-h-screen bg-[#070708] text-[#e5e5e5] antialiased selection:bg-orange-500 selection:text-white">
 
     @section('meta_title', $project->title . ' | Reva Adhitya')
     @section('meta_description', Str::limit(strip_tags($project->description), 160))
     @section('meta_keywords', 'Project, ' . $project->category . ', ' . $project->title . ', Reva Adhitya')
-    @php
-        $displayImage = $project->cover_image ?? $project->image;
-    @endphp
+    @php $displayImage = $project->cover_image ?? $project->image; @endphp
     @if ($displayImage)
         @section('meta_image', asset('storage/' . $displayImage))
     @endif
 
-    {{-- 1. Minimalist Back Button --}}
-    <div class="fixed bottom-8 left-6 md:left-12 z-[100]">
+    {{-- Back button --}}
+    <div class="fixed bottom-8 left-6 md:left-10 z-[100]">
         <button type="button" x-on:click="window.history.back()"
-            class="group flex items-center gap-4 bg-transparent focus:outline-none">
-            <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path>
-                </svg>
-            </div>
+            class="group w-12 h-12 rounded-full border border-white/10 flex items-center justify-center
+                   hover:bg-orange-500 hover:border-orange-500 transition-all duration-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/>
+            </svg>
         </button>
     </div>
 
-    {{-- 2. Massive Editorial Hero --}}
-    <header class="relative pt-40 pb-20 px-6 md:px-12 max-w-[1440px] mx-auto overflow-hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
-            <div class="lg:col-span-8">
-                <div class="flex items-center gap-4 mb-8">
-                    <span class="font-mono text-xs text-orange-500 tracking-tighter">// PROJECT_{{ sprintf('%03d', $project->id) }}</span>
-                    <div class="h-[1px] w-12 bg-white/20"></div>
-                </div>
-                <h1 class="text-[12vw] md:text-[9vw] font-black tracking-[calc(-0.06em)] leading-[0.85] text-white uppercase italic">
-                    {{ $project->title }}<span class="text-orange-500">.</span>
-                </h1>
-            </div>
-            <div class="lg:col-span-4">
-                <p class="text-xl text-white/40 leading-relaxed font-light mb-8">
-                    {{ Str::limit(strip_tags($project->description), 180) }}
-                </p>
-            </div>
+    {{-- Page header --}}
+    <header class="max-w-[1400px] mx-auto px-5 md:px-10 pt-32 pb-10">
+        <div class="flex items-center gap-4 mb-6">
+            <div class="w-1.5 h-1.5 rounded-full bg-orange-500"></div>
+            <span class="font-mono text-[9px] text-orange-500/70 tracking-[0.3em] uppercase">
+                Project_{{ sprintf('%03d', $project->id) }}
+            </span>
+            <div class="h-px w-10 bg-white/10"></div>
+            <span class="text-[9px] uppercase tracking-[0.3em] text-white/20">{{ $project->category ?? 'Development' }}</span>
         </div>
-
-        {{-- Cinematic Main Image --}}
-        <div class="mt-20 relative aspect-video md:aspect-[21/9] overflow-hidden rounded-sm border border-white/5">
-            @if ($displayImage)
-                <img id="hero-image" src="{{ asset('storage/' . $displayImage) }}"
-                    class="w-full h-full object-cover grayscale brightness-75 transition-all duration-700">
-            @endif
-            <div class="absolute inset-0 bg-gradient-to-t from-[#070708] via-transparent to-transparent"></div>
-        </div>
+        <h1 class="text-[clamp(3rem,9vw,8rem)] font-black tracking-[-0.04em] leading-[0.85] uppercase"
+            style="font-family:'Bebas Neue','Arial Black',sans-serif;">
+            {{ $project->title }}<span class="text-orange-500">.</span>
+        </h1>
     </header>
 
-    {{-- 3. Specs Table (Metadata Bar) --}}
-    <section class="relative z-10 border-y border-white/10">
-        <div class="max-w-[1440px] mx-auto grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10">
-            <div class="p-8 md:p-12">
-                <p class="text-[10px] uppercase tracking-[0.3em] text-white/30 mb-4">Field / Sector</p>
-                <p class="text-lg font-bold uppercase tracking-tighter">{{ $project->category ?? 'Digital Architecture' }}</p>
+    {{-- ══════════════════════
+         BENTO GRID
+    ══════════════════════ --}}
+    <div class="max-w-[1400px] mx-auto px-5 md:px-10 pb-32">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
+
+            {{-- [1] Hero image — wide --}}
+            <div class="sm:col-span-2 lg:col-span-8 border border-white/[0.06] bg-[#0d0d0e] overflow-hidden group relative">
+                <div class="aspect-video overflow-hidden">
+                    @if ($displayImage)
+                        <img src="{{ asset('storage/' . $displayImage) }}"
+                            class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-[1.5s]">
+                    @else
+                        <div class="w-full h-full bg-[#111] flex items-center justify-center">
+                            <span class="text-6xl font-black text-white/5"
+                                style="font-family:'Bebas Neue',sans-serif;">{{ substr($project->title,0,1) }}</span>
+                        </div>
+                    @endif
+                </div>
+                {{-- Orange bottom sweep --}}
+                <div class="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-orange-600 to-amber-400 group-hover:w-full transition-all duration-700"></div>
             </div>
-            <div class="p-8 md:p-12">
-                <p class="text-[10px] uppercase tracking-[0.3em] text-white/30 mb-4">Involvement</p>
-                <p class="text-lg font-bold uppercase tracking-tighter">{{ $project->role ?? 'Lead Developer' }}</p>
-            </div>
-            <div class="p-8 md:p-12">
-                <p class="text-[10px] uppercase tracking-[0.3em] text-white/30 mb-4">Timeline</p>
-                <p class="text-lg font-mono tracking-tighter">{{ $project->year ?? '2026' }}</p>
-            </div>
-            <div class="p-8 md:p-12 group cursor-pointer">
+
+            {{-- [2] Description card --}}
+            <div class="lg:col-span-4 border border-white/[0.06] bg-[#0d0d0e] p-8 flex flex-col justify-between">
+                <div>
+                    <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-orange-400/60 mb-4">Overview</p>
+                    <p class="text-sm text-white/50 leading-relaxed font-light">
+                        {{ Str::limit(strip_tags($project->description), 220) }}
+                    </p>
+                </div>
                 @if ($project->link)
-                    <a href="{{ $project->link }}" target="_blank" class="block">
-                        <p class="text-orange-500 uppercase tracking-[0.3em] text-[10px] mb-4 group-hover:text-white transition-colors">Live Access</p>
-                        <p class="text-lg font-bold uppercase tracking-tighter flex items-center gap-2 group-hover:gap-4 transition-all">
-                            Visit Site <span>↗</span>
-                        </p>
+                    <a href="{{ $project->link }}" target="_blank"
+                        class="mt-8 inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.3em]
+                               text-orange-400 hover:text-white transition-colors duration-200 group/link">
+                        <span>Visit Live Site</span>
+                        <svg class="w-3 h-3 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/>
+                        </svg>
                     </a>
-                @else
-                    <p class="text-[10px] uppercase tracking-[0.3em] text-white/30 mb-4">Client</p>
-                    <p class="text-lg font-bold uppercase tracking-tighter">{{ $project->client ?? 'Proprietary' }}</p>
                 @endif
             </div>
-        </div>
-    </section>
 
-    {{-- 4. Main Narrative Area --}}
-    <main class="max-w-[1440px] mx-auto px-6 md:px-12 py-32">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
+            {{-- [3] Category --}}
+            <div class="lg:col-span-3 border border-white/[0.06] bg-[#0d0d0e] p-8 flex flex-col justify-between">
+                <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20">Field</p>
+                <div>
+                    <p class="text-[2.5rem] font-black leading-none text-white/5 mb-1"
+                        style="font-family:'Bebas Neue',sans-serif;">CAT</p>
+                    <p class="text-lg font-black uppercase tracking-tight text-white"
+                        style="font-family:'Bebas Neue',sans-serif;">{{ $project->category ?? 'Digital' }}</p>
+                </div>
+            </div>
 
-            {{-- The Story --}}
-            <div class="lg:col-span-7">
-                <span class="inline-block px-4 py-1 rounded-full border border-orange-500/30 text-orange-500 text-[10px] font-black uppercase tracking-widest mb-12">
-                    Case Narrative
-                </span>
-                <div class="prose prose-invert prose-2xl max-w-none 
-                            prose-p:text-white/50 prose-p:leading-[1.6] prose-p:font-light
-                            prose-headings:text-white prose-headings:font-black prose-headings:tracking-[calc(-0.04em)] prose-headings:uppercase
-                            prose-strong:text-white prose-strong:font-bold
-                            prose-blockquote:border-l-orange-500 prose-blockquote:bg-white/5 prose-blockquote:py-2 prose-blockquote:px-8">
+            {{-- [4] Year --}}
+            <div class="lg:col-span-2 border border-white/[0.06] bg-[#0d0d0e] p-8 flex flex-col justify-between">
+                <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20">Year</p>
+                <p class="text-4xl font-black font-mono text-white/80"
+                    style="font-family:'Bebas Neue',sans-serif;">{{ $project->year ?? '2026' }}</p>
+            </div>
+
+            {{-- [5] Role --}}
+            <div class="lg:col-span-3 border border-white/[0.06] bg-[#0d0d0e] p-8 flex flex-col justify-between">
+                <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20">Role</p>
+                <p class="text-lg font-black uppercase tracking-tight text-white leading-tight"
+                    style="font-family:'Bebas Neue',sans-serif;">{{ $project->role ?? 'Lead Developer' }}</p>
+            </div>
+
+            {{-- [6] Live CTA --}}
+            <div class="lg:col-span-4 border border-orange-500/20 bg-orange-500/[0.04] p-8 flex flex-col justify-between group/cta">
+                <div class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                </div>
+                <div>
+                    <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-orange-400/60 mb-2">Status</p>
+                    <p class="text-3xl font-black text-white leading-tight mb-5"
+                        style="font-family:'Bebas Neue',sans-serif;">Live &<br>Deployed</p>
+                    @if ($project->link)
+                        <a href="{{ $project->link }}" target="_blank"
+                            class="inline-flex items-center justify-center w-full py-3 bg-orange-500 text-white
+                                   text-[9px] font-bold uppercase tracking-[0.3em]
+                                   hover:bg-orange-400 active:scale-[0.98] transition-all duration-200">
+                            Open Project ↗
+                        </a>
+                    @endif
+                </div>
+            </div>
+
+            {{-- [7] Case narrative --}}
+            <div class="sm:col-span-2 lg:col-span-8 border border-white/[0.06] bg-[#0d0d0e] p-8 md:p-10">
+                <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 mb-8">Case Narrative</p>
+                <div class="prose prose-invert prose-sm max-w-none
+                            prose-p:text-white/50 prose-p:leading-relaxed prose-p:font-light prose-p:text-sm prose-p:mb-4
+                            prose-strong:text-orange-400
+                            prose-headings:text-white prose-headings:font-black prose-headings:tracking-tight prose-headings:uppercase prose-headings:text-base
+                            prose-blockquote:border-l-orange-500 prose-blockquote:text-white/40
+                            prose-a:text-orange-400 prose-a:no-underline hover:prose-a:text-orange-300">
                     {!! $project->content ?? $project->description !!}
                 </div>
             </div>
 
-            {{-- Specifications Sidebar --}}
-            <div class="lg:col-span-5">
-                <div class="sticky top-20">
-                    <div class="p-12 bg-white/[0.02] border border-white/5 rounded-sm">
-                        <h3 class="text-xs font-black uppercase tracking-[0.5em] text-white mb-12 pb-4 border-b border-white/10">Technical Scope</h3>
-                        <ul class="space-y-8">
-                            @foreach (['Art Direction', 'UI/UX Design', 'Full-stack Development', 'Motion & Interaction'] as $item)
-                                <li class="flex items-center justify-between group">
-                                    <span class="text-sm font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">{{ $item }}</span>
-                                    <div class="h-[1px] flex-grow mx-4 bg-white/5 group-hover:bg-orange-500/50 transition-colors"></div>
-                                    <span class="font-mono text-[10px] text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity">COMPLETED</span>
-                                </li>
-                            @endforeach
-                        </ul>
-
-                        <div class="mt-20 pt-12 border-t border-white/5">
-                            <p class="text-white/30 text-sm font-light italic leading-relaxed mb-8">
-                                "This project represents a synthesis of technical performance and aesthetic intent, pushing the boundaries of modern web standards."
-                            </p>
-                            <div class="flex items-center gap-4">
-                                <div class="w-8 h-[1px] bg-orange-500"></div>
-                                <span class="font-black text-[10px] uppercase tracking-[0.3em] text-white/80">Reva Adhitya — 2026</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- 5. Staggered Media Gallery --}}
-        @if ($project->media && $project->media->count() > 0)
-            <div class="mt-40">
-                <div class="mb-24 flex items-baseline gap-6">
-                    <h3 class="text-7xl md:text-9xl font-black tracking-tighter uppercase opacity-10">Archive</h3>
-                    <p class="text-orange-500 font-mono text-xs tracking-widest uppercase">Visual Evidence / Documentation</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                    @foreach ($project->media as $index => $media)
-                        <div class="relative overflow-hidden group aspect-[4/5] bg-zinc-900 border border-white/5">
-                            
-                            @if ($media->file_type === 'video')
-                                <video src="{{ asset('storage/' . $media->file_path) }}" 
-                                    controls
-                                    class="w-full h-full object-cover grayscale-50 group-hover:grayscale-0 transition-all duration-1000">
-                                </video>
-                            @else
-                                <img src="{{ asset('storage/' . $media->file_path) }}"
-                                    class="w-full h-full object-cover grayscale-[50%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[2s]">
-                            @endif
-                
-                            {{-- Caption Overlay --}}
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
-                                <span class="bg-white text-black text-[9px] font-black font-mono px-3 py-1.5 uppercase tracking-[0.2em]">
-                                    {{ $media->caption ?? 'VIEW_REF_' . sprintf('%02d', $index + 1) }}
-                                </span>
-                            </div>
+            {{-- [8] Technical scope sidebar --}}
+            <div class="lg:col-span-4 border border-white/[0.06] bg-[#0d0d0e] p-8">
+                <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 mb-8">Technical Scope</p>
+                <div class="divide-y divide-white/[0.05]">
+                    @foreach (['Art Direction', 'UI / UX Design', 'Full-stack Dev', 'Motion & Interaction'] as $item)
+                        <div class="group/sc flex items-center justify-between py-4">
+                            <span class="text-xs font-bold text-white/40 group-hover/sc:text-white transition-colors duration-200">{{ $item }}</span>
+                            <div class="w-1.5 h-1.5 rounded-full bg-orange-500/30 group-hover/sc:bg-orange-500 transition-colors duration-200"></div>
                         </div>
                     @endforeach
                 </div>
+                <div class="mt-8 pt-6 border-t border-white/[0.05]">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-5 h-px bg-orange-500"></div>
+                        <span class="text-[8px] font-bold uppercase tracking-[0.3em] text-white/30">Reva Adhitya</span>
+                    </div>
+                    <p class="text-xs text-white/25 leading-relaxed font-light italic">
+                        "A synthesis of technical performance and aesthetic intent."
+                    </p>
+                </div>
             </div>
-        @endif
-    </main>
 
-    {{-- 6. High-Contrast Footer CTA --}}
-    <footer class="py-40 bg-white text-black rounded-t-[100px] text-center px-6 overflow-hidden relative">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[30vw] font-black text-black/[0.03] select-none pointer-events-none uppercase tracking-tighter">
-            Next
+            {{-- [9] Media gallery --}}
+            @if ($project->media && $project->media->count() > 0)
+                {{-- Gallery header --}}
+                <div class="sm:col-span-2 lg:col-span-12 flex items-center gap-5 pt-4 pb-1">
+                    <div class="w-1.5 h-1.5 rounded-full bg-orange-500"></div>
+                    <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/30">Visual Documentation</p>
+                    <div class="flex-1 h-px bg-white/[0.05]"></div>
+                    <span class="font-mono text-[9px] text-orange-400/50">{{ $project->media->count() }} assets</span>
+                </div>
+
+                @foreach ($project->media as $index => $media)
+                    @php
+                        $mediaSpans = [
+                            0 => 'lg:col-span-7',
+                            1 => 'lg:col-span-5',
+                            2 => 'lg:col-span-4',
+                            3 => 'lg:col-span-4',
+                            4 => 'lg:col-span-4',
+                        ];
+                        $mediaAspects = [
+                            0 => 'aspect-[16/9]',
+                            1 => 'aspect-[4/3]',
+                            2 => 'aspect-[4/3]',
+                            3 => 'aspect-[4/3]',
+                            4 => 'aspect-[4/3]',
+                        ];
+                        $span   = $mediaSpans[$index % count($mediaSpans)] ?? 'lg:col-span-4';
+                        $aspect = $mediaAspects[$index % count($mediaAspects)] ?? 'aspect-[4/3]';
+                    @endphp
+                    <div class="sm:col-span-1 {{ $span }} border border-white/[0.06] bg-[#0d0d0e] overflow-hidden group relative">
+                        <div class="{{ $aspect }} overflow-hidden">
+                            @if ($media->file_type === 'video')
+                                <video src="{{ asset('storage/' . $media->file_path) }}"
+                                    controls
+                                    class="w-full h-full object-cover"></video>
+                            @else
+                                <img src="{{ asset('storage/' . $media->file_path) }}"
+                                    class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-[1.5s]">
+                            @endif
+                        </div>
+                        {{-- Caption --}}
+                        <div class="absolute bottom-0 left-0 right-0 px-4 py-3 bg-gradient-to-t from-black/70 to-transparent
+                                    opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-center justify-between">
+                            <span class="text-[8px] font-mono font-bold uppercase tracking-[0.2em] text-white/60">
+                                {{ $media->caption ?? 'REF_' . sprintf('%02d', $index + 1) }}
+                            </span>
+                            <span class="text-[8px] font-mono text-orange-400/60">{{ sprintf('%02d', $index + 1) }}</span>
+                        </div>
+                        <div class="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-orange-600 to-amber-400 group-hover:w-full transition-all duration-700"></div>
+                    </div>
+                @endforeach
+            @endif
+
         </div>
-        
+    </div>
+
+    {{-- Footer --}}
+    <footer class="relative min-h-[65vh] flex flex-col items-center justify-center bg-white text-black
+                   rounded-t-[50px] md:rounded-t-[100px] px-6 text-center overflow-hidden">
+        <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] select-none pointer-events-none">
+            <span class="text-[30vw] font-black tracking-tighter uppercase">Next</span>
+        </div>
         <div class="relative z-10">
-            <p class="text-[10px] font-black uppercase tracking-[0.5em] mb-12 text-black/40">Ready to initiate?</p>
-            <h2 class="text-6xl md:text-[8vw] font-black tracking-[calc(-0.06em)] leading-[0.9] mb-16 uppercase italic">
-                Start a<br/>New Story.
+            <p class="text-[9px] font-black uppercase tracking-[0.6em] mb-8 opacity-30">Ready to initiate?</p>
+            <h2 class="text-5xl md:text-[8vw] font-black tracking-[-0.04em] leading-[0.9] mb-12"
+                style="font-family:'Bebas Neue','Arial Black',sans-serif;">
+                Start a<br/><span class="text-orange-500">New Story.</span>
             </h2>
             <a href="{{ route('home') }}#contact"
-                class="group relative inline-flex items-center gap-6 px-16 py-8 bg-black text-white rounded-sm overflow-hidden transition-all hover:pr-20">
-                <span class="text-xs font-black uppercase tracking-[0.4em] relative z-10">Begin Consultation</span>
-                <span class="text-2xl relative z-10">→</span>
-                <div class="absolute inset-0 bg-orange-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                class="group relative inline-flex items-center gap-4 px-12 py-5 bg-black text-white overflow-hidden
+                       hover:scale-105 active:scale-95 transition-transform duration-200">
+                <span class="relative z-10 text-[9px] font-black uppercase tracking-[0.35em]">Begin Consultation</span>
+                <span class="relative z-10 text-sm">→</span>
+                <div class="absolute inset-0 bg-orange-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
             </a>
         </div>
+        <div class="absolute bottom-8 opacity-20">
+            <span class="text-[9px] font-bold tracking-[0.5em] uppercase">Jakarta / Indonesia</span>
+        </div>
     </footer>
-</div>
 
-<script>
-    window.addEventListener('scroll', () => {
-        const heroImg = document.getElementById('hero-image');
-        if (heroImg) {
-            const scroll = window.scrollY;
-            heroImg.style.transform = `scale(${1 + scroll * 0.0002}) translateY(${scroll * 0.1}px)`;
-            heroImg.style.filter = `grayscale(${Math.min(1, scroll / 500)}) brightness(${0.75 - (scroll / 2000)})`;
-        }
-    });
-</script>
+</div>

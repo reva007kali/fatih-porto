@@ -1,184 +1,226 @@
-<div class="min-h-screen bg-[#070708] text-[#e5e5e5] antialiased selection:bg-white selection:text-black overflow-x-hidden">
+<div class="min-h-screen bg-[#070708] text-[#e5e5e5] antialiased selection:bg-orange-500 selection:text-white overflow-x-hidden">
 
-    {{-- 1. Floating Back Button (Editorial Style) --}}
-    <div class="fixed bottom-8 left-6 md:left-12 z-[100]">
+    {{-- Back button --}}
+    <div class="fixed bottom-8 left-6 md:left-10 z-[100]">
         <button type="button" x-on:click="window.history.back()"
-            class="group flex items-center gap-4 bg-transparent focus:outline-none"
-            title="Go Back">
-            
-            <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500 hover:rotate-[-15deg]">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path>
-                </svg>
-            </div>
-            
-            <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-white/40 group-hover:text-white transition-colors">Return</span>
+            class="group w-12 h-12 rounded-full border border-white/10 flex items-center justify-center
+                   hover:bg-orange-500 hover:border-orange-500 transition-all duration-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/>
+            </svg>
         </button>
     </div>
 
-    {{-- 2. Massive Editorial Header (Hero) --}}
-    <header class="relative min-h-[90vh] flex items-center max-w-[1440px] mx-auto px-6 md:px-12 py-32 overflow-hidden border-b border-white/10 z-10">
-        {{-- Background Texture (Service Icon with semi-grayscale) --}}
-        @if ($service->icon)
-            <div class="absolute inset-0 pointer-events-none grayscale-[70%] opacity-[0.03] scale-110 group-hover:scale-100 transition-transform duration-[3s]">
-                <img src="{{ asset('storage/' . $service->icon) }}"
-                    class="w-full h-full object-cover">
-            </div>
-        @endif
-
-        {{-- Gradient Overlay (Darker for contrast) --}}
-        <div class="absolute inset-0 bg-gradient-to-t from-[#070708] via-[#070708]/90 to-transparent"></div>
-
-        <div class="relative w-full">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
-                <div class="lg:col-span-8">
-                    <div class="flex items-center gap-4 mb-8">
-                        <span class="font-mono text-xs text-orange-600 tracking-tighter">// CAPABILITY_{{ sprintf('%02d', $service->id) }}</span>
-                        <div class="h-[1px] w-12 bg-white/20"></div>
-                    </div>
-                    <h1 class="text-[12vw] md:text-[10vw] font-black tracking-[calc(-0.06em)] leading-[0.8] text-white uppercase italic">
-                        {{ $service->title }}<span class="text-white/20 hover:text-orange-600 transition-colors duration-1000">.</span>
-                    </h1>
-                </div>
-                <div class="lg:col-span-4 pb-4">
-                    <p class="text-2xl text-white/50 leading-snug font-light max-w-md">
-                        {{ Str::limit(strip_tags($service->description), 180) }}
-                    </p>
-                </div>
-            </div>
+    {{-- Page header --}}
+    <header class="max-w-[1400px] mx-auto px-5 md:px-10 pt-32 pb-10">
+        <div class="flex items-center gap-4 mb-6">
+            <div class="w-1.5 h-1.5 rounded-full bg-orange-500"></div>
+            <span class="font-mono text-[9px] text-orange-500/70 tracking-[0.3em] uppercase">
+                Capability_{{ sprintf('%02d', $service->id) }}
+            </span>
+            <div class="h-px w-10 bg-white/10"></div>
+            <span class="text-[9px] uppercase tracking-[0.3em] text-white/20">Service</span>
         </div>
+        <h1 class="text-[clamp(3rem,9vw,8rem)] font-black tracking-[-0.04em] leading-[0.85] uppercase"
+            style="font-family:'Bebas Neue','Arial Black',sans-serif;">
+            {{ $service->title }}<span class="text-orange-500">.</span>
+        </h1>
     </header>
 
-    {{-- 3. In-Depth Content Strategy Section --}}
-    <main class="relative z-10 max-w-[1440px] mx-auto px-6 md:px-12 py-32 md:py-48">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start overflow-visible">
+    {{-- ══════════════════════
+         BENTO GRID
+    ══════════════════════ --}}
+    <div class="max-w-[1400px] mx-auto px-5 md:px-10 pb-32">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
 
-            {{-- Left Side: Deep Dive Content with Clean Typography --}}
-            <div class="lg:col-span-7 prose-container overflow-visible">
-                <div class="flex items-center gap-4 mb-16 overflow-hidden">
-                    <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-white/30 whitespace-nowrap">Service Narrative</span>
-                    <div class="flex-grow h-[1px] bg-white/10"></div>
+            {{-- [1] Hero icon / visual — wide --}}
+            <div class="sm:col-span-2 lg:col-span-8 border border-white/[0.06] bg-[#0d0d0e] overflow-hidden group relative">
+                @if ($service->icon)
+                    <div class="aspect-video overflow-hidden">
+                        <img src="{{ asset('storage/' . $service->icon) }}"
+                            class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-[1.5s]">
+                    </div>
+                @else
+                    <div class="aspect-video flex items-center justify-center bg-[#111]">
+                        <span class="text-[8rem] font-black text-white/[0.03]"
+                            style="font-family:'Bebas Neue',sans-serif;">{{ substr($service->title, 0, 1) }}</span>
+                    </div>
+                @endif
+                <div class="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-orange-600 to-amber-400 group-hover:w-full transition-all duration-700"></div>
+            </div>
+
+            {{-- [2] Description --}}
+            <div class="lg:col-span-4 border border-white/[0.06] bg-[#0d0d0e] p-8 flex flex-col justify-between">
+                <div>
+                    <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-orange-400/60 mb-4">Overview</p>
+                    <p class="text-sm text-white/50 leading-relaxed font-light">
+                        {{ Str::limit(strip_tags($service->description), 240) }}
+                    </p>
                 </div>
+                <a href="{{ route('home') }}#contact"
+                    class="mt-8 inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.3em]
+                           text-orange-400 hover:text-white transition-colors duration-200 group/link">
+                    <span>Start a Project</span>
+                    <svg class="w-3 h-3 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/>
+                    </svg>
+                </a>
+            </div>
 
-                <div class="prose prose-invert prose-2xl max-w-none 
-                            prose-p:text-white/50 prose-p:leading-[1.7] prose-p:font-light prose-p:mb-12
-                            prose-headings:text-white prose-headings:font-black prose-headings:tracking-[calc(-0.04em)] prose-headings:uppercase prose-headings:mb-10 prose-headings:mt-20
-                            prose-strong:text-white prose-strong:font-bold
-                            prose-blockquote:border-l-orange-600 prose-blockquote:bg-white/5 prose-blockquote:py-4 prose-blockquote:px-10 prose-blockquote:font-normal
-                            prose-a:text-white prose-a:underline prose-a:underline-offset-8 hover:prose-a:text-white/60">
+            {{-- [3] Turnaround stat --}}
+            <div class="lg:col-span-3 border border-white/[0.06] bg-[#0d0d0e] p-8 flex flex-col justify-between">
+                <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20">Turnaround</p>
+                <div>
+                    <p class="text-[2.5rem] font-black leading-none text-white/5 mb-1 select-none"
+                        style="font-family:'Bebas Neue',sans-serif;">ETA</p>
+                    <p class="text-base font-black text-white leading-tight"
+                        style="font-family:'Bebas Neue',sans-serif;">{{ $service->turnaround_time ?? '14–28 Days' }}</p>
+                </div>
+            </div>
+
+            {{-- [4] Features count --}}
+            <div class="lg:col-span-2 border border-white/[0.06] bg-[#0d0d0e] p-8 flex flex-col justify-between">
+                <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20">Features</p>
+                @php $featureCount = count($service->features ?? [1,2,3,4]); @endphp
+                <p class="text-5xl font-black text-white/80 leading-none"
+                    style="font-family:'Bebas Neue',sans-serif;">{{ sprintf('%02d', $featureCount) }}</p>
+            </div>
+
+            {{-- [5] CTA card --}}
+            <div class="lg:col-span-3 border border-orange-500/20 bg-orange-500/[0.04] p-8 flex flex-col justify-between">
+                <div class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                </div>
+                <div>
+                    <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-orange-400/60 mb-2">Ready to start?</p>
+                    <p class="text-2xl font-black text-white leading-tight mb-5"
+                        style="font-family:'Bebas Neue',sans-serif;">Let's Build<br>Together</p>
+                    <a href="{{ route('home') }}#contact"
+                        class="inline-flex items-center justify-center w-full py-3 bg-orange-500 text-white
+                               text-[9px] font-bold uppercase tracking-[0.3em]
+                               hover:bg-orange-400 active:scale-[0.98] transition-all duration-200">
+                        Book Consultation ↗
+                    </a>
+                </div>
+            </div>
+
+            {{-- [6] Scope of work --}}
+            <div class="lg:col-span-4 border border-white/[0.06] bg-[#0d0d0e] p-8">
+                <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 mb-8">Scope of Work</p>
+                @php
+                    $features = $service->features && is_array($service->features) && count($service->features) > 0
+                        ? $service->features
+                        : ['Strategic Consultation', 'Custom-Tailored Design', 'Performance Optimization', 'Post-Launch Support'];
+                @endphp
+                <div class="divide-y divide-white/[0.05]">
+                    @foreach ($features as $i => $feature)
+                        <div class="group/f flex items-center justify-between py-4">
+                            <div class="flex items-center gap-3">
+                                <span class="text-[8px] font-mono text-orange-500/40 flex-shrink-0">{{ sprintf('%02d', $i + 1) }}</span>
+                                <span class="text-xs font-bold text-white/50 group-hover/f:text-white transition-colors duration-200">{{ $feature }}</span>
+                            </div>
+                            <div class="w-1.5 h-1.5 rounded-full bg-orange-500/20 group-hover/f:bg-orange-500 transition-colors duration-200 flex-shrink-0"></div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- [7] Service narrative --}}
+            <div class="sm:col-span-2 lg:col-span-8 border border-white/[0.06] bg-[#0d0d0e] p-8 md:p-10">
+                <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 mb-8">Service Narrative</p>
+                <div class="prose prose-invert prose-sm max-w-none
+                            prose-p:text-white/50 prose-p:leading-relaxed prose-p:font-light prose-p:text-sm prose-p:mb-4
+                            prose-strong:text-orange-400
+                            prose-headings:text-white prose-headings:font-black prose-headings:tracking-tight prose-headings:uppercase prose-headings:text-sm prose-headings:mt-8 prose-headings:mb-3
+                            prose-blockquote:border-l-orange-500 prose-blockquote:text-white/40 prose-blockquote:not-italic
+                            prose-a:text-orange-400 prose-a:no-underline hover:prose-a:text-orange-300">
                     {!! $service->content ?? $service->description !!}
                 </div>
             </div>
 
-            {{-- Right Side: The "Why Me" / Process Card (Sticky Bento Style) --}}
-            <div class="lg:col-span-5 lg:sticky lg:top-10 h-fit">
-                <div class="space-y-12">
-
-                    {{-- Features Box: Bento Editorial --}}
-                    <div class="p-12 bg-white/[0.02] border border-white/5 rounded-sm relative overflow-hidden group">
-                        
-                        {{-- Large Background Number for Editorial depth --}}
-                        <div class="absolute -bottom-10 -right-10 text-[20vw] font-black text-white/[0.01] pointer-events-none">
-                            {{ sprintf('%02d', count($service->features ?? [1,2,3,4])) }}
-                        </div>
-
-                        <h4 class="relative z-10 text-xs font-black uppercase tracking-[0.5em] text-white mb-12 pb-4 border-b border-white/10">Scope of Work</h4>
-
-                        <ul class="relative z-10 space-y-8">
-                            @php
-                                $features = $service->features && is_array($service->features) && count($service->features) > 0 
-                                            ? $service->features 
-                                            : ['Strategic Consultation', 'Custom-Tailored Design', 'Performance Optimization', 'Post-Launch Support'];
-                            @endphp
-                            
-                            @foreach ($features as $feature)
-                                <li class="flex items-center justify-between group/item">
-                                    <span class="text-sm font-bold uppercase tracking-widest text-white/40 group-hover/item:text-white transition-colors">
-                                        {{ $feature }}
-                                    </span>
-                                    <div class="h-[1px] flex-grow mx-4 bg-white/5 group-hover/item:bg-orange-600/50 transition-colors"></div>
-                                    <span class="font-mono text-[10px] text-orange-600 opacity-0 group-hover/item:opacity-100 transition-opacity">
-                                        INCLUDED
-                                    </span>
-                                </li>
-                            @endforeach
-                        </ul>
-
-                        {{-- Final CTA Area inside Bento --}}
-                        <div class="relative z-10 mt-20 pt-12 border-t border-white/5">
-                            <h5 class="text-2xl font-bold uppercase tracking-tighter text-white mb-3">Initiate Project</h5>
-                            <p class="text-white/40 text-sm font-light leading-relaxed mb-10 max-w-xs">Let's discuss how this tailored capability can transform your digital footprint.</p>
-
-                            <a href="{{ route('home') }}#contact"
-                                class="group relative block w-full text-center py-6 bg-black text-white overflow-hidden transition-all hover:pr-10">
-                                <span class="relative z-10 text-xs font-black uppercase tracking-[0.3em]">
-                                    Book a Consultation
-                                </span>
-                                <span class="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all">→</span>
-                                {{-- Hover fill effect --}}
-                                <div class="absolute inset-0 bg-orange-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                            </a>
-                        </div>
+            {{-- [8] Why choose / quote card --}}
+            <div class="lg:col-span-4 border border-white/[0.06] bg-[#0d0d0e] p-8 flex flex-col justify-between">
+                <div>
+                    <div class="text-orange-500/20 text-5xl font-black leading-none mb-4"
+                        style="font-family:Georgia,serif;">"</div>
+                    <p class="text-sm text-white/40 leading-relaxed font-light italic">
+                        Let's discuss how this tailored capability can transform your digital footprint and drive measurable outcomes.
+                    </p>
+                </div>
+                <div class="mt-8 pt-6 border-t border-white/[0.05]">
+                    <div class="flex items-center gap-3 mb-1">
+                        <div class="w-5 h-px bg-orange-500"></div>
+                        <span class="text-[8px] font-bold uppercase tracking-[0.3em] text-white/30">Reva Adhitya</span>
                     </div>
-
-                    {{-- Trust Badge (Minimalist) --}}
-                    <div class="px-10 py-6 bg-white/[0.01] border border-white/5 rounded-sm flex items-center justify-between">
-                        <span class="text-[10px] font-bold uppercase tracking-[0.5em] text-white/30">Average Turnaround</span>
-                        <div class="flex items-center gap-3">
-                            <div class="h-[1px] w-6 bg-white/10"></div>
-                            <span class="font-mono text-sm tracking-tighter text-white">{{ $service->turnaround_time ?? '14-28 Business Days' }}</span>
-                        </div>
-                    </div>
-
+                    <span class="text-[8px] font-mono text-orange-400/40 tracking-widest">Creative Director</span>
                 </div>
             </div>
-        </div>
-    </main>
 
-    {{-- 4. High-Contrast Editorial Footer CTA --}}
-    <footer class="relative min-h-[70vh] flex flex-col items-center justify-center bg-white text-black rounded-t-[50px] md:rounded-t-[120px] px-6 text-center overflow-hidden">
-        {{-- Background Large Text --}}
+            {{-- [9] Process steps --}}
+            <div class="sm:col-span-2 lg:col-span-12 border border-white/[0.06] bg-[#0d0d0e] p-8 md:p-10">
+                <p class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 mb-8">Process</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    @foreach ([
+                        ['01', 'Discovery', 'Understanding your goals, audience, and technical requirements.'],
+                        ['02', 'Strategy', 'Crafting a tailored roadmap aligned to your business outcomes.'],
+                        ['03', 'Execution', 'Precision-built delivery with iterative review checkpoints.'],
+                        ['04', 'Launch', 'Deployment, QA, and post-launch monitoring and support.'],
+                    ] as [$num, $title, $desc])
+                        <div class="group/p border border-white/[0.06] bg-[#111] p-6 hover:border-orange-500/30 transition-colors duration-300">
+                            <p class="font-mono text-[9px] text-orange-500/50 mb-4">{{ $num }}</p>
+                            <p class="text-sm font-black text-white/70 group-hover/p:text-white transition-colors mb-2"
+                                style="font-family:'Bebas Neue',sans-serif; font-size:1.1rem;">{{ strtoupper($title) }}</p>
+                            <p class="text-[11px] text-white/30 leading-relaxed font-light">{{ $desc }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {{-- Footer --}}
+    <footer class="relative min-h-[65vh] flex flex-col items-center justify-center bg-white text-black
+                   rounded-t-[50px] md:rounded-t-[100px] px-6 text-center overflow-hidden">
         <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] select-none pointer-events-none">
-            <span class="text-[25vw] font-black tracking-[calc(-0.06em)] leading-none uppercase">Forge</span>
+            <span class="text-[28vw] font-black tracking-tighter uppercase leading-none">Forge</span>
         </div>
-
         <div class="relative z-10">
-            <p class="text-[10px] font-black uppercase tracking-[0.6em] mb-12 opacity-40 italic underline underline-offset-8">Collaboration</p>
-            <h2 class="text-6xl md:text-[8vw] font-black tracking-[calc(-0.06em)] leading-[0.9] mb-16 uppercase italic">
-                Ready to make <br /> an Impact?
+            <p class="text-[9px] font-black uppercase tracking-[0.6em] mb-8 opacity-30">Ready to initiate?</p>
+            <h2 class="text-5xl md:text-[8vw] font-black tracking-[-0.04em] leading-[0.9] mb-12"
+                style="font-family:'Bebas Neue','Arial Black',sans-serif;">
+                Ready to make<br/><span class="text-orange-500">an Impact?</span>
             </h2>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-10">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
                 <a href="{{ route('home') }}#contact"
-                    class="group relative inline-flex items-center gap-6 px-16 py-8 bg-black text-white rounded-sm overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl">
-                    <span class="text-xs font-black uppercase tracking-[0.4em] relative z-10">Start Project Now</span>
-                    <span class="text-2xl relative z-10">→</span>
-                    {{-- Hover fill effect --}}
-                    <div class="absolute inset-0 bg-orange-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                    class="group relative inline-flex items-center gap-4 px-12 py-5 bg-black text-white overflow-hidden
+                           hover:scale-105 active:scale-95 transition-transform duration-200">
+                    <span class="relative z-10 text-[9px] font-black uppercase tracking-[0.35em]">Start Project Now</span>
+                    <span class="relative z-10 text-sm">→</span>
+                    <div class="absolute inset-0 bg-orange-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                 </a>
-                
                 <a href="{{ route('home') }}#works"
-                    class="text-xs font-black uppercase tracking-[0.4em] relative group overflow-hidden py-2">
+                    class="text-[9px] font-black uppercase tracking-[0.4em] relative group overflow-hidden py-2">
                     <span class="block group-hover:-translate-y-full transition-transform duration-500">Explore Portfolio</span>
-                    <span class="absolute top-full left-0 block group-hover:-translate-y-full transition-transform duration-500 underline underline-offset-4">Explore Portfolio</span>
+                    <span class="absolute top-full left-0 block group-hover:-translate-y-full transition-transform duration-500 text-orange-500">Explore Portfolio</span>
                 </a>
             </div>
+        </div>
+        <div class="absolute bottom-8 opacity-20">
+            <span class="text-[9px] font-bold tracking-[0.5em] uppercase">Jakarta / Indonesia</span>
         </div>
     </footer>
 
     <style>
-        /* Editorial Typography Tweaks */
-        h1, h2, h3, h4 { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
-        
-        /* Hide default scrollbar for a cleaner editorial look if needed */
-        /* ::-webkit-scrollbar { width: 0px; background: transparent; } */
-
-        /* Prevent prose from breaking the layout horizontally */
-        .prose-container { max-width: 100%; overflow-x: hidden; }
-        
-        /* High-end Prose adjustments */
-        .prose strong { color: white !important; font-weight: bold; }
-        .prose blockquote p { color: white !important; opacity: 1; }
+        h1,h2,h3,h4{text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;}
+        ::-webkit-scrollbar{width:4px;}
+        ::-webkit-scrollbar-track{background:#070708;}
+        ::-webkit-scrollbar-thumb{background:#1a1a1c;}
+        ::-webkit-scrollbar-thumb:hover{background:#f97316;}
+        .prose strong{color:#fb923c !important;}
+        .prose blockquote p{color:rgba(255,255,255,0.4) !important;}
     </style>
 
 </div>

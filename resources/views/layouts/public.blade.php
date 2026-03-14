@@ -232,7 +232,6 @@
             font-family: var(--font-disp);
             font-size: 1.5rem;
             letter-spacing: 0.05em;
-            color: var(--white);
             text-decoration: none;
             line-height: 1;
             flex-shrink: 0;
@@ -655,7 +654,7 @@
     <nav id="navbar">
         <div class="nav-inner">
 
-            <a href="/" class="nav-logo">REVA<span class="dot">.</span></a>
+            <a href="/" class="nav-logo bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 text-transparent bg-clip-text font-black">REVA<span class="dot">.</span></a>
 
             <ul class="nav-links">
                 @forelse ($navItems as $item)
@@ -683,7 +682,7 @@
                 @endforelse
             </ul>
 
-            <a href="/#contact" class="nav-cta">Let's Talk</a>
+            <a href="/#contact" class="px-3 hidden md:inline-block py-1 text-xs font-bold uppercase bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400">Let's Talk</a>
 
             <button id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
                 <span></span><span></span><span></span>

@@ -16,8 +16,8 @@
 
     <style>
         /* CRITICAL: Mencegah elemen muncul sebelum Alpine.js siap */
-        [x-cloak] { 
-            display: none !important; 
+        [x-cloak] {
+            display: none !important;
         }
 
         .prose-chat ul {
@@ -54,8 +54,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .ai-sphere {
@@ -63,48 +68,102 @@
         }
     </style>
 
-    <button wire:click="toggleChat" class="fixed bottom-6 right-6 z-[1000] group w-12 h-12">
-        <img class="ai-sphere" src="/img/ai-sphere.png" alt="{{ $assistantName }}">
+    <button wire:click="toggleChat" class="fixed bottom-6 right-6 z-[1000] group w-10 h-10">
 
-        <span class="absolute right-14 top-1/2 -translate-y-1/2 
-                   bg-black text-white text-xs px-3 py-1 rounded-full 
-                   opacity-0 group-hover:opacity-100 
-                   translate-x-2 group-hover:translate-x-0
-                   transition-all duration-300 
-                   whitespace-nowrap shadow-lg">
+        {{-- Animated gradient ring --}}
+        <span class="absolute inset-0 rounded-full animate-spin-slow"
+            style="background: conic-gradient(from 0deg, #ea580c, #f97316, #fbbf24, #fb923c, #ea580c); padding: 2px;">
+            <span class="absolute inset-[2px] rounded-full bg-[#0a0a0a]"></span>
+        </span>
+
+        {{-- Pulse ring --}}
+        <span class="absolute inset-0 rounded-full bg-orange-500/30 animate-ping"></span>
+
+        {{-- Button face --}}
+        <span
+            class="absolute inset-[2px] rounded-full flex items-center justify-center
+                 bg-gradient-to-br from-orange-600 via-orange-500 to-amber-400">
+
+            {{-- AI icon — stylised neural/waveform --}}
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
+                {{-- Central brain node --}}
+                <circle cx="12" cy="12" r="2.5" fill="white" />
+
+                {{-- Orbit ring --}}
+                <circle cx="12" cy="12" r="5.5" stroke="white" stroke-width="1" stroke-dasharray="2 2.5"
+                    opacity="0.5" />
+
+                {{-- Neural spokes --}}
+                <line x1="12" y1="6.5" x2="12" y2="3" stroke="white" stroke-width="1.5"
+                    stroke-linecap="round" />
+                <line x1="12" y1="17.5" x2="12" y2="21" stroke="white" stroke-width="1.5"
+                    stroke-linecap="round" />
+                <line x1="6.5" y1="12" x2="3" y2="12" stroke="white" stroke-width="1.5"
+                    stroke-linecap="round" />
+                <line x1="17.5" y1="12" x2="21" y2="12" stroke="white" stroke-width="1.5"
+                    stroke-linecap="round" />
+
+                {{-- Diagonal spokes --}}
+                <line x1="8.4" y1="8.4" x2="5.6" y2="5.6" stroke="white" stroke-width="1.2"
+                    stroke-linecap="round" opacity="0.6" />
+                <line x1="15.6" y1="15.6" x2="18.4" y2="18.4" stroke="white" stroke-width="1.2"
+                    stroke-linecap="round" opacity="0.6" />
+                <line x1="15.6" y1="8.4" x2="18.4" y2="5.6" stroke="white" stroke-width="1.2"
+                    stroke-linecap="round" opacity="0.6" />
+                <line x1="8.4" y1="15.6" x2="5.6" y2="18.4" stroke="white" stroke-width="1.2"
+                    stroke-linecap="round" opacity="0.6" />
+
+                {{-- Outer node dots --}}
+                <circle cx="12" cy="3" r="1.2" fill="white" />
+                <circle cx="12" cy="21" r="1.2" fill="white" />
+                <circle cx="3" cy="12" r="1.2" fill="white" />
+                <circle cx="21" cy="12" r="1.2" fill="white" />
+                <circle cx="5.6" cy="5.6" r="0.9" fill="white" opacity="0.6" />
+                <circle cx="18.4" cy="18.4" r="0.9" fill="white" opacity="0.6" />
+                <circle cx="18.4" cy="5.6" r="0.9" fill="white" opacity="0.6" />
+                <circle cx="5.6" cy="18.4" r="0.9" fill="white" opacity="0.6" />
+            </svg>
+        </span>
+
+        {{-- Tooltip --}}
+        <span
+            class="absolute right-16 top-1/2 -translate-y-1/2
+                 bg-black text-white text-xs px-3 py-1.5 rounded-full
+                 opacity-0 group-hover:opacity-100
+                 translate-x-2 group-hover:translate-x-0
+                 transition-all duration-300
+                 whitespace-nowrap shadow-lg">
             {{ $assistantName }}
         </span>
     </button>
 
+    {{-- Custom animation --}}
+    <style>
+        @keyframes spin-slow {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-    <div 
-        class="fixed inset-0 z-[1001] pointer-events-none" 
-        x-show="$wire.isOpen"
-        x-cloak
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-    >
-        <div 
-            class="absolute inset-0 bg-black/50 backdrop-blur-sm pointer-events-auto" 
-            @click="$wire.toggleChat()"
-        ></div>
+        .animate-spin-slow {
+            animation: spin-slow 4s linear infinite;
+        }
+    </style>
 
-        <div 
-            class="absolute top-0 right-0 h-full w-full md:w-[450px] glass-panel shadow-2xl flex flex-col pointer-events-auto transform"
-            x-show="$wire.isOpen"
-            x-cloak
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="translate-x-full"
-            x-transition:enter-end="translate-x-0"
-            x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="translate-x-0"
-            x-transition:leave-end="translate-x-full"
-        >
-            
+
+    <div class="fixed inset-0 z-[1001] pointer-events-none" x-show="$wire.isOpen" x-cloak
+        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm pointer-events-auto" @click="$wire.toggleChat()">
+        </div>
+
+        <div class="absolute top-0 right-0 h-full w-full md:w-[450px] glass-panel shadow-2xl flex flex-col pointer-events-auto transform"
+            x-show="$wire.isOpen" x-cloak x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-x-0"
+            x-transition:leave-end="translate-x-full">
+
             <div class="px-6 py-5 border-b border-white/5 bg-white/[0.02] flex justify-between items-center shrink-0">
                 <div class="flex items-center gap-3">
                     <div class="">
@@ -128,10 +187,12 @@
                     @if (($message['role'] === 'user' || $message['role'] === 'assistant') && isset($message['content']))
                         <div class="flex {{ $message['role'] === 'user' ? 'justify-end' : 'justify-start' }}">
                             <div class="max-w-[85%]">
-                                <span class="text-[9px] font-bold text-white/20 uppercase mb-1 block {{ $message['role'] === 'user' ? 'text-right' : 'text-left' }}">
+                                <span
+                                    class="text-[9px] font-bold text-white/20 uppercase mb-1 block {{ $message['role'] === 'user' ? 'text-right' : 'text-left' }}">
                                     {{ $message['role'] === 'user' ? 'You' : $assistantName }}
                                 </span>
-                                <div class="p-4 rounded-2xl text-[13px] {{ $message['role'] === 'user' ? 'bg-orange-500 text-black font-semibold' : 'bg-white/5 text-gray-300 border border-white/10' }}">
+                                <div
+                                    class="p-4 rounded-2xl text-[13px] {{ $message['role'] === 'user' ? 'bg-orange-500 text-black font-semibold' : 'bg-white/5 text-gray-300 border border-white/10' }}">
                                     @if ($message['role'] === 'user')
                                         {{ $message['content'] }}
                                     @else
@@ -160,19 +221,25 @@
                 @if ($showLeadForm)
                     <div class="flex justify-start pb-4">
                         <div class="max-w-[90%] w-full">
-                            <span class="text-[9px] font-bold text-white/20 uppercase mb-1 block text-left">System</span>
+                            <span
+                                class="text-[9px] font-bold text-white/20 uppercase mb-1 block text-left">System</span>
                             <div class="bg-white/10 border border-white/20 p-5 rounded-2xl shadow-xl">
                                 <h4 class="text-white font-bold mb-3 text-sm">Formulir Pemesanan</h4>
                                 <form wire:submit.prevent="submitLeadForm" class="space-y-3">
                                     <div>
                                         <input wire:model="leadForm.name" type="text" placeholder="Nama Kamu"
                                             class="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-orange-500 outline-none">
-                                        @error('leadForm.name') <span class="text-[10px] text-red-400">{{ $message }}</span> @enderror
+                                        @error('leadForm.name')
+                                            <span class="text-[10px] text-red-400">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div>
-                                        <input wire:model="leadForm.contact" type="text" placeholder="No. WA / Email"
+                                        <input wire:model="leadForm.contact" type="text"
+                                            placeholder="No. WA / Email"
                                             class="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-orange-500 outline-none">
-                                        @error('leadForm.contact') <span class="text-[10px] text-red-400">{{ $message }}</span> @enderror
+                                        @error('leadForm.contact')
+                                            <span class="text-[10px] text-red-400">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div>
                                         <select wire:model="leadForm.budget"
@@ -183,18 +250,23 @@
                                             <option value="3jt - 5jt">3 Juta - 5 Juta</option>
                                             <option value="5jt+">Diatas 5 Juta</option>
                                         </select>
-                                        @error('leadForm.budget') <span class="text-[10px] text-red-400">{{ $message }}</span> @enderror
+                                        @error('leadForm.budget')
+                                            <span class="text-[10px] text-red-400">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div>
                                         <textarea wire:model="leadForm.description" rows="2" placeholder="Jelasin singkat kebutuhanmu..."
                                             class="w-full bg-black/20 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:border-orange-500 outline-none resize-none"></textarea>
-                                        @error('leadForm.description') <span class="text-[10px] text-red-400">{{ $message }}</span> @enderror
+                                        @error('leadForm.description')
+                                            <span class="text-[10px] text-red-400">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="flex justify-end gap-2 pt-2">
                                         <button type="button" wire:click="$set('showLeadForm', false)"
                                             class="text-xs text-gray-400 hover:text-white px-3 py-2">Batal</button>
                                         <button type="submit"
-                                            class="bg-orange-500 text-black text-xs font-bold px-4 py-2 rounded-lg hover:bg-orange-400 transition-colors">Kirim Data</button>
+                                            class="bg-orange-500 text-black text-xs font-bold px-4 py-2 rounded-lg hover:bg-orange-400 transition-colors">Kirim
+                                            Data</button>
                                     </div>
                                 </form>
                             </div>
@@ -203,7 +275,8 @@
                 @endif
 
                 <div wire:loading wire:target="sendMessage" class="flex justify-start">
-                    <div class="bg-white/5 p-4 rounded-2xl animate-pulse text-[10px] text-white/40 uppercase tracking-widest">
+                    <div
+                        class="bg-white/5 p-4 rounded-2xl animate-pulse text-[10px] text-white/40 uppercase tracking-widest">
                         Reva Thinking...
                     </div>
                 </div>

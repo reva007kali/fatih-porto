@@ -1,103 +1,114 @@
 <div class="w-full bg-[#0a0a0a] text-white overflow-x-hidden relative" x-data="{ loading: true }" x-init="setTimeout(() => { loading = false }, 1600)">
 
+    <div x-show="loading" x-transition:leave="transition duration-700 cubic-bezier(0.4, 0, 0.2, 1)"
+    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+    class="fixed inset-0 z-[9999] bg-[#070708] flex flex-col items-center justify-center overflow-hidden"
+    style="display:flex;">
 
-    {{-- ══════════════════════════════════════
-        MINIMALIST EDITORIAL LOADING
-     ══════════════════════════════════════ --}}
-    <div x-show="loading" x-transition:leave="transition duration-1000 cubic-bezier(0.4, 0, 0.2, 1)"
-        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-        class="fixed inset-0 z-[9999] bg-[#070708] flex flex-col items-center justify-center overflow-hidden"
-        style="display:flex;">
+    {{-- Center content --}}
+    <div class="relative w-full max-w-[1000px] mx-auto px-8 md:px-16 flex flex-col gap-10">
 
-        {{-- Subtle Center Content --}}
-        <div class="relative flex flex-col items-center">
+        {{-- Eyebrow --}}
+        <p class="text-[10px] font-bold uppercase tracking-[0.7em] text-white/25"
+            style="animation: fadeUp 0.6s ease forwards; opacity:0; animation-delay:0.1s;">
+            Initializing Portfolio
+        </p>
 
-            {{-- Top Label --}}
-            <div class="mb-12 overflow-hidden">
-                <p class="text-[10px] font-bold uppercase tracking-[0.8em] text-white/20"
-                    style="animation: fadeInOut 2s ease-in-out infinite;">
-                    Initializing Portfolio
-                </p>
-            </div>
+        {{-- Big name --}}
+        <h1 class="font-black uppercase leading-none tracking-[-0.04em] text-[clamp(4rem,16vw,12rem)]"
+            style="font-family:'Bebas Neue','Arial Black',sans-serif;
+                   background: linear-gradient(135deg, #ffffff 0%, #f97316 55%, #fbbf24 100%);
+                   -webkit-background-clip: text;
+                   -webkit-text-fill-color: transparent;
+                   background-clip: text;
+                   animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
+                   opacity:0; animation-delay:0.25s;">
+            Revaldy<br>Adhitya
+        </h1>
 
-            {{-- Main Name: Relaxed Tracking --}}
-            <div class="relative">
-                <h1 class="text-xs md:text-sm font-light tracking-[1.5em] md:tracking-[2.5em] text-white uppercase leading-none pr-[-2.5em]"
-                    style="animation: revealText 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
-                    Reva Adhitya
-                </h1>
+        {{-- Progress track --}}
+        <div style="animation: fadeUp 0.6s ease forwards; opacity:0; animation-delay:0.4s;">
 
-                {{-- Ultra-thin Progress Line --}}
-                <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-24 h-[1px] bg-white/5 overflow-hidden">
-                    <div class="h-full bg-white/40"
-                        style="animation: slowLoad 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;">
-                    </div>
+            {{-- Track --}}
+            <div class="relative w-full h-[3px] bg-white/[0.06]">
+                {{-- Fill --}}
+                <div id="loader-bar"
+                    class="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-600 via-orange-400 to-amber-400"
+                    style="width:0%; transition: width 0.1s linear;">
+                </div>
+                {{-- Glowing tip --}}
+                <div id="loader-tip"
+                    class="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-orange-400 -translate-x-1/2"
+                    style="left:0%; box-shadow: 0 0 12px 4px rgba(249,115,22,0.8); transition: left 0.1s linear;">
                 </div>
             </div>
 
-            {{-- Year Indicator --}}
-            <div class="absolute bottom-[-100px] md:bottom-[-150px]">
-                <span class="font-mono text-[9px] text-white/10 tracking-widest">© 2026</span>
+            {{-- Percent + label row --}}
+            <div class="flex items-center justify-between mt-4">
+                <span class="text-[9px] font-mono text-white/20 tracking-[0.3em] uppercase">Loading assets</span>
+                <span id="loader-pct" class="text-[11px] font-mono font-bold text-orange-400 tracking-[0.1em]">0%</span>
             </div>
         </div>
+
+        {{-- Year --}}
+        <span class="font-mono text-[9px] text-white/15 tracking-[0.4em]"
+            style="animation: fadeUp 0.6s ease forwards; opacity:0; animation-delay:0.55s;">
+            © 2026
+        </span>
+
     </div>
 
-    <style>
-        @keyframes revealText {
-            0% {
-                opacity: 0;
-                letter-spacing: 3em;
-                filter: blur(8px);
-            }
+</div>
 
-            100% {
-                opacity: 1;
-                letter-spacing: 1.5em;
-                filter: blur(0);
-            }
+<style>
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+(function () {
+    let pct    = 0;
+    let animId = null;
+
+    function ease(t) {
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
+
+    function update() {
+        const bar  = document.getElementById('loader-bar');
+        const tip  = document.getElementById('loader-tip');
+        const label= document.getElementById('loader-pct');
+        if (!bar || !tip || !label) return;
+
+        const speed = pct < 70 ? 0.55 : pct < 90 ? 0.22 : 0.08;
+        pct = Math.min(pct + speed, 100);
+
+        bar.style.width   = pct + '%';
+        tip.style.left    = pct + '%';
+        label.textContent = Math.floor(pct) + '%';
+
+        if (pct < 100) {
+            animId = requestAnimationFrame(update);
         }
+    }
 
-        @keyframes slowLoad {
-            0% {
-                width: 0%;
-                transform: translateX(-100%);
-            }
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => requestAnimationFrame(update), 500);
 
-            100% {
-                width: 100%;
-                transform: translateX(0%);
-            }
-        }
-
-        @keyframes fadeInOut {
-
-            0%,
-            100% {
-                opacity: 0.1;
-            }
-
-            50% {
-                opacity: 0.4;
-            }
-        }
-
-        /* Khusus desktop tracking lebih lebar */
-        @media (min-width: 768px) {
-            @keyframes revealText {
-                0% {
-                    opacity: 0;
-                    letter-spacing: 4em;
-                    filter: blur(8px);
+        const loader = document.querySelector('[x-show="loading"]');
+        if (loader) {
+            new MutationObserver((_, obs) => {
+                if (loader.style.display === 'none') {
+                    cancelAnimationFrame(animId);
+                    obs.disconnect();
                 }
-
-                100% {
-                    opacity: 1;
-                    letter-spacing: 2.5em;
-                    filter: blur(0);
-                }
-            }
+            }).observe(loader, { attributes: true, attributeFilter: ['style'] });
         }
-    </style>
+    });
+})();
+</script>
 
 
     {{-- ══════════════════════════════════════
@@ -117,9 +128,9 @@
             <div class="absolute right-0 top-0 w-full md:w-[58%] h-full">
                 <img src="{{ asset('storage/' . ($hero->image ?? 'default.jpg')) }}" alt="Profile"
                     class="w-full h-full object-cover object-top"
-                    style="filter: grayscale(100%) contrast(1.1); animation: heroReveal 1.4s 1.5s cubic-bezier(0.16,1,0.3,1) both;">
+                    style=" contrast(1.1); animation: heroReveal 1.4s 1.5s cubic-bezier(0.16,1,0.3,1) both;">
                 {{-- Gradient masks --}}
-                <div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/50 to-transparent"></div>
+                {{-- <div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/50 to-transparent"></div> --}}
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/40"></div>
             </div>
         </div>
@@ -158,8 +169,8 @@
 
         {{-- Hero content --}}
         <div
-            class="relative z-10 flex-1 flex flex-col justify-center md:justify-end
-                    max-w-[1200px] mx-auto w-full px-6 md:px-12 pb-0 md:pb-28 pt-28 md:pt-0">
+            class="relative z-10 flex-1 flex flex-col justify-end
+                    max-w-[1200px] mx-auto w-full px-6 md:px-12 pb-12 md:pb-28 pt-28 md:pt-0">
 
             {{-- Eyebrow --}}
             <div class="flex items-center gap-4 mb-8" style="animation: fadeIn 0.6s 1.6s ease-out both; opacity:0;">
@@ -183,31 +194,25 @@
                 $first = implode(' ', $titleParts);
             @endphp
 
-            <div class="mb-8">
+            <div class="mb-3">
                 <div class="overflow-hidden">
-                    <h1 class="text-[clamp(3.5rem,9vw,8.5rem)] font-black leading-[0.9] tracking-[-0.04em] text-white"
+                    <h1 class="text-[clamp(5.5rem,9vw,8.5rem)] font-black leading-[0.9] text-white"
                         style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;
                                animation: slideUp 1s 1.7s cubic-bezier(0.16,1,0.3,1) both;">
                         {{ strtoupper($first) }}
                     </h1>
                 </div>
                 <div class="overflow-hidden flex items-end gap-4 md:gap-8">
-                    <h1 class="text-[clamp(3.5rem,9vw,8.5rem)] font-black leading-[0.9] tracking-[-0.04em]"
-                        style="font-family: 'Bebas Neue', 'Arial Black', sans-serif; color:transparent;
-                               -webkit-text-stroke: 1.5px rgba(255,255,255,0.35);
+                    <h1 class="text-[clamp(5.5rem,9vw,8.5rem)] bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 text-transparent bg-clip-text font-black leading-[0.9] "
+                        style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;
                                animation: slideUp 1s 1.85s cubic-bezier(0.16,1,0.3,1) both;">
                         {{ strtoupper($last) }}
                     </h1>
-                    <span
-                        class="text-[clamp(1rem,2vw,1.5rem)] font-light tracking-[-0.01em] text-white/30 mb-3 hidden md:block"
-                        style="animation: fadeIn 0.8s 2s ease-out both;">
-                        — Creative Developer
-                    </span>
                 </div>
             </div>
 
             {{-- Subtitle + CTAs --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-end max-w-4xl"
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end max-w-4xl"
                 style="animation: fadeIn 0.8s 2.1s ease-out both; opacity:0;">
                 <p class="text-base md:text-lg text-white/40 leading-relaxed font-light max-w-xs">
                     {{ $hero->subtitle ?? 'I craft precise digital experiences with clarity & emotional impact.' }}
@@ -246,10 +251,10 @@
             style="animation: fadeIn 0.6s 2.3s ease-out both; opacity:0;">
             <div class="max-w-[1200px] mx-auto px-6 md:px-12">
                 <div class="grid grid-cols-3 divide-x divide-white/[0.06]">
-                    @foreach ([['40+', 'Projects delivered'], ['5+', 'Years experience'], ['100%', 'Client satisfaction']] as $stat)
+                    @foreach ([['30+', 'Projects delivered'], ['3+', 'Years experience'], ['100%', 'Client satisfaction']] as $stat)
                         <div
                             class="py-5 {{ $loop->first ? 'pr-8' : ($loop->last ? 'pl-8' : 'px-8') }} group cursor-default">
-                            <p class="text-xl md:text-2xl font-black tracking-[-0.03em] text-white group-hover:text-white/60 transition-colors"
+                            <p class="text-xl md:text-2xl font-black tracking-[-0.03em] text-orange-700 group-hover:text-white/60 transition-colors"
                                 style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">{{ $stat[0] }}</p>
                             <p class="text-[9px] font-medium tracking-[0.2em] uppercase text-white/20 mt-0.5">
                                 {{ $stat[1] }}</p>
@@ -268,9 +273,11 @@
         <div class="flex gap-0 whitespace-nowrap" style="animation: marqueeScroll 24s linear infinite;">
             @foreach (range(1, 8) as $i)
                 <span
-                    class="inline-flex items-center gap-6 px-6 text-[11px] font-black tracking-[0.35em] uppercase text-white/10">
-                    Web Design <span class="text-white/5">✦</span> 3D & Motion <span class="text-white/5">✦</span>
-                    UI/UX <span class="text-white/5">✦</span> Development <span class="text-white/5">✦</span> Branding
+                    class="inline-flex items-center gap-6 px-6 text-[11px] font-black tracking-[0.35em] uppercase text-white/90">
+                    Web Design <span class="text-orange-600">✦</span> 3D & Motion <span
+                        class="text-orange-600">✦</span>
+                    UI/UX <span class="text-orange-600">✦</span> Development <span class="text-orange-600">✦</span>
+                    Branding
                 </span>
             @endforeach
         </div>
@@ -292,15 +299,15 @@
                             <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">Selected
                                 Works</span>
                         </div>
-                        <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.04em] leading-[0.9] text-white"
+                        <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black  leading-[0.9] text-white"
                             style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
                             CREATIVE<br>
                             <span
-                                style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color: transparent;">HIGHLIGHTS.</span>
+                                class="bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 text-transparent bg-clip-text">HIGHLIGHTS.</span>
                         </h2>
                     </div>
                     <a href="{{ route('works') }}" wire:navigate
-                        class="group hidden md:inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.25em] uppercase text-white/30
+                        class="group hidden md:inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.25em] uppercase text-white/70
                            hover:text-white transition-colors duration-300 border-b border-white/10 hover:border-white/50 pb-1">
                         All Projects
                         <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none"
@@ -320,7 +327,7 @@
                                     class="group flex flex-col h-full">
 
                                     {{-- Image --}}
-                                    <div class="relative overflow-hidden aspect-[4/3] mb-5 bg-[#111]">
+                                    <div class="relative overflow-hidden aspect-[5/3] mb-5 bg-[#111]">
                                         @php
                                             $displayImage = $project->cover_image ?? $project->image;
                                         @endphp
@@ -381,7 +388,7 @@
                                         </div>
                                         <div
                                             class="w-7 h-7 border border-white/10 flex items-center justify-center flex-shrink-0
-                                                group-hover:border-white/60 group-hover:bg-white transition-all duration-300 mt-0.5">
+                                                group-hover:border-orange-500 group-hover:bg-orange-500 transition-all duration-300 mt-0.5">
                                             <svg class="w-3 h-3 text-white/30 group-hover:text-black transition-colors group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200"
                                                 fill="none" stroke="currentColor" stroke-width="2"
                                                 viewBox="0 0 24 24">
@@ -439,15 +446,15 @@
                             <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">Web
                                 Collection</span>
                         </div>
-                        <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.04em] leading-[0.9] text-white"
+                        <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black  leading-[0.9] text-white"
                             style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
                             WEBSITES<br>
                             <span
-                                style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color: transparent;">COLLECTION.</span>
+                                class="bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 text-transparent bg-clip-text">COLLECTION.</span>
                         </h2>
                     </div>
                     <a href="{{ route('websites') }}" wire:navigate
-                        class="group hidden md:inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.25em] uppercase text-white/30
+                        class="group hidden md:inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.25em] uppercase text-white/70
                            hover:text-white transition-colors border-b border-white/10 hover:border-white/50 pb-1">
                         All Sites
                         <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none"
@@ -458,60 +465,116 @@
                     </a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 grid-rows-auto gap-3 md:gap-6">
                     @foreach ($websites as $i => $website)
-                        <div class="aw-reveal" style="--delay:{{ $i * 80 }}ms">
+                        @php
+                            $spans = [
+                                0 => 'lg:col-span-7',
+                                1 => 'lg:col-span-5',
+                                2 => 'lg:col-span-4',
+                                3 => 'lg:col-span-4',
+                                4 => 'lg:col-span-4',
+                                5 => 'lg:col-span-5',
+                                6 => 'lg:col-span-7',
+                            ];
+                            $aspectRatios = [
+                                0 => 'aspect-[16/8]',
+                                1 => 'aspect-[5/3]',
+                                2 => 'aspect-[5/3]',
+                                3 => 'aspect-[5/3]',
+                                4 => 'aspect-[5/3]',
+                                5 => 'aspect-[5/3]',
+                                6 => 'aspect-[16/7]',
+                            ];
+                            $colSpan = $spans[$i % count($spans)] ?? 'lg:col-span-4';
+                            $aspect = $aspectRatios[$i % count($aspectRatios)] ?? 'aspect-[5/3]';
+                            $isWide = in_array($i % count($spans), [0, 6]);
+                        @endphp
+
+                        <div class="aw-reveal sm:col-span-1 {{ $colSpan }}"
+                            style="--delay:{{ $i * 80 }}ms">
                             <a href="{{ route('websites.show', $website->slug) }}"
                                 class="group relative flex flex-col overflow-hidden bg-[#111] border border-white/[0.06]
-                                   hover:border-white/25 transition-all duration-500
-                                   hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+                                       hover:border-white/25 transition-all duration-500
+                                       hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(0,0,0,0.7)] h-full">
 
                                 {{-- Image --}}
-                                <div class="relative overflow-hidden aspect-[4/3]">
+                                <div class="relative overflow-hidden {{ $aspect }}">
                                     @if ($website->image)
                                         <img src="{{ asset('storage/' . $website->image) }}"
-                                            class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-                                            style="filter: grayscale(70%); transition: filter 0.7s ease, transform 0.7s ease;"
-                                            onmouseenter="this.style.filter='grayscale(0%)'"
-                                            onmouseleave="this.style.filter='grayscale(70%)'">
+                                            class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105">
                                     @else
                                         <div class="w-full h-full flex items-center justify-center bg-[#1a1a1a]">
-                                            <span class="text-5xl font-black text-white/5"
-                                                style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
+                                            <span class="font-black text-white/[0.04] select-none"
+                                                style="font-family:'Bebas Neue','Arial Black',sans-serif;
+                                                       font-size: clamp(4rem, 12vw, 9rem);">
                                                 {{ substr($website->title, 0, 1) }}
                                             </span>
                                         </div>
                                     @endif
 
-                                    {{-- Tags on hover --}}
+                                    {{-- Dark gradient overlay --}}
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-[#111]/80 via-transparent to-transparent
+                                                opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    </div>
+
+                                    {{-- Tags --}}
                                     @if ($website->tags)
                                         <div
-                                            class="absolute top-3 left-3 flex flex-wrap gap-1.5 opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 transition-all duration-300">
-                                            @foreach (array_slice($website->tags, 0, 2) as $tag)
+                                            class="absolute top-3 left-3 flex flex-wrap gap-1.5
+                                                    opacity-0 group-hover:opacity-100
+                                                    -translate-y-1 group-hover:translate-y-0
+                                                    transition-all duration-300">
+                                            @foreach (array_slice($website->tags, 0, $isWide ? 3 : 2) as $tag)
                                                 <span
                                                     class="px-2.5 py-1 bg-[#0a0a0a]/90 backdrop-blur-sm border border-white/20
-                                                         text-[8px] font-bold uppercase tracking-[0.15em] text-white/60">
+                                                             text-[8px] font-bold uppercase tracking-[0.15em] text-white/60">
                                                     {{ $tag }}
                                                 </span>
                                             @endforeach
                                         </div>
                                     @endif
+
+                                    {{-- Index watermark --}}
+                                    <div class="absolute bottom-3 right-4 text-[2rem] font-black text-white/[0.04] leading-none select-none
+                                                group-hover:text-white/[0.08] transition-all duration-500"
+                                        style="font-family:'Bebas Neue','Arial Black',sans-serif;">
+                                        {{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}
+                                    </div>
                                 </div>
 
                                 {{-- Card body --}}
-                                <div class="p-5 flex items-start justify-between gap-3">
+                                <div class="p-5 flex items-start justify-between gap-3 mt-auto">
                                     <div class="flex-1 min-w-0">
+
+                                        {{-- Category pill --}}
+                                        @if ($website->category ?? null)
+                                            <span
+                                                class="inline-block mb-2 text-[8px] font-bold uppercase tracking-[0.2em]
+                                                         text-orange-400/70 border border-orange-500/20 px-2 py-0.5">
+                                                {{ $website->category }}
+                                            </span>
+                                        @endif
+
                                         <h3
-                                            class="text-sm font-bold tracking-[-0.01em] text-white/70 group-hover:text-white transition-colors duration-200 mb-1 truncate">
+                                            class="font-bold tracking-[-0.01em] text-white/70
+                                                   group-hover:text-white transition-colors duration-200 mb-1 truncate
+                                                   {{ $isWide ? 'text-base' : 'text-sm' }}">
                                             {{ $website->title }}
                                         </h3>
                                         <p class="text-xs text-white/20 line-clamp-1 font-light">
-                                            {{ $website->description }}</p>
+                                            {{ $website->description }}
+                                        </p>
                                     </div>
+
+                                    {{-- Arrow button --}}
                                     <div
                                         class="w-7 h-7 border border-white/10 flex items-center justify-center flex-shrink-0
-                                            group-hover:bg-white group-hover:border-white transition-all duration-300">
-                                        <svg class="w-3 h-3 text-white/30 group-hover:text-black transition-colors"
+                                                group-hover:bg-white group-hover:border-white transition-all duration-300">
+                                        <svg class="w-3 h-3 text-white/30 group-hover:text-black
+                                                    group-hover:translate-x-0.5 group-hover:-translate-y-0.5
+                                                    transition-all duration-200"
                                             fill="none" stroke="currentColor" stroke-width="2"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -520,9 +583,16 @@
                                     </div>
                                 </div>
 
-                                {{-- Bottom line sweep --}}
+                                {{-- Bottom sweep --}}
                                 <div
-                                    class="absolute bottom-0 left-0 h-px w-0 bg-white group-hover:w-full transition-all duration-700">
+                                    class="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-orange-500 to-amber-400
+                                            group-hover:w-full transition-all duration-700">
+                                </div>
+
+                                {{-- Left accent --}}
+                                <div
+                                    class="absolute left-0 top-0 w-px h-0 bg-gradient-to-b from-orange-500 to-transparent
+                                            group-hover:h-full transition-all duration-700 delay-100">
                                 </div>
                             </a>
                         </div>
@@ -545,11 +615,11 @@
                         <div class="w-6 h-px bg-white/20"></div>
                         <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">What I Offer</span>
                     </div>
-                    <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.04em] leading-[0.9] text-white mb-6"
+                    <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black  leading-[0.9] text-white mb-6"
                         style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
                         SPECIALIZED<br>
                         <span
-                            style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color: transparent;">SOLUTIONS.</span>
+                            class="bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 text-transparent bg-clip-text">SOLUTIONS.</span>
                     </h2>
                     <p class="text-base text-white/30 max-w-md leading-relaxed font-light">
                         I build digital solutions that simplify, streamline, and strengthen brands with precision and
@@ -579,16 +649,13 @@
                                         {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
                                     </span>
                                     <div class="min-w-0 flex-1">
-                                        <h3 class="text-xl md:text-2xl lg:text-3xl font-black tracking-[-0.03em] text-white/70
-                                               group-hover:text-white transition-colors duration-300 truncate"
+                                        <h3 class="text-xl md:text-2xl lg:text-3xl font-black text-white/70
+                                               group-hover:text-orange-500 transition-colors duration-300 truncate"
                                             style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
                                             {{ strtoupper($service->title) }}
                                         </h3>
                                         <p
-                                            class="text-xs text-white/20 leading-relaxed mt-1 max-w-sm font-light 
-          max-h-0 opacity-0 overflow-hidden 
-          group-hover:max-h-12 group-hover:opacity-100 group-hover:line-clamp-2 
-          transition-all duration-500">
+                                            class="text-xs text-white/20 leading-relaxed mt-1 max-w-sm font-light max-h-0 opacity-0 overflow-hidden group-hover:max-h-12 group-hover:opacity-100 group-hover:line-clamp-2 transition-all duration-500">
                                             {{ $service->description }}
                                         </p>
                                     </div>
@@ -631,53 +698,67 @@
                             Me</span>
                         <div class="w-6 h-px bg-white/20"></div>
                     </div>
-                    <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.04em] leading-[0.9] text-white"
+                    <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black  leading-[0.9] text-white"
                         style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
-                        DRIVEN BY<br>
+                        DRIVEN BY
                         <span
-                            style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color: transparent;">PURPOSE.</span>
+                            class="bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 text-transparent bg-clip-text !text-[clamp(2.5rem,6vw,8rem)]">PURPOSE.</span>
                     </h2>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="features-grid">
                     @foreach ($features as $index => $feature)
-                        <div class="feature-card group relative p-8 md:p-10 border border-white/[0.07] bg-[#0a0a0a]
-                                hover:border-white/20 hover:bg-[#111] hover:-translate-y-1
-                                transition-all duration-400 overflow-hidden cursor-default
-                                opacity-0 translate-y-8"
+                        @php $isAccent = ($index + 1) % 2 === 0; @endphp
+
+                        <div class="feature-card group relative p-8 md:p-10 border overflow-hidden cursor-default opacity-0 translate-y-8 transition-all duration-400
+                                {{ $isAccent
+                                    ? 'border-orange-500/30 bg-gradient-to-br from-orange-600 to-orange-500 hover:border-orange-400 hover:brightness-110'
+                                    : 'border-white/[0.07] bg-[#0a0a0a] hover:border-white/20 hover:bg-[#111]' }}
+                                hover:-translate-y-1"
                             style="transition-delay: {{ $index * 70 }}ms;">
 
                             {{-- Number watermark --}}
-                            <div class="absolute top-4 right-5 text-[2.5rem] font-black text-white/[0.03] leading-none select-none"
+                            <div class="absolute top-4 right-5 text-[2.5rem] font-black leading-none select-none
+                                    {{ $isAccent ? 'text-white/10' : 'text-white/[0.03]' }}"
                                 style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
                                 {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
                             </div>
 
                             {{-- Icon --}}
                             <div
-                                class="w-11 h-11 border border-white/[0.07] bg-[#111] flex items-center justify-center mb-8
-                                    group-hover:bg-white group-hover:border-white transition-all duration-400">
+                                class="w-11 h-11 border flex items-center justify-center mb-8 transition-all duration-400
+                                    {{ $isAccent
+                                        ? 'border-white/20 bg-white/10 group-hover:bg-white group-hover:border-white'
+                                        : 'border-white/[0.07] bg-[#111] group-hover:bg-white group-hover:border-white' }}">
                                 @if ($feature->icon)
                                     <img src="{{ asset('storage/' . $feature->icon) }}"
-                                        class="w-5 h-5 object-contain opacity-30 group-hover:opacity-100 group-hover:brightness-0 transition-all duration-300">
+                                        class="w-5 h-5 object-contain transition-all duration-300
+                                            {{ $isAccent
+                                                ? 'opacity-80 brightness-0 invert group-hover:opacity-100 group-hover:brightness-0 group-hover:invert-0'
+                                                : 'opacity-30 group-hover:opacity-100 group-hover:brightness-0' }}">
                                 @else
                                     <span
-                                        class="text-white/30 group-hover:text-black text-sm transition-colors">✦</span>
+                                        class="text-sm transition-colors
+                                            {{ $isAccent ? 'text-white/70 group-hover:text-black' : 'text-white/30 group-hover:text-black' }}">✦</span>
                                 @endif
                             </div>
 
                             <h3
-                                class="text-lg font-bold tracking-[-0.02em] text-white/70 mb-3
-                                   group-hover:text-white transition-colors duration-200">
+                                class="text-lg font-bold tracking-[-0.02em] mb-3 transition-colors duration-200
+                                    {{ $isAccent ? 'text-white' : 'text-white/70 group-hover:text-white' }}">
                                 {{ $feature->title }}
                             </h3>
-                            <p class="text-sm text-white/25 leading-relaxed font-light">
+
+                            <p
+                                class="text-sm leading-relaxed font-light
+                                    {{ $isAccent ? 'text-orange-100/70' : 'text-white/25' }}">
                                 {{ $feature->description }}
                             </p>
 
                             {{-- Hover sweep --}}
                             <div
-                                class="absolute bottom-0 left-0 h-px w-0 bg-white group-hover:w-full transition-all duration-700">
+                                class="absolute bottom-0 left-0 h-px w-0 group-hover:w-full transition-all duration-700
+                                    {{ $isAccent ? 'bg-white/40' : 'bg-white' }}">
                             </div>
                         </div>
                     @endforeach
@@ -715,10 +796,7 @@
                         <div class="relative aspect-[3/4] overflow-hidden bg-[#111]">
                             @if ($about->image)
                                 <img src="{{ asset('storage/' . $about->image) }}"
-                                    class="w-full h-full object-cover object-top transition-all duration-1000 group-hover:scale-[1.04]"
-                                    style="filter: grayscale(85%); transition: filter 1s ease, transform 1s ease;"
-                                    onmouseenter="this.style.filter='grayscale(20%)'"
-                                    onmouseleave="this.style.filter='grayscale(85%)'">
+                                    class="w-full h-full object-cover object-top transition-all duration-1000 group-hover:scale-[1.04]">
                             @else
                                 <div class="w-full h-full bg-[#111]"></div>
                             @endif
@@ -729,7 +807,7 @@
 
                         {{-- Floating stat --}}
                         <div class="absolute -bottom-5 -right-5 px-6 py-4 bg-white shadow-2xl">
-                            <p class="text-3xl font-black tracking-[-0.04em] text-[#0a0a0a]"
+                            <p class="text-3xl font-black  text-[#0a0a0a]"
                                 style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">40+</p>
                             <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-[#0a0a0a]/40">Projects</p>
                         </div>
@@ -757,11 +835,11 @@
                         <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">About Me</span>
                     </div>
 
-                    <h2 class="text-[clamp(2.5rem,5vw,4rem)] font-black tracking-[-0.04em] leading-[0.9] text-white mb-8"
+                    <h2 class="text-[clamp(2.5rem,5vw,4rem)] font-black  leading-[0.9] text-white mb-8"
                         style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
                         DESIGNING<br>
                         <span
-                            style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color:transparent;">PRECISION.</span>
+                            class="bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 text-transparent bg-clip-text">PRECISION.</span>
                     </h2>
 
                     <p class="text-lg md:text-xl text-white/60 leading-relaxed font-light mb-5">
@@ -823,10 +901,12 @@
                     <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">Investment</span>
                     <div class="w-6 h-px bg-white/20"></div>
                 </div>
-                <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.04em] leading-[0.9] text-white"
+                <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black  leading-[0.9] text-white"
                     style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
                     READY TO<br>
-                    <span style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color:transparent;">LEVEL UP?</span>
+                    <span
+                        class="bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 text-transparent bg-clip-text">LEVEL
+                        UP?</span>
                 </h2>
             </div>
 
@@ -837,7 +917,7 @@
                         <div
                             class="group relative flex flex-col h-full border overflow-hidden transition-all duration-400 hover:-translate-y-1
                                     {{ $isMain
-                                        ? 'bg-white border-white shadow-[0_20px_60px_rgba(255,255,255,0.08)] hover:shadow-[0_30px_80px_rgba(255,255,255,0.12)]'
+                                        ? 'bg-orange-500 border-white shadow-[0_20px_60px_rgba(255,255,255,0.08)] hover:shadow-[0_30px_80px_rgba(255,255,255,0.12)]'
                                         : 'bg-[#0a0a0a] border-white/[0.07] hover:border-white/25 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)]' }}">
 
                             @if ($isMain)
@@ -855,7 +935,7 @@
                                         style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
                                         {{ strtoupper($plan->name) }}
                                     </h3>
-                                    <p class="text-3xl font-black tracking-[-0.04em] mb-3 {{ $isMain ? 'text-[#0a0a0a]' : 'text-white' }}"
+                                    <p class="text-3xl font-black  mb-3 {{ $isMain ? 'text-[#0a0a0a]' : 'text-orange-500' }}"
                                         style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
                                         {{ $plan->price }}
                                     </p>
@@ -868,7 +948,7 @@
                                 <div class="mt-auto">
                                     <a href="{{ $plan->cta_link ?? '#' }}"
                                         class="block w-full text-center py-4 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-200 active:scale-[0.98]
-                                               {{ $isMain ? 'bg-[#0a0a0a] text-white hover:bg-[#1a1a1a]' : 'bg-white text-[#0a0a0a] hover:bg-white/90' }}">
+                                               {{ $isMain ? 'bg-[#0a0a0a] text-white hover:bg-[#1a1a1a]' : 'bg-orange-500 text-[#0a0a0a] hover:bg-orange-700' }}">
                                         {{ $plan->cta_text ?? 'Get Started' }}
                                     </a>
                                 </div>
@@ -913,11 +993,11 @@
                         <div class="w-6 h-px bg-white/20"></div>
                         <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-white/30">Social Proof</span>
                     </div>
-                    <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black tracking-[-0.04em] leading-[0.9] text-white"
+                    <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-black  leading-[0.9] text-white"
                         style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
                         CLIENT<br>
                         <span
-                            style="-webkit-text-stroke: 1px rgba(255,255,255,0.25); color:transparent;">FEEDBACK.</span>
+                            class="bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 text-transparent bg-clip-text">FEEDBACK.</span>
                     </h2>
                 </div>
             </div>
@@ -1013,35 +1093,46 @@
 
 
     {{-- ══════════════════════════════════════
-         CONTACT
-    ══════════════════════════════════════ --}}
-    <section id="contact" class="py-28 md:py-40 bg-white">
-        <div class="max-w-[1200px] mx-auto px-6 md:px-12">
+     CONTACT
+══════════════════════════════════════ --}}
+    <section id="contact"
+        class="relative pt-36 md:pt-48 pb-28 md:pb-40 bg-gradient-to-br from-orange-600 via-orange-500 to-amber-400">
 
+        {{-- Top wave divider --}}
+        <div class="absolute top-0 left-0 w-full overflow-hidden leading-none">
+            <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"
+                class="w-full h-24 md:h-40">
+                <path
+                    d="M0,0 L1440,0 L1440,60 C1320,130 1200,160 1080,140 C960,120 840,60 720,80 C600,100 480,150 360,130 C240,110 120,50 0,90 Z"
+                    fill="#0a0a0a" />
+            </svg>
+        </div>
+
+        <div class="max-w-[1200px] mx-auto px-6 md:px-12">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
 
                 {{-- Left --}}
                 <div class="aw-reveal">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="w-6 h-px bg-[#1a1a1a]/20"></div>
-                        <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-black/30">Get In Touch</span>
+                        <div class="w-6 h-px bg-black/30"></div>
+                        <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-black">Get In Touch</span>
                     </div>
-                    <h2 class="text-[clamp(3rem,7vw,6rem)] font-black tracking-[-0.05em] leading-[0.88] text-[#0a0a0a] mb-8"
+                    <h2 class="text-[clamp(3rem,7vw,6rem)] font-black leading-[0.88] text-black mb-8"
                         style="font-family: 'Bebas Neue', 'Arial Black', sans-serif;">
                         LET'S<br>
-                        <span style="-webkit-text-stroke: 1.5px rgba(0,0,0,0.25); color:transparent;">CONNECT.</span>
+                        <span class="text-black">CONNECT.</span>
                     </h2>
-                    <p class="text-base text-black/40 leading-relaxed font-light max-w-xs mb-12">
+                    <p class="text-base text-black leading-relaxed font-light max-w-xs mb-12">
                         Ready to start your next project? I am currently available for new opportunities.
                     </p>
 
-                    <div class="inline-flex items-center gap-3 px-5 py-3.5 border border-black/10 bg-[#f5f5f5]">
+                    <div class="inline-flex items-center gap-3 px-5 py-3.5 border border-black/20 bg-black/10">
                         <div class="relative flex h-2 w-2">
                             <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
                         </div>
-                        <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-black/40">Available for new
+                        <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-black">Available for new
                             projects</span>
                     </div>
                 </div>
@@ -1049,7 +1140,7 @@
                 {{-- Form --}}
                 <div class="aw-reveal" style="--delay:150ms">
                     @if (session()->has('message'))
-                        <div class="mb-5 px-5 py-4 bg-[#f5f5f5] border border-black/10 text-sm text-black/60">
+                        <div class="mb-5 px-5 py-4 bg-black/80 border border-black/20 text-sm text-white">
                             {{ session('message') }}
                         </div>
                     @endif
@@ -1057,33 +1148,33 @@
                     <form wire:submit.prevent="sendMessage" class="space-y-3">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <input type="text" wire:model="name" placeholder="Your name" required
-                                class="w-full px-5 py-4 bg-[#f5f5f5] border border-transparent text-[#0a0a0a] placeholder-black/25
-                                       text-sm font-light tracking-[-0.01em]
-                                       focus:outline-none focus:bg-white focus:border-black/20 transition-all duration-300">
+                                class="w-full px-5 py-4 bg-black border border-black text-white placeholder-white/30
+                                   text-sm font-light tracking-[-0.01em]
+                                   focus:outline-none focus:border-white/20 transition-all duration-300">
                             <input type="email" wire:model="email" placeholder="Email address" required
-                                class="w-full px-5 py-4 bg-[#f5f5f5] border border-transparent text-[#0a0a0a] placeholder-black/25
-                                       text-sm font-light tracking-[-0.01em]
-                                       focus:outline-none focus:bg-white focus:border-black/20 transition-all duration-300">
+                                class="w-full px-5 py-4 bg-black border border-black text-white placeholder-white/30
+                                   text-sm font-light tracking-[-0.01em]
+                                   focus:outline-none focus:border-white/20 transition-all duration-300">
                         </div>
                         <input type="text" wire:model="subject" placeholder="Subject"
-                            class="w-full px-5 py-4 bg-[#f5f5f5] border border-transparent text-[#0a0a0a] placeholder-black/25
-                                   text-sm font-light tracking-[-0.01em]
-                                   focus:outline-none focus:bg-white focus:border-black/20 transition-all duration-300">
+                            class="w-full px-5 py-4 bg-black border border-black text-white placeholder-white/30
+                               text-sm font-light tracking-[-0.01em]
+                               focus:outline-none focus:border-white/20 transition-all duration-300">
                         <textarea wire:model="message" rows="5" placeholder="Tell me about your project..." required
-                            class="w-full px-5 py-4 bg-[#f5f5f5] border border-transparent text-[#0a0a0a] placeholder-black/25
-                                   text-sm font-light tracking-[-0.01em] resize-none
-                                   focus:outline-none focus:bg-white focus:border-black/20 transition-all duration-300"></textarea>
+                            class="w-full px-5 py-4 bg-black border border-black text-white placeholder-white/30
+                               text-sm font-light tracking-[-0.01em] resize-none
+                               focus:outline-none focus:border-white/20 transition-all duration-300"></textarea>
                         <button type="submit"
-                            class="w-full py-4 bg-[#0a0a0a] text-white text-[11px] font-bold uppercase tracking-[0.25em]
-                                   hover:bg-[#1a1a1a] active:scale-[0.99] transition-all duration-200">
+                            class="w-full py-4 bg-black text-white text-[11px] font-bold uppercase tracking-[0.25em]
+                               hover:bg-black/80 active:scale-[0.99] transition-all duration-200">
                             Send Message
                         </button>
                     </form>
                 </div>
+
             </div>
         </div>
     </section>
-
 
     {{-- ══════════════════════════════════════
          STYLES
@@ -1192,14 +1283,14 @@
         .swiper-pagination-bullet {
             width: 5px !important;
             height: 5px !important;
-            background: rgba(255, 255, 255, 0.15) !important;
+            background: rgb(226, 226, 226) !important;
             opacity: 1 !important;
             border-radius: 9999px !important;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
         }
 
         .swiper-pagination-bullet-active {
-            background: rgba(255, 255, 255, 0.9) !important;
+            background: rgba(255, 117, 31, 0.9) !important;
             width: 20px !important;
             border-radius: 9999px !important;
         }
@@ -1309,7 +1400,7 @@
                             spaceBetween: 20
                         },
                         1280: {
-                            slidesPerView: 2.6,
+                            slidesPerView: 2.2,
                             spaceBetween: 24
                         },
                     }
