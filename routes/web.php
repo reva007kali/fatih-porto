@@ -38,12 +38,16 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home::class)->name('home');
-Route::get('/3d-showcase', ThreeShowcase::class)->name('showcase.3d');
+// Route::get('/3d-showcase', ThreeShowcase::class)->name('showcase.3d');
+Route::get('/3d-showcase', function () {
+    abort(403); })->name('showcase.3d');
 Route::get('/works', Works::class)->name('works');
 Route::get('/gallery', Gallery::class)->name('gallery');
 Route::get('/3d-gallery', ThreeDGallery::class)->name('three-d.gallery');
 Route::get('/3d-gallery/{slug}', ThreeDViewer::class)->name('three-d.show');
-Route::get('/websites', Websites::class)->name('websites');
+Route::get('/websites', function () {
+    abort(403); })->name('websites');
+// Route::get('/websites', Websites::class)->name('websites');
 Route::get('/archive', Archive::class)->name('archive');
 Route::get('/works/{slug}', ProjectDetail::class)->name('works.show');
 Route::get('/services/{slug}', ServiceDetail::class)->name('services.show');
@@ -96,7 +100,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/order-form', OrderForm::class)->name('order-form');
     Route::get('/orders', OrderList::class)->name('orders.index');
 
-    Route::get('/ai-settings', App\Livewire\Admin\AiSettings::class)->name('ai-settings');
+    // Route::get('/ai-settings', App\Livewire\Admin\AiSettings::class)->name('ai-settings');
+    Route::get('/ai-settings', function () {
+        abort(403); })->name('ai-settings');
     Route::get('/website-settings', App\Livewire\Admin\WebsiteSettings::class)->name('website-settings');
 });
 
