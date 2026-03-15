@@ -68,7 +68,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('services', ServicesIndex::class)->name('services');
     Route::get('services/create', App\Livewire\Admin\Services\Create::class)->name('services.create');
     Route::get('services/{id}/edit', App\Livewire\Admin\Services\Edit::class)->name('services.edit');
-    
+
     Route::get('projects', ProjectsIndex::class)->name('projects');
     Route::get('projects/create', App\Livewire\Admin\Projects\Create::class)->name('projects.create');
     Route::get('projects/{id}/edit', App\Livewire\Admin\Projects\Edit::class)->name('projects.edit');
@@ -88,7 +88,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('three-d', App\Livewire\Admin\ThreeD\Index::class)->name('three-d.index');
     Route::get('three-d/create', App\Livewire\Admin\ThreeD\Create::class)->name('three-d.create');
     Route::get('three-d/{id}/edit', App\Livewire\Admin\ThreeD\Edit::class)->name('three-d.edit');
-    
+
     Route::get('music', App\Livewire\Admin\Music\Index::class)->name('music.index');
     Route::get('music/create', App\Livewire\Admin\Music\Create::class)->name('music.create');
     Route::get('music/{music}/edit', App\Livewire\Admin\Music\Edit::class)->name('music.edit');
@@ -97,6 +97,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/orders', OrderList::class)->name('orders.index');
 
     Route::get('/ai-settings', App\Livewire\Admin\AiSettings::class)->name('ai-settings');
+    Route::get('/website-settings', App\Livewire\Admin\WebsiteSettings::class)->name('website-settings');
 });
 
 Route::get('/luna-ai', App\Livewire\Public\LunaAi::class)->name('luna-ai');

@@ -6,7 +6,10 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RHN7H3NJS9"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
         gtag('config', 'G-RHN7H3NJS9');
     </script>
@@ -15,13 +18,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="icon" type="image/png" href="/img/logo.png">
-    <title>Reva Adhitya | Portfolio</title>
+    <link rel="icon" type="image/png" href="{{ ($fav = \App\Models\WebsiteSetting::first()?->favicon) ? asset('storage/' . $fav) : asset('/img/logo.png') }}">
+    <title>Sofyan Abdul Fatih | Creative Portfolio</title>
 
     <!-- Fonts: Bebas Neue (display) + DM Sans (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&display=swap"
+        rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
@@ -39,24 +44,30 @@
            DESIGN TOKENS
         ───────────────────────────────────────── */
         :root {
-            --bg:         #0a0a0a;
-            --bg-2:       #0f0f0f;
-            --bg-3:       #141414;
-            --white:      #ffffff;
-            --border:     rgba(255,255,255,0.07);
-            --border-h:   rgba(255,255,255,0.20);
-            --text:       rgba(255,255,255,0.80);
-            --text-2:     rgba(255,255,255,0.38);
-            --text-3:     rgba(255,255,255,0.18);
-            --font-sans:  'DM Sans', system-ui, sans-serif;
-            --font-disp:  'Bebas Neue', 'Arial Black', sans-serif;
-            --nav-h:      64px;
+            --bg: #0a0a0a;
+            --bg-2: #0f0f0f;
+            --bg-3: #141414;
+            --white: #ffffff;
+            --border: rgba(255, 255, 255, 0.07);
+            --border-h: rgba(255, 255, 255, 0.20);
+            --text: rgba(255, 255, 255, 0.80);
+            --text-2: rgba(255, 255, 255, 0.38);
+            --text-3: rgba(255, 255, 255, 0.18);
+            --font-sans: 'DM Sans', system-ui, sans-serif;
+            --font-disp: 'Bebas Neue', 'Arial Black', sans-serif;
+            --nav-h: 64px;
         }
 
         /* ─────────────────────────────────────────
            RESET & BASE
         ───────────────────────────────────────── */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         html {
             scroll-behavior: smooth;
@@ -74,7 +85,12 @@
 
         /* Restore cursor on touch / coarse pointer devices */
         @media (pointer: coarse) {
-            html, body, * { cursor: auto !important; }
+
+            html,
+            body,
+            * {
+                cursor: auto !important;
+            }
         }
 
         /* ─────────────────────────────────────────
@@ -107,11 +123,17 @@
         }
 
         @keyframes grainDrift {
+
             /* We shift by exactly one tile (240px) so
                the pattern is seamless at start & end.
                Diagonal movement reads as "live" grain. */
-            0%   { transform: translate(0,    0);    }
-            100% { transform: translate(240px, 120px); }
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(240px, 120px);
+            }
         }
 
         /* ─────────────────────────────────────────
@@ -157,50 +179,109 @@
                that causes the laggy "rubber band" feel.
                Position is driven purely by rAF lerp. */
             transition: width 0.28s ease,
-                        height 0.28s ease,
-                        border-color 0.28s ease,
-                        opacity 0.28s ease;
+                height 0.28s ease,
+                border-color 0.28s ease,
+                opacity 0.28s ease;
         }
 
         /* Hover state: ring expands, dot fades */
-        #cur-dot.hovered  { width: 3px; height: 3px; opacity: 0.4; }
-        #cur-ring.hovered { width: 52px; height: 52px; border-color: rgba(255,255,255,0.20); }
+        #cur-dot.hovered {
+            width: 3px;
+            height: 3px;
+            opacity: 0.4;
+        }
+
+        #cur-ring.hovered {
+            width: 52px;
+            height: 52px;
+            border-color: rgba(255, 255, 255, 0.20);
+        }
 
         /* Click state */
-        #cur-ring.clicked { width: 22px; height: 22px; border-color: rgba(255,255,255,0.80); }
+        #cur-ring.clicked {
+            width: 22px;
+            height: 22px;
+            border-color: rgba(255, 255, 255, 0.80);
+        }
 
         /* On mobile/touch: hide completely */
-        @media (hover: none), (pointer: coarse) {
-            #cur-dot, #cur-ring { display: none; }
+        @media (hover: none),
+        (pointer: coarse) {
+
+            #cur-dot,
+            #cur-ring {
+                display: none;
+            }
         }
 
         /* ─────────────────────────────────────────
            SCROLLBAR
         ───────────────────────────────────────── */
-        ::-webkit-scrollbar             { width: 3px; }
-        ::-webkit-scrollbar-track       { background: var(--bg); }
-        ::-webkit-scrollbar-thumb       { background: rgba(255,255,255,0.09); border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.20); }
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
 
-        ::selection { background: var(--white); color: var(--bg); }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.09);
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.20);
+        }
+
+        ::selection {
+            background: var(--white);
+            color: var(--bg);
+        }
 
         /* ─────────────────────────────────────────
            PROSE CHAT (Livewire chatbot)
         ───────────────────────────────────────── */
-        .prose-chat ul  { list-style: disc;    margin-left: 1rem; margin-bottom: 0.5rem; color: var(--text-2); }
-        .prose-chat ol  { list-style: decimal; margin-left: 1rem; margin-bottom: 0.5rem; color: var(--text-2); }
-        .prose-chat p   { margin-bottom: 0.5rem; line-height: 1.6; }
-        .prose-chat a   { color: var(--white); text-decoration: underline; font-weight: 600; }
-        .prose-chat a:hover { opacity: 0.6; }
+        .prose-chat ul {
+            list-style: disc;
+            margin-left: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-2);
+        }
 
-        [x-cloak] { display: none !important; }
+        .prose-chat ol {
+            list-style: decimal;
+            margin-left: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-2);
+        }
+
+        .prose-chat p {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .prose-chat a {
+            color: var(--white);
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        .prose-chat a:hover {
+            opacity: 0.6;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
 
         /* ─────────────────────────────────────────
            NAVBAR
         ───────────────────────────────────────── */
         #navbar {
             position: fixed;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             width: 100%;
             z-index: 500;
             height: var(--nav-h);
@@ -237,8 +318,14 @@
             flex-shrink: 0;
             transition: opacity 0.2s;
         }
-        .nav-logo:hover { opacity: 0.5; }
-        .nav-logo .dot { color: rgba(255,255,255,0.22); }
+
+        .nav-logo:hover {
+            opacity: 0.5;
+        }
+
+        .nav-logo .dot {
+            color: rgba(255, 255, 255, 0.22);
+        }
 
         /* Links */
         .nav-links {
@@ -259,10 +346,15 @@
             text-decoration: none;
             transition: color 0.2s;
         }
-        .nav-links a:hover { color: var(--white); }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
 
         /* Dropdown */
-        .nav-dropdown { position: relative; }
+        .nav-dropdown {
+            position: relative;
+        }
 
         .nav-dd-btn {
             display: flex;
@@ -279,13 +371,21 @@
             padding: 0;
             transition: color 0.2s;
         }
-        .nav-dd-btn:hover { color: var(--white); }
+
+        .nav-dd-btn:hover {
+            color: var(--white);
+        }
+
         .nav-dd-btn svg {
-            width: 8px; height: 8px;
+            width: 8px;
+            height: 8px;
             stroke: currentColor;
             transition: transform 0.25s;
         }
-        .nav-dropdown:hover .nav-dd-btn svg { transform: rotate(180deg); }
+
+        .nav-dropdown:hover .nav-dd-btn svg {
+            transform: rotate(180deg);
+        }
 
         .nav-dd-panel {
             position: absolute;
@@ -294,18 +394,20 @@
             min-width: 175px;
             background: var(--bg-3);
             border: 1px solid var(--border);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
             opacity: 0;
             pointer-events: none;
             transform: translateY(6px);
             transition: opacity 0.2s, transform 0.2s;
             z-index: 510;
         }
+
         .nav-dropdown:hover .nav-dd-panel {
             opacity: 1;
             pointer-events: auto;
             transform: translateY(0);
         }
+
         .nav-dd-panel a {
             display: block;
             padding: 0.7rem 1rem;
@@ -318,8 +420,15 @@
             border-bottom: 1px solid var(--border);
             transition: color 0.2s, background 0.2s;
         }
-        .nav-dd-panel a:last-child { border-bottom: none; }
-        .nav-dd-panel a:hover { color: var(--white); background: rgba(255,255,255,0.04); }
+
+        .nav-dd-panel a:last-child {
+            border-bottom: none;
+        }
+
+        .nav-dd-panel a:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.04);
+        }
 
         /* CTA */
         .nav-cta {
@@ -331,11 +440,16 @@
             color: var(--white);
             text-decoration: none;
             padding: 0.5rem 1.125rem;
-            border: 1px solid rgba(255,255,255,0.25);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             transition: background 0.2s, border-color 0.2s, color 0.2s;
             white-space: nowrap;
         }
-        .nav-cta:hover { background: var(--white); border-color: var(--white); color: var(--bg); }
+
+        .nav-cta:hover {
+            background: var(--white);
+            border-color: var(--white);
+            color: var(--bg);
+        }
 
         /* Hamburger */
         #menu-toggle {
@@ -343,18 +457,21 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 38px; height: 38px;
+            width: 38px;
+            height: 38px;
             gap: 5px;
             border: 1px solid var(--border);
             background: transparent;
             cursor: none;
             flex-shrink: 0;
         }
+
         #menu-toggle span {
             display: block;
-            width: 17px; height: 1px;
+            width: 17px;
+            height: 1px;
             background: var(--white);
-            transition: transform 0.35s cubic-bezier(0.77,0,0.175,1), opacity 0.35s;
+            transition: transform 0.35s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.35s;
         }
 
         /* ─────────────────────────────────────────
@@ -370,11 +487,14 @@
             display: flex;
             flex-direction: column;
             transform: translateX(100%);
-            transition: transform 0.55s cubic-bezier(0.77,0,0.175,1);
+            transition: transform 0.55s cubic-bezier(0.77, 0, 0.175, 1);
             overflow-y: auto;
             border-top: 1px solid var(--border);
         }
-        #mobile-menu.open { transform: translateX(0); }
+
+        #mobile-menu.open {
+            transform: translateX(0);
+        }
 
         .mob-link {
             display: block;
@@ -382,15 +502,21 @@
             font-size: clamp(2.25rem, 8vw, 3.5rem);
             letter-spacing: 0.04em;
             line-height: 1;
-            color: rgba(255,255,255,0.70);
+            color: rgba(255, 255, 255, 0.70);
             text-decoration: none;
             padding: 1rem 0;
             border-bottom: 1px solid var(--border);
             transition: color 0.2s;
         }
-        .mob-link:hover { color: rgba(255,255,255,0.35); }
 
-        .mob-children { padding-left: 1.25rem; }
+        .mob-link:hover {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .mob-children {
+            padding-left: 1.25rem;
+        }
+
         .mob-children a {
             display: block;
             font-size: 0.9375rem;
@@ -401,7 +527,10 @@
             border-bottom: 1px solid var(--border);
             transition: color 0.2s;
         }
-        .mob-children a:hover { color: var(--white); }
+
+        .mob-children a:hover {
+            color: var(--white);
+        }
 
         .mob-cta {
             display: inline-block;
@@ -413,11 +542,16 @@
             color: var(--white);
             text-decoration: none;
             padding: 0.875rem 2rem;
-            border: 1px solid rgba(255,255,255,0.25);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             align-self: flex-start;
             transition: background 0.2s, color 0.2s, border-color 0.2s;
         }
-        .mob-cta:hover { background: var(--white); color: var(--bg); border-color: var(--white); }
+
+        .mob-cta:hover {
+            background: var(--white);
+            color: var(--bg);
+            border-color: var(--white);
+        }
 
         /* ─────────────────────────────────────────
            FOOTER
@@ -438,7 +572,7 @@
             transform: translateX(-50%);
             font-family: var(--font-disp);
             font-size: 20vw;
-            color: rgba(255,255,255,0.018);
+            color: rgba(255, 255, 255, 0.018);
             white-space: nowrap;
             user-select: none;
             pointer-events: none;
@@ -468,14 +602,20 @@
             font-size: 1.75rem;
             letter-spacing: 0.04em;
             line-height: 1;
-            color: rgba(255,255,255,0.75);
+            color: rgba(255, 255, 255, 0.75);
             text-decoration: none;
             display: block;
             margin-bottom: 1.25rem;
             transition: opacity 0.2s;
         }
-        .footer-logo:hover { opacity: 0.45; }
-        .footer-logo .dot { color: rgba(255,255,255,0.20); }
+
+        .footer-logo:hover {
+            opacity: 0.45;
+        }
+
+        .footer-logo .dot {
+            color: rgba(255, 255, 255, 0.20);
+        }
 
         .footer-about {
             font-size: 0.9375rem;
@@ -493,17 +633,27 @@
         }
 
         .footer-avail-dot {
-            width: 7px; height: 7px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: #4ade80;
-            box-shadow: 0 0 8px rgba(74,222,128,0.45);
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.45);
             animation: pulseGreen 2.4s ease-in-out infinite;
             flex-shrink: 0;
         }
 
         @keyframes pulseGreen {
-            0%, 100% { opacity: 1;   box-shadow: 0 0 8px rgba(74,222,128,0.45); }
-            50%       { opacity: 0.4; box-shadow: 0 0 3px rgba(74,222,128,0.15); }
+
+            0%,
+            100% {
+                opacity: 1;
+                box-shadow: 0 0 8px rgba(74, 222, 128, 0.45);
+            }
+
+            50% {
+                opacity: 0.4;
+                box-shadow: 0 0 3px rgba(74, 222, 128, 0.15);
+            }
         }
 
         .footer-avail-label {
@@ -519,12 +669,18 @@
             font-weight: 700;
             letter-spacing: 0.38em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.14);
+            color: rgba(255, 255, 255, 0.14);
             margin-bottom: 1.5rem;
         }
 
-        .footer-nav { list-style: none; }
-        .footer-nav li { margin-bottom: 0.85rem; }
+        .footer-nav {
+            list-style: none;
+        }
+
+        .footer-nav li {
+            margin-bottom: 0.85rem;
+        }
+
         .footer-nav a {
             font-size: 0.875rem;
             font-weight: 400;
@@ -532,9 +688,15 @@
             text-decoration: none;
             transition: color 0.2s;
         }
-        .footer-nav a:hover { color: var(--white); }
 
-        .footer-contact-row { margin-bottom: 0.625rem; }
+        .footer-nav a:hover {
+            color: var(--white);
+        }
+
+        .footer-contact-row {
+            margin-bottom: 0.625rem;
+        }
+
         .footer-contact-row a {
             font-size: 0.9375rem;
             font-weight: 300;
@@ -542,7 +704,10 @@
             text-decoration: none;
             transition: color 0.2s;
         }
-        .footer-contact-row a:hover { color: var(--white); }
+
+        .footer-contact-row a:hover {
+            color: var(--white);
+        }
 
         .footer-socials {
             display: flex;
@@ -552,22 +717,30 @@
         }
 
         .footer-soc-btn {
-            width: 36px; height: 36px;
+            width: 36px;
+            height: 36px;
             border: 1px solid var(--border);
-            background: rgba(255,255,255,0.03);
+            background: rgba(255, 255, 255, 0.03);
             display: flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
             transition: background 0.2s, border-color 0.2s;
         }
-        .footer-soc-btn:hover { background: rgba(255,255,255,0.07); border-color: var(--border-h); }
+
+        .footer-soc-btn:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--border-h);
+        }
+
         .footer-soc-btn img {
-            width: 15px; height: 15px;
+            width: 15px;
+            height: 15px;
             object-fit: contain;
             opacity: 0.40;
             filter: brightness(0) invert(1);
         }
+
         .footer-soc-btn span {
             font-size: 0.5rem;
             font-weight: 700;
@@ -589,44 +762,87 @@
             font-weight: 700;
             letter-spacing: 0.28em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.14);
+            color: rgba(255, 255, 255, 0.14);
         }
 
-        .footer-legal { display: flex; gap: 1.5rem; list-style: none; }
+        .footer-legal {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
         .footer-legal a {
             font-size: 0.5rem;
             font-weight: 700;
             letter-spacing: 0.28em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.14);
+            color: rgba(255, 255, 255, 0.14);
             text-decoration: none;
             transition: color 0.2s;
         }
-        .footer-legal a:hover { color: rgba(255,255,255,0.50); }
+
+        .footer-legal a:hover {
+            color: rgba(255, 255, 255, 0.50);
+        }
 
         /* ─────────────────────────────────────────
            RESPONSIVE
         ───────────────────────────────────────── */
         @media (max-width: 1280px) {
-            .nav-inner, .footer-inner { padding: 0 1.5rem; }
+
+            .nav-inner,
+            .footer-inner {
+                padding: 0 1.5rem;
+            }
         }
 
         @media (max-width: 1024px) {
-            .footer-grid { grid-template-columns: 1fr 1fr; }
-            .footer-grid > *:first-child { grid-column: 1 / -1; }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-grid>*:first-child {
+                grid-column: 1 / -1;
+            }
         }
 
         @media (max-width: 768px) {
-            .nav-links, .nav-cta { display: none !important; }
-            #menu-toggle          { display: flex; }
-            .footer-grid          { grid-template-columns: 1fr; gap: 2.5rem; }
-            .footer-grid > *:first-child { grid-column: auto; }
-            .footer-bottom        { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+
+            .nav-links,
+            .nav-cta {
+                display: none !important;
+            }
+
+            #menu-toggle {
+                display: flex;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .footer-grid>*:first-child {
+                grid-column: auto;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
         }
 
         @media (max-width: 480px) {
-            .nav-inner, .footer-inner { padding: 0 1.25rem; }
-            #mobile-menu              { padding: 2.5rem 1.25rem; }
+
+            .nav-inner,
+            .footer-inner {
+                padding: 0 1.25rem;
+            }
+
+            #mobile-menu {
+                padding: 2.5rem 1.25rem;
+            }
         }
     </style>
 </head>
@@ -637,7 +853,7 @@
     {{-- ══════════════════════════════════════
          CUSTOM CURSOR
     ══════════════════════════════════════ --}}
-    <div id="cur-dot"  aria-hidden="true"></div>
+    <div id="cur-dot" aria-hidden="true"></div>
     <div id="cur-ring" aria-hidden="true"></div>
 
     {{-- ══════════════════════════════════════
@@ -654,7 +870,9 @@
     <nav id="navbar">
         <div class="nav-inner">
 
-            <a href="/" class="nav-logo bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 text-transparent bg-clip-text font-black">REVA<span class="dot">.</span></a>
+            <a href="/"
+                class="nav-logo bg-gradient-to-r from-blue-600 via-purple-500 to-indigo-400 text-transparent bg-clip-text font-black">FATIH<span
+                    class="dot">.</span></a>
 
             <ul class="nav-links">
                 @forelse ($navItems as $item)
@@ -663,7 +881,7 @@
                             <button class="nav-dd-btn">
                                 {{ $item->label }}
                                 <svg viewBox="0 0 10 10" fill="none" stroke-width="1.8">
-                                    <path d="M2 3.5l3 3 3-3"/>
+                                    <path d="M2 3.5l3 3 3-3" />
                                 </svg>
                             </button>
                             <div class="nav-dd-panel">
@@ -682,7 +900,9 @@
                 @endforelse
             </ul>
 
-            <a href="/#contact" class="px-3 hidden md:inline-block py-1 text-xs font-bold uppercase bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400">Let's Talk</a>
+            <a href="/#contact"
+                class="px-3 hidden md:inline-block py-1 text-xs font-bold uppercase bg-gradient-to-r from-blue-600 via-purple-500 to-indigo-400 rounded-full">Let's
+                Talk</a>
 
             <button id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
                 <span></span><span></span><span></span>
@@ -698,17 +918,15 @@
         @forelse ($navItems as $item)
             @if ($item->children->isNotEmpty())
                 <div x-data="{ expanded: false }">
-                    <button @click="expanded = !expanded"
-                        class="mob-link"
+                    <button @click="expanded = !expanded" class="mob-link"
                         style="width:100%;text-align:left;background:none;border:none;
                                border-bottom:1px solid var(--border);cursor:none;
                                display:flex;align-items:center;justify-content:space-between;">
                         {{ $item->label }}
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                             stroke="currentColor" stroke-width="1.5"
-                             :class="expanded ? 'rotate-180' : ''"
-                             style="transition:transform 0.3s;flex-shrink:0;">
-                            <path d="M3 5.5l4 4 4-4"/>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor"
+                            stroke-width="1.5" :class="expanded ? 'rotate-180' : ''"
+                            style="transition:transform 0.3s;flex-shrink:0;">
+                            <path d="M3 5.5l4 4 4-4" />
                         </svg>
                     </button>
                     <div x-show="expanded" x-collapse class="mob-children">
@@ -721,9 +939,9 @@
                 <a href="{{ $item->url }}" class="mob-link">{{ $item->label }}</a>
             @endif
         @empty
-            <a href="#works"    class="mob-link">Works</a>
+            <a href="#works" class="mob-link">Works</a>
             <a href="#services" class="mob-link">Services</a>
-            <a href="#about"    class="mob-link">About</a>
+            <a href="#about" class="mob-link">About</a>
         @endforelse
 
         <a href="/#contact" class="mob-cta">Let's Talk</a>
@@ -732,7 +950,7 @@
     {{-- ══════════════════════════════════════
          MAIN CONTENT
     ══════════════════════════════════════ --}}
-    <main style="padding-top: var(--nav-h);">
+    <main style="">
         {{ $slot }}
     </main>
 
@@ -740,22 +958,22 @@
          FOOTER
     ══════════════════════════════════════ --}}
     @php
-        $footerSettings    = \App\Models\FooterSetting::first();
-        $footerDetails     = $footerSettings->social_links ?? [];
+        $footerSettings = \App\Models\FooterSetting::first();
+        $footerDetails = $footerSettings->social_links ?? [];
         $footerSocialLinks = \App\Models\SocialLink::where('is_active', true)->orderBy('sort_order')->get();
     @endphp
 
     <footer id="footer">
-        <div class="footer-wm">{{ $footerDetails['watermark_text'] ?? 'REVALDY' }}</div>
+        <div class="footer-wm">{{ $footerDetails['watermark_text'] ?? 'FATIH' }}</div>
 
         <div class="footer-inner">
             <div class="footer-grid">
 
                 {{-- Brand --}}
                 <div>
-                    <a href="/" class="footer-logo">REVA<span class="dot">.</span></a>
+                    <a href="/" class="footer-logo">FATIH<span class="dot">.</span></a>
                     <p class="footer-about">
-                        {{ $footerSettings->about_text ?? 'Crafting high-performance digital experiences that merge aesthetic precision with technical excellence.' }}
+                        {{ $footerSettings->about_text ?? 'Transforming concepts into compelling visual narratives through advanced motion graphics and cinematic editing.' }}
                     </p>
                     <div class="footer-avail">
                         <span class="footer-avail-dot"></span>
@@ -791,7 +1009,8 @@
 
                     @if ($footerDetails['phone'] ?? false)
                         <div class="footer-contact-row">
-                            <a href="tel:{{ str_replace(' ', '', $footerDetails['phone']) }}">{{ $footerDetails['phone'] }}</a>
+                            <a
+                                href="tel:{{ str_replace(' ', '', $footerDetails['phone']) }}">{{ $footerDetails['phone'] }}</a>
                         </div>
                     @endif
 
@@ -820,153 +1039,147 @@
         </div>
     </footer>
 
-    <livewire:chat-bot />
+    {{-- <livewire:chat-bot /> --}}
 
     <script>
-    /* ════════════════════════════════════════════════
-       CUSTOM CURSOR
-       ────────────────────────────────────────────
-       Why this approach is smooth & glitch-free:
-       1. We never set `left` / `top` on the elements.
-          Everything goes through `--cx` / `--cy` CSS
-          custom properties which drive `transform`.
-          → Zero layout thrashing, GPU-composited.
-       2. The dot's CSS var is set SYNCHRONOUSLY in the
-          mousemove handler, so it's always 1 frame behind
-          at most — effectively instant.
-       3. The ring position is lerp'd inside a rAF loop.
-          We do NOT add a CSS `transition` on transform —
-          that stacks a CSS delay on top of the JS lag,
-          making it feel rubber-band and lagy.
-          The rAF lerp IS the lag; CSS transition is off.
-       4. Size/opacity changes (hover, click) still use CSS
-          transitions because those are discrete state
-          changes, not per-frame motion.
-    ════════════════════════════════════════════════ */
-    (function () {
-        const dot  = document.getElementById('cur-dot');
-        const ring = document.getElementById('cur-ring');
-        if (!dot || !ring) return;
+   
+        (function() {
+            const dot = document.getElementById('cur-dot');
+            const ring = document.getElementById('cur-ring');
+            if (!dot || !ring) return;
 
-        // Check for coarse pointer (touch) — bail early
-        if (window.matchMedia('(pointer: coarse)').matches) return;
+            // Check for coarse pointer (touch) — bail early
+            if (window.matchMedia('(pointer: coarse)').matches) return;
 
-        let mouseX = -200, mouseY = -200;  // raw mouse position
-        let ringX  = -200, ringY  = -200;  // ring's current lerped position
+            let mouseX = -200,
+                mouseY = -200; // raw mouse position
+            let ringX = -200,
+                ringY = -200; // ring's current lerped position
 
-        const LERP_FACTOR = 0.12; // 0 = stuck, 1 = instant. 0.12 = silky lag
+            const LERP_FACTOR = 0.12; // 0 = stuck, 1 = instant. 0.12 = silky lag
 
-        function lerp(a, b, t) { return a + (b - a) * t; }
+            function lerp(a, b, t) {
+                return a + (b - a) * t;
+            }
 
-        // ── Capture mouse, update dot immediately ──
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            // Dot snaps instantly (no rAF needed — mousemove fires per frame anyway)
-            dot.style.setProperty('--cx', mouseX + 'px');
-            dot.style.setProperty('--cy', mouseY + 'px');
-        }, { passive: true });
+            // ── Capture mouse, update dot immediately ──
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                // Dot snaps instantly (no rAF needed — mousemove fires per frame anyway)
+                dot.style.setProperty('--cx', mouseX + 'px');
+                dot.style.setProperty('--cy', mouseY + 'px');
+            }, {
+                passive: true
+            });
 
-        // ── rAF loop for ring only ──
-        let rafId;
-        function tick() {
-            ringX = lerp(ringX, mouseX, LERP_FACTOR);
-            ringY = lerp(ringY, mouseY, LERP_FACTOR);
-            ring.style.setProperty('--cx', ringX.toFixed(2) + 'px');
-            ring.style.setProperty('--cy', ringY.toFixed(2) + 'px');
+            // ── rAF loop for ring only ──
+            let rafId;
+
+            function tick() {
+                ringX = lerp(ringX, mouseX, LERP_FACTOR);
+                ringY = lerp(ringY, mouseY, LERP_FACTOR);
+                ring.style.setProperty('--cx', ringX.toFixed(2) + 'px');
+                ring.style.setProperty('--cy', ringY.toFixed(2) + 'px');
+                rafId = requestAnimationFrame(tick);
+            }
             rafId = requestAnimationFrame(tick);
-        }
-        rafId = requestAnimationFrame(tick);
 
-        // ── Hover detection via event delegation ──
-        const HOVER_SELECTOR = 'a, button, input, textarea, select, label, [data-cursor-hover]';
+            // ── Hover detection via event delegation ──
+            const HOVER_SELECTOR = 'a, button, input, textarea, select, label, [data-cursor-hover]';
 
-        document.addEventListener('mouseover', (e) => {
-            if (e.target.closest(HOVER_SELECTOR)) {
-                dot.classList.add('hovered');
-                ring.classList.add('hovered');
-            }
-        });
-        document.addEventListener('mouseout', (e) => {
-            if (e.target.closest(HOVER_SELECTOR)) {
-                dot.classList.remove('hovered');
+            document.addEventListener('mouseover', (e) => {
+                if (e.target.closest(HOVER_SELECTOR)) {
+                    dot.classList.add('hovered');
+                    ring.classList.add('hovered');
+                }
+            });
+            document.addEventListener('mouseout', (e) => {
+                if (e.target.closest(HOVER_SELECTOR)) {
+                    dot.classList.remove('hovered');
+                    ring.classList.remove('hovered');
+                }
+            });
+
+            // ── Click pulse ──
+            document.addEventListener('mousedown', () => {
+                ring.classList.add('clicked');
                 ring.classList.remove('hovered');
+            });
+            document.addEventListener('mouseup', () => {
+                ring.classList.remove('clicked');
+            });
+
+            // ── Hide when leaving window ──
+            document.addEventListener('mouseleave', () => {
+                dot.style.opacity = '0';
+                ring.style.opacity = '0';
+            });
+            document.addEventListener('mouseenter', () => {
+                dot.style.opacity = '';
+                ring.style.opacity = '';
+            });
+
+            // ── Re-run hover check after Livewire navigation ──
+            document.addEventListener('livewire:navigated', () => {
+                dot.classList.remove('hovered', 'clicked');
+                ring.classList.remove('hovered', 'clicked');
+            });
+        })();
+
+
+        /* ════════════════════════════════════════════════
+           NAVBAR SCROLL
+        ════════════════════════════════════════════════ */
+        (function() {
+            const navbar = document.getElementById('navbar');
+            if (!navbar) return;
+            let last = false;
+            window.addEventListener('scroll', () => {
+                const s = window.scrollY > 30;
+                if (s !== last) {
+                    last = s;
+                    navbar.classList.toggle('scrolled', s);
+                }
+            }, {
+                passive: true
+            });
+        })();
+
+
+        /* ════════════════════════════════════════════════
+           MOBILE MENU
+        ════════════════════════════════════════════════ */
+        (function() {
+            const toggle = document.getElementById('menu-toggle');
+            const menu = document.getElementById('mobile-menu');
+            if (!toggle || !menu) return;
+
+            const spans = toggle.querySelectorAll('span');
+            let open = false;
+
+            function setOpen(state) {
+                open = state;
+                menu.classList.toggle('open', state);
+                menu.setAttribute('aria-hidden', String(!state));
+                toggle.setAttribute('aria-expanded', String(state));
+                document.body.style.overflow = state ? 'hidden' : '';
+
+                spans[0].style.transform = state ? 'translateY(6px) rotate(45deg)' : '';
+                spans[1].style.opacity = state ? '0' : '';
+                spans[2].style.transform = state ? 'translateY(-6px) rotate(-45deg)' : '';
             }
-        });
 
-        // ── Click pulse ──
-        document.addEventListener('mousedown', () => {
-            ring.classList.add('clicked');
-            ring.classList.remove('hovered');
-        });
-        document.addEventListener('mouseup', () => {
-            ring.classList.remove('clicked');
-        });
+            toggle.addEventListener('click', () => setOpen(!open));
 
-        // ── Hide when leaving window ──
-        document.addEventListener('mouseleave', () => {
-            dot.style.opacity  = '0';
-            ring.style.opacity = '0';
-        });
-        document.addEventListener('mouseenter', () => {
-            dot.style.opacity  = '';
-            ring.style.opacity = '';
-        });
-
-        // ── Re-run hover check after Livewire navigation ──
-        document.addEventListener('livewire:navigated', () => {
-            dot.classList.remove('hovered', 'clicked');
-            ring.classList.remove('hovered', 'clicked');
-        });
-    })();
-
-
-    /* ════════════════════════════════════════════════
-       NAVBAR SCROLL
-    ════════════════════════════════════════════════ */
-    (function () {
-        const navbar = document.getElementById('navbar');
-        if (!navbar) return;
-        let last = false;
-        window.addEventListener('scroll', () => {
-            const s = window.scrollY > 30;
-            if (s !== last) { last = s; navbar.classList.toggle('scrolled', s); }
-        }, { passive: true });
-    })();
-
-
-    /* ════════════════════════════════════════════════
-       MOBILE MENU
-    ════════════════════════════════════════════════ */
-    (function () {
-        const toggle = document.getElementById('menu-toggle');
-        const menu   = document.getElementById('mobile-menu');
-        if (!toggle || !menu) return;
-
-        const spans = toggle.querySelectorAll('span');
-        let open = false;
-
-        function setOpen(state) {
-            open = state;
-            menu.classList.toggle('open', state);
-            menu.setAttribute('aria-hidden', String(!state));
-            toggle.setAttribute('aria-expanded', String(state));
-            document.body.style.overflow = state ? 'hidden' : '';
-
-            spans[0].style.transform = state ? 'translateY(6px) rotate(45deg)'  : '';
-            spans[1].style.opacity   = state ? '0'                               : '';
-            spans[2].style.transform = state ? 'translateY(-6px) rotate(-45deg)' : '';
-        }
-
-        toggle.addEventListener('click', () => setOpen(!open));
-
-        document.querySelectorAll('#mobile-menu a').forEach(a => {
-            a.addEventListener('click', () => setOpen(false));
-        });
-    })();
+            document.querySelectorAll('#mobile-menu a').forEach(a => {
+                a.addEventListener('click', () => setOpen(false));
+            });
+        })();
     </script>
 
     @livewireScripts
     @livewireScriptConfig
 </body>
+
 </html>

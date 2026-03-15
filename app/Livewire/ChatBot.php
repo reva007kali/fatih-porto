@@ -272,7 +272,7 @@ class ChatBot extends Component
             // But to ensure tools work, we must instruct it to use tools.
             // Let's prepend the dynamic data to ensure the AI knows about Reva's current state.
             $systemPrompt = $basePrompt . "\n\n[CONTEXT DATA]\n" .
-                "About Reva: " . ($about->description ?? 'Expert Web Developer') . "\n" .
+                "About Reva: " . ($about?->description ?? 'Expert Web Developer') . "\n" .
                 "Tools Instruction: Jika user tertarik memesan, ingin konsultasi serius, atau tanya harga detail: JANGAN tanya data manual satu-satu. PANGGIL fungsi 'trigger_lead_form'.";
 
             $apiKey = config('services.openai.key');

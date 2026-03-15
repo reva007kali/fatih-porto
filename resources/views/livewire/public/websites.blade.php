@@ -1,8 +1,8 @@
-<div class="min-h-screen bg-[#070708] text-[#e5e5e5] antialiased selection:bg-orange-500 selection:text-white overflow-x-hidden">
+<div class="min-h-screen bg-[#070708] text-[#e5e5e5] antialiased selection:bg-purple-500 selection:text-white overflow-x-hidden">
 
-    @section('meta_title', 'Websites Gallery | Reva Adhitya')
+    @section('meta_title', 'Websites Gallery | Sofyan Abdul Fatih')
     @section('meta_description', 'A showcase of static websites and landing pages, designed for performance and aesthetic impact.')
-    @section('meta_keywords', 'Websites, Landing Pages, Web Design, Reva Adhitya, Portfolio')
+    @section('meta_keywords', 'Websites, Landing Pages, Web Design, Sofyan Abdul Fatih, Portfolio')
 
     {{-- Ambient BG --}}
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -15,7 +15,7 @@
     <header class="relative z-10 pt-48 pb-32 px-6 md:px-20">
         <div class="max-w-[1440px] mx-auto">
             <div class="flex items-center gap-4 mb-12">
-                <div class="w-12 h-px bg-orange-500/50"></div>
+                <div class="w-12 h-px bg-purple-500/50"></div>
                 <span class="text-[10px] uppercase tracking-[0.5em] font-bold text-white/40">Web Gallery / 2026</span>
             </div>
 
@@ -47,14 +47,14 @@
                     placeholder="Search websites..."
                     class="w-full bg-[#0d0d0e] border border-white/[0.07] text-white text-sm font-light
                            pl-12 pr-12 py-4 placeholder-white/20
-                           focus:outline-none focus:border-orange-500/50 focus:bg-[#111]
+                           focus:outline-none focus:border-purple-500/50 focus:bg-[#111]
                            transition-all duration-300">
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-orange-500 transition-colors duration-300">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-purple-500 transition-colors duration-300">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
                 </span>
-                <div class="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-orange-600 to-amber-400 group-focus-within:w-full transition-all duration-500"></div>
+                <div class="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-blue-600 to-purple-500 group-focus-within:w-full transition-all duration-500"></div>
             </div>
 
             {{-- Tag pills --}}
@@ -62,13 +62,13 @@
                 <span class="text-[8px] font-bold uppercase tracking-[0.3em] text-white/20 mr-1 flex-shrink-0">Tag</span>
                 <button wire:click="$set('tag', '')"
                     class="px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] border transition-all duration-200
-                           {{ !$tag ? 'bg-orange-500 border-orange-500 text-white' : 'border-white/10 text-white/40 hover:border-white/30 hover:text-white' }}">
+                           {{ !$tag ? 'bg-purple-500 border-purple-500 text-white' : 'border-white/10 text-white/40 hover:border-white/30 hover:text-white' }}">
                     All
                 </button>
                 @foreach ($allTags as $t)
                     <button wire:click="$set('tag', '{{ $t }}')"
                         class="px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] border transition-all duration-200
-                               {{ $tag === $t ? 'bg-orange-500 border-orange-500 text-white' : 'border-white/10 text-white/40 hover:border-white/30 hover:text-white' }}">
+                               {{ $tag === $t ? 'bg-purple-500 border-purple-500 text-white' : 'border-white/10 text-white/40 hover:border-white/30 hover:text-white' }}">
                         {{ $t }}
                     </button>
                 @endforeach
@@ -81,7 +81,7 @@
                     @if($search)
                         <button wire:click="$set('search', '')"
                             class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10
-                                   text-[9px] font-bold text-white/50 hover:border-orange-500/50 hover:text-orange-400 transition-all duration-200">
+                                   text-[9px] font-bold text-white/50 hover:border-purple-500/50 hover:text-purple-400 transition-all duration-200">
                             <span>"{{ $search }}"</span>
                             <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -90,8 +90,8 @@
                     @endif
                     @if($tag)
                         <button wire:click="$set('tag', '')"
-                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-500/10 border border-orange-500/30
-                                   text-[9px] font-bold text-orange-400 hover:bg-orange-500/20 transition-all duration-200">
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-500/10 border border-purple-500/30
+                                   text-[9px] font-bold text-purple-400 hover:bg-purple-500/20 transition-all duration-200">
                             <span>{{ $tag }}</span>
                             <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -99,7 +99,7 @@
                         </button>
                     @endif
                     <button wire:click="$set('search', ''); $set('tag', '')"
-                        class="text-[9px] uppercase tracking-[0.25em] text-white/20 hover:text-orange-400 transition-colors duration-200">
+                        class="text-[9px] uppercase tracking-[0.25em] text-white/20 hover:text-purple-400 transition-colors duration-200">
                         Clear all
                     </button>
                 </div>
@@ -123,7 +123,7 @@
 
                                 {{-- Image --}}
                                 <div class="relative aspect-[5/3] overflow-hidden bg-[#111] border border-white/[0.06]
-                                            group-hover:border-orange-500/30 transition-colors duration-500">
+                                            group-hover:border-purple-500/30 transition-colors duration-500">
                                     @if ($website->image)
                                         <img src="{{ asset('storage/' . $website->image) }}"
                                             class="w-full h-full object-cover scale-105 group-hover:scale-100 transition-all duration-[1.5s] ease-out">
@@ -136,7 +136,7 @@
 
                                     {{-- Index --}}
                                     <div class="absolute top-4 left-4">
-                                        <span class="text-[9px] font-mono text-white/30 group-hover:text-orange-400 transition-colors duration-300">
+                                        <span class="text-[9px] font-mono text-white/30 group-hover:text-purple-400 transition-colors duration-300">
                                             {{ sprintf('%02d', $i + 1) }}
                                         </span>
                                     </div>
@@ -164,7 +164,7 @@
                                     </div>
 
                                     {{-- Bottom sweep --}}
-                                    <div class="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-orange-600 to-amber-400 group-hover:w-full transition-all duration-700"></div>
+                                    <div class="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-blue-600 to-purple-500 group-hover:w-full transition-all duration-700"></div>
                                 </div>
 
                                 {{-- Meta --}}
@@ -206,11 +206,11 @@
         ::-webkit-scrollbar{width:4px;}
         ::-webkit-scrollbar-track{background:#070708;}
         ::-webkit-scrollbar-thumb{background:#1a1a1c;}
-        ::-webkit-scrollbar-thumb:hover{background:#f97316;}
+        ::-webkit-scrollbar-thumb:hover{background:#a855f7;}
         .pagination{display:flex;gap:8px;font-family:monospace;font-size:10px;}
         .page-item.active .page-link{background:white;color:black;border-color:white;}
         .page-link{border:1px solid rgba(255,255,255,0.1);padding:8px 14px;color:rgba(255,255,255,0.4);transition:all 0.2s;}
-        .page-link:hover{background:#f97316;border-color:#f97316;color:white;}
+        .page-link:hover{background:#a855f7;border-color:#a855f7;color:white;}
     </style>
 
 </div>
